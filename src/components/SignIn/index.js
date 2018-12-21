@@ -24,6 +24,7 @@ const SignIn = () => (
         <Title>Sign In</Title>
         <SignInForm />
         <SignUpLink />
+        <SignInWithGoogleButton />
     </Wrapper>
 );
 
@@ -89,9 +90,33 @@ class SignInFormBase extends React.Component {
     }
 }
 
+class SignInWithGoogleButtonBase extends React.Component {
+
+    handleClicked = () => {
+        this.props.firebase.doSignInWithGoogle().then(() => {
+            this.setState({...INITIAL_STATE});
+            this.props.history.push(ROUTES.HOME);
+        })
+        .catch(error => {
+            this.setState({ error });
+        });
+    }
+
+    render() {
+        return (
+            <button onClick={this.handleClicked}>Sign in with Google</button>
+        );
+    }
+}
+
 const SignInForm = compose(
     withRouter,
     withFirebase,
 )(SignInFormBase);
+
+const SignInWithGoogleButton = compose(
+    withRouter,
+    withFirebase,
+)(SignInWithGoogleButtonBase);
 
 export default SignIn;

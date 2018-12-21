@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { 
+import {
     BrowserRouter as Router,
     Route,
 } from 'react-router-dom';
@@ -15,6 +15,9 @@ import AccountPage from '../Account';
 import AdminPage from '../Admin';
 
 import * as ROUTES from '../../constants/routes';
+import { withAuthentication } from '../Session';
+import { withFirebase } from '../Firebase';
+
 
 const Title = styled.h1`
     font-size: 1.5em;
@@ -29,21 +32,25 @@ const Wrapper = styled.section`
 `;
 
 //use our Title and Wrapper just like any other React componend, but they are now styled!
-const App = () => (
+class App extends React.Component {
     
-    <Router>
-        <Wrapper>
-        <Navigation />
-        <hr />
-            <Route exact path={ROUTES.LANDING} component={LandingPage} />
-            <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-            <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-            <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-            <Route path={ROUTES.HOME} component={HomePage} />
-            <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-            <Route path={ROUTES.ADMIN} component={AdminPage} />
-        </Wrapper>
-    </Router>
-)
+    render() {
+        return (
+            <Router>
+                <Wrapper>
+                    <Navigation />
+                    <hr />
+                    <Route exact path={ROUTES.LANDING} component={LandingPage} />
+                    <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+                    <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+                    <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+                    <Route path={ROUTES.HOME} component={HomePage} />
+                    <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+                    <Route path={ROUTES.ADMIN} component={AdminPage} />
+                </Wrapper>
+            </Router>
+        );
+    }
+}
 
-export default App;
+export default withAuthentication(withFirebase(App));

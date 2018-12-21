@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withFirebase } from '../Firebase';
+import * as ROUTES from '../../constants/routes';
+import { withRouter } from 'react-router-dom';
+
+
 
 const Title = styled.h1`
     font-size: 1.5em;
@@ -14,13 +18,23 @@ const Wrapper = styled.section`
     background: pink;
 `;
 
-const SignOut = ({ firebase }) => (
-    <Wrapper>
-        <Title>Sign Out</Title>
-        <button type="button" onClick={firebase.doSignOut}>
-            Sign Out
-        </button>
-    </Wrapper>
-)
+class SignOut extends React.Component {
 
-export default withFirebase(SignOut);
+    handleSignOutClicked = () => {
+        this.props.firebase.doSignOut();
+        this.props.history.push(ROUTES.HOME);
+    }
+
+    render() {
+        return (
+            <Wrapper>
+                <Title>Sign Out</Title>
+                <button type="button" onClick={this.handleSignOutClicked}>
+                    Sign Out
+                </button>
+            </Wrapper>
+        );
+    }
+}
+
+export default withRouter(withFirebase(SignOut));
