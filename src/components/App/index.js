@@ -18,7 +18,6 @@ import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 import { withFirebase } from '../Firebase';
 
-
 const Title = styled.h1`
     font-size: 1.5em;
     text-align: center;
