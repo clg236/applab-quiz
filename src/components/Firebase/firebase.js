@@ -27,6 +27,8 @@ class Firebase {
         app.initializeApp(config);
 
         this.auth = app.auth();
+
+        this.id = '123';
     }
 
     // Our authentication API
