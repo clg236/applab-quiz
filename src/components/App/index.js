@@ -2,8 +2,11 @@ import React, { useState, useContext } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 
-import AppBar from './appBar';
+import { useAuthentication } from '../Session';
+
+import MyAppBar from './appBar';
 import SignInPage from '../SignIn';
+import LandingPage from '../Landing';
 
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -17,7 +20,18 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-
+import { FirebaseContext } from '../Firebase';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import PeopleIcon from '@material-ui/icons/People';
+import BarChartIcon from '@material-ui/icons/BarChart';
+import LayersIcon from '@material-ui/icons/Layers';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const drawerWidth = 240;
 
@@ -99,69 +113,115 @@ const styles = theme => ({
 });
 
 
-//use our Title and Wrapper just like any other React componend, but they are now styled!
-class App extends React.Component {
-    state = {
-        open: true,
-    };
+function App(props) {
 
-    handleDrawerOpen = () => {
-        this.setState({ open: true });
+    const { classes } = props;
+    const firebase = useContext(FirebaseContext);
+    const user = useAuthentication(firebase);
+    const [drawerOpen, setDrawerOpen] = useState(true);
 
-    };
+    const handleDrawerClose = () => {
+        setDrawerOpen(false);
+    }
 
-    handleDrawerClose = () => {
-        this.setState({ open: false });
-    };
+    const handleDrawerOpen = () => {
+        setDrawerOpen(true);
+    }
 
+    const handleSignOutClicked = () => {
+        firebase.doSignOut();
+    }
 
-    render() {
-        const { classes } = this.props;
+    let content = <SignInPage />;
 
-        return (
-            <Router>
-                <SignInPage />
-                                {/* <div className={classes.root}>
-                                    <CssBaseline />
-                                    <div>
-                                        <AppBar />
-                                        <Drawer
-                                            variant="permanent"
-                                            classes={{
-                                                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-                                            }}
-                                            open={this.state.open}
-                                        >
-                                            <div className={classes.toolbarIcon}>
-                                                <IconButton onClick={this.handleDrawerClose}>
-                                                    <ChevronLeftIcon />
-                                                </IconButton>
-                                            </div>
-                                            <Divider />
-                                            <List></List>
-                                            <Divider />
-                                            <List></List>
-                                        </Drawer>
-                                        <main className={classes.content}>
-                                            <div className={classes.appBarSpacer} />
+    if (user) {
+        content = (
+            <div className={classes.root}>
+                <CssBaseline />
+                <MyAppBar isDrawerOpen={drawerOpen} onDrawerOpen={handleDrawerOpen} />
+                <Drawer
+                    variant="permanent"
+                    classes={{
+                        paper: classNames(classes.drawerPaper, !drawerOpen && classes.drawerPaperClose),
+                    }}
+                    open={drawerOpen}
+                >
+                    <div className={classes.toolbarIcon}>
+                        <IconButton onClick={handleDrawerClose}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </div>
+                    <Divider />
+                    <List>
+                        <div>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <DashboardIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Dashboard" />
+                            </ListItem>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <ShoppingCartIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Orders" />
+                            </ListItem>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <PeopleIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Customers" />
+                            </ListItem>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <BarChartIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Reports" />
+                            </ListItem>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <LayersIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Integrations" />
+                            </ListItem>
+                        </div>
+                    </List>
+                    <Divider />
+                    <List>
+                        <div>
+                            <ListItem button onClick={handleSignOutClicked}>
+                                <ListItemIcon>
+                                    <ExitToAppIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Sign out" />
+                            </ListItem>
+                        </div>
+                    </List>
+                </Drawer>
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer} />
+                    <Route exact path={ROUTES.LANDING} component={LandingPage} />
 
-                                            <Navigation />
-                                            <hr />
-                                            <Route exact path={ROUTES.LANDING} component={LandingPage} />
-                                            <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-                                            <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-                                            <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-                                            <Route path={ROUTES.HOME} component={HomePage} />
-                                            <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-                                            <Route path={ROUTES.ADMIN} component={AdminPage} />
-                                        </main>
-                                    </div>
+                    <Route path={ROUTES.SIGN_IN} component={SignInPage} />
 
-                                </div> */}
-                                
-            </Router>
+                    {/* 
+                    <Navigation />
+                    <hr />
+                    <Route exact path={ROUTES.LANDING} component={LandingPage} />
+                    <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+                    <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+                    <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+                    <Route path={ROUTES.HOME} component={HomePage} />
+                    <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+                    <Route path={ROUTES.ADMIN} component={AdminPage} /> */}
+                </main>
+            </div>
         );
     }
+
+    return (
+        <Router>{content}</Router>
+    );
 }
 
 
