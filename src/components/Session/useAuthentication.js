@@ -6,8 +6,6 @@ function useAuthentication(firebase) {
     useEffect(() => {
         let listener = firebase.auth.onAuthStateChanged(user => setUser(user));
 
-        console.log('useAuthentication::useEffect');
-
         return () => {
             listener();
         };
