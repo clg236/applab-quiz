@@ -1,13 +1,23 @@
 import React from 'react';
 import QuestionListItem from './QuestionListItem';
+import { Formik, Field } from 'formik';
+
 
 function QuestionList(props) {
+    
     return (
-        <ol>
-            {props.quiz.questions.map((question, i) => (
-                <QuestionListItem question={question} position={i} />
-            ))}
-        </ol>
+        <Formik>
+            {(formik) => (
+                <form onSubmit={formik.handleSubmit}>
+                    <ol>
+                        {props.quiz.questions.map((question, i) => (
+                            <QuestionListItem question={question} key={i} formik={formik} />
+                        ))}
+                    </ol>
+                    { JSON.stringify(formik.values) }
+                </form>
+            )}
+        </Formik>
     );
 }
 

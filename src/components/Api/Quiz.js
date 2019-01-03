@@ -8,20 +8,36 @@ class Quiz
                     title: "General Knowledge",
                     questions:[
                         {
-                            title: 'Tell us about yourself',
+                            question: 'Tell us about yourself',
                             name: 'introduction',
                             type: 'text'
                         },
                         {
-                            title: 'In which U.S. state was the first nuclear bomb tested?',
+                            question: 'In which U.S. state was the first nuclear bomb tested?',
                             type: 'single',
-                            name: 'tested',
+                            name: 'where_bomb_tested',
                             options: [
                                 'New Mexico',
                                 'Shanghai',
                                 'Abu Dhabi',
                                 'New York'
                             ]
+                        },
+                        {
+                            question: "How are you today?",
+                            type: 'multiple',
+                            name: 'how_are_you',
+                            options: [
+                                'Fine',
+                                'Happy',
+                                'Excited'
+                            ]
+                        },
+                        {
+                            question: "How would you display an alert box in javascript?",
+                            type: 'code',
+                            name: 'alert_box',
+                            placeholder: "// alert?"
                         }
                     ]
                 }
