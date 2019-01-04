@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import Api, { ApiContext } from '../Api';
+import { ApiContext } from '../Api';
 import Grid from '@material-ui/core/Grid';
 import QuizListItem from './QuizListItem';
 import { QuestionList, QuestionListItem } from '../Questions';

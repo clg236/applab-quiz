@@ -7,5 +7,7 @@ export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
 export const PASSWORD_FORGET = 'pw-forget';
 export const QUIZZES = '/quizzes';
+export const ADMIN_QUESTIONS = '/admin/questions';
+export const ADMIN_CREATE_QUESTION = '/admin/questions/create';
 
 

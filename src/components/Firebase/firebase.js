@@ -1,5 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/database';
 
 const devConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -24,9 +25,12 @@ const config = process.env.NODE_ENV === 'production' ? prodConfig : devConfig;
 //init our firebase goodies
 class Firebase {
     constructor() {
-        app.initializeApp(config);
+        if (!app.apps.length) {
+            app.initializeApp(config);
+        }
 
         this.auth = app.auth();
+        this.db = app.database();
     }
 
     // Our authentication API

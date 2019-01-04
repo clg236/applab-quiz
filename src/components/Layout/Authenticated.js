@@ -7,6 +7,7 @@ import AppBarComponent from './AppBar';
 import * as ROUTES from '../../constants/routes';
 import HomePage from '../Home';
 import QuizzesPage from '../Quizzes';
+import { QuestionsPage, CreateQuestionPage } from '../Questions';
 import { Route } from 'react-router-dom';
 
 const styles = theme => ({
@@ -38,7 +39,9 @@ function AuthenticatedLayout(props) {
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
                     <Route exact path={ROUTES.HOME} component={HomePage} />
-                    <Route path={ROUTES.QUIZZES} component={QuizzesPage} />
+                    <Route exact path={ROUTES.QUIZZES} component={QuizzesPage} />
+                    <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsPage} />
+                    <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={CreateQuestionPage} />
 
                     {/* <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
                     <Route path={ROUTES.SIGN_IN} component={SignInPage} />

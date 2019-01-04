@@ -6,7 +6,7 @@ import Layout from '../Layout';
 
 function App() {
     const firebase = new Firebase();
-    const api = new Api();
+    const api = new Api(firebase);
     return (
         <FirebaseContext.Provider value={firebase}>
             <ApiContext.Provider value={api}>

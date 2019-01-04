@@ -75,6 +75,10 @@ function DrawerComponent(props) {
         props.history.push(ROUTES.QUIZZES);
     }
 
+    const handleAllQuestionsMenuClicked = () => {
+        props.history.push(ROUTES.ADMIN_QUESTIONS);
+    }
+
     return (
         <Drawer
             variant="permanent"
@@ -104,6 +108,15 @@ function DrawerComponent(props) {
                         <ListItemText primary="My Quizzes" />
                     </ListItem>
                 </div>
+            </List>
+            <Divider />
+            <List>
+                <ListItem button onClick={handleAllQuestionsMenuClicked}>
+                    <ListItemIcon>
+                        <HelpIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="All Questions" />
+                </ListItem>
             </List>
             <Divider />
             <List>
