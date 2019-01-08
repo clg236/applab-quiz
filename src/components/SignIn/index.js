@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import * as ROUTES from '../../constants/routes';
-import { FirebaseContext } from '../Firebase';
 
 //our front-end material-ui
 import { withStyles } from '@material-ui/core/styles';
@@ -17,6 +16,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import FormGroup from '@material-ui/core/FormGroup';
+
+import { withFirebase } from 'react-redux-firebase';
 
 
 const styles = theme => ({
@@ -61,15 +62,16 @@ const INITIAL_STATE = {
 
 function SignIn(props) {
     const [state, setState] = useState(INITIAL_STATE);
-    const firebase = useContext(FirebaseContext);
+    const firebase = props.firebase;
 
     const handleFormSubmit = event => {
         const { email, password } = state;
 
         firebase
-            .doSignInWithEmailAndPassword(email, password)
+            .login({
+                email, password
+            })
             .then(() => {
-                setState({ ...INITIAL_STATE });
                 props.history.push(ROUTES.HOME);
             })
             .catch(error => {
@@ -85,9 +87,11 @@ function SignIn(props) {
 
     const handleSignInWithGoogleClicked = () => {
         firebase
-            .doSignInWithGoogle()
+            .login({
+                provider: 'google',
+                type: 'popup'
+            })
             .then(() => {
-                setState({ ...INITIAL_STATE });
                 props.history.push(ROUTES.HOME);
             })
             .catch(error => {
@@ -128,4 +132,4 @@ function SignIn(props) {
 };
 
 
-export default withStyles(styles)(withRouter(SignIn));
+export default withFirebase(withStyles(styles)(withRouter(SignIn)));

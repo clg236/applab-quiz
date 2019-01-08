@@ -43,12 +43,6 @@ function AuthenticatedLayout(props) {
                     <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsPage} />
                     <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={CreateQuestionPage} />
 
-                    {/* <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-                    <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-                    <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-                    <Route path={ROUTES.HOME} component={HomePage} />
-                    <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-                    <Route path={ROUTES.ADMIN} component={AdminPage} />  */}
                 </main>
             </div>
         </LayoutContext.Provider>

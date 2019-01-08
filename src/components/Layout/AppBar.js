@@ -11,10 +11,12 @@ import React, { useContext, useState } from 'react';
 import LayoutContext from './Context';
 import { DRAWER_WIDTH } from './Drawer';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
+
 
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-
+import { connect } from 'react-redux';
 
 const styles = theme => ({
     toolbar: {
@@ -47,8 +49,7 @@ const styles = theme => ({
     }
 });
 
-function AppBarComponent(props) {
-    const { classes } = props;
+function AppBarComponent({ classes, auth }) {
     const layoutContext = useContext(LayoutContext);
 
     function handleOpenDrawerClicked() {
@@ -102,7 +103,11 @@ function AppBarComponent(props) {
                     onClick={handleAccountClicked}
                     color="inherit"
                 >
-                    <AccountCircle />
+                    {
+                        auth.photoURL ? 
+                            <Avatar alt={auth.name} src={auth.photoURL} /> : 
+                            <Avatar alt={auth.name}><AccountCircle /></Avatar>
+                    }
                 </IconButton>
                 <Menu
                     id="menu-appbar"
@@ -126,4 +131,4 @@ function AppBarComponent(props) {
     );
 }
 
-export default withStyles(styles)(AppBarComponent);
+export default connect(({ firebase: { auth } }) => ({ auth }))(withStyles(styles)(AppBarComponent));

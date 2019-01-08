@@ -4,18 +4,28 @@ import Firebase, { FirebaseContext } from '../Firebase';
 import Api, { ApiContext } from '../Api';
 import Layout from '../Layout';
 
-function App() {
-    const firebase = new Firebase();
-    const api = new Api(firebase);
-    return (
-        <FirebaseContext.Provider value={firebase}>
-            <ApiContext.Provider value={api}>
-                <Router>
-                    <Layout />
-                </Router>
-            </ApiContext.Provider>
+import { Provider } from 'react-redux';
+import store from '../../store';
+import { connect } from 'react-redux';
 
-        </FirebaseContext.Provider>
+function App() {
+    // const firebase = new Firebase();
+    // const api = new Api(firebase);
+    return (
+        // <FirebaseContext.Provider value={firebase}>
+        //     <ApiContext.Provider value={api}>
+        //         <Router>
+        //             <Layout />
+        //         </Router>
+        //     </ApiContext.Provider>
+
+        // </FirebaseContext.Provider>
+
+        <Provider store={store}>
+            <Router>
+                <Layout />
+            </Router>
+        </Provider>
     );
 }
 

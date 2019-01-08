@@ -14,8 +14,8 @@ import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
-import { FirebaseContext } from '../Firebase';
 import LayoutContext from './Context';
+import { withFirebase } from 'react-redux-firebase';
 
 
 const DRAWER_WIDTH = 240;
@@ -52,7 +52,7 @@ const styles = theme => ({
 
 
 function DrawerComponent(props) {
-    const { classes } = props;
+    const { classes, firebase } = props;
 
     // layout context
     const layoutContext = useContext(LayoutContext);
@@ -61,9 +61,8 @@ function DrawerComponent(props) {
     }
 
     // firebase
-    const firebase = useContext(FirebaseContext);
     const handleSignOutClicked = () => {
-        firebase.doSignOut();
+        firebase.logout();
     }
 
     // navigations
@@ -134,6 +133,6 @@ function DrawerComponent(props) {
     );
 }
 
-export default withStyles(styles)(withRouter(DrawerComponent));
+export default withFirebase(withStyles(styles)(withRouter(DrawerComponent)));
 export { DRAWER_WIDTH };
 

@@ -1,19 +1,16 @@
 import React, { useContext } from 'react';
 
-import { useAuthentication } from '../Session';
-import { FirebaseContext } from '../Firebase';
 import AuthenticatedLayout from './Authenticated';
 import NonAuthenticatedLayout from './NonAuthenticated';
 import LayoutContext from './Context';
+import { connect } from 'react-redux';
 
-function Layout(props) {
-    const firebase = useContext(FirebaseContext);
-    const user = useAuthentication(firebase);
-
+function Layout({ auth }) {
     return (
-        user ? <AuthenticatedLayout /> : <NonAuthenticatedLayout />
+        auth.isLoaded && !auth.isEmpty ? <AuthenticatedLayout /> : <NonAuthenticatedLayout />
     );
 }
 
-export default Layout;
+
+export default connect(({ firebase: { auth } }) => ({ auth }))(Layout);
 export { LayoutContext };
