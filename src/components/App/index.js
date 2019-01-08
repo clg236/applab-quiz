@@ -1,30 +1,29 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Firebase, { FirebaseContext } from '../Firebase';
-import Api, { ApiContext } from '../Api';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import Layout from '../Layout';
 
 import { Provider } from 'react-redux';
-import store from '../../store';
-import { connect } from 'react-redux';
+import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
+import { ConnectedRouter } from 'connected-react-router'
+import store, { firebase, history } from '../../store';
+import { reactReduxFirebaseConfig } from '../../config';
+
 
 function App() {
-    // const firebase = new Firebase();
-    // const api = new Api(firebase);
+    const rrfProps = {
+        firebase,
+        config: reactReduxFirebaseConfig,
+        dispatch: store.dispatch,
+    }
+
     return (
-        // <FirebaseContext.Provider value={firebase}>
-        //     <ApiContext.Provider value={api}>
-        //         <Router>
-        //             <Layout />
-        //         </Router>
-        //     </ApiContext.Provider>
-
-        // </FirebaseContext.Provider>
-
         <Provider store={store}>
-            <Router>
-                <Layout />
-            </Router>
+            <ReactReduxFirebaseProvider {...rrfProps}>
+                <ConnectedRouter history={history}>
+                    <Layout />
+                </ConnectedRouter>
+            </ReactReduxFirebaseProvider>
+
         </Provider>
     );
 }

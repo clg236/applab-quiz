@@ -1,5 +1,5 @@
 import { createStore, compose, applyMiddleware } from 'redux';
-import rootReducer from './reducers';
+import createRootReducer from './reducers';
 import { getFirebase, reactReduxFirebase } from 'react-redux-firebase';
 import thunk from 'redux-thunk';
 
@@ -8,15 +8,22 @@ import 'firebase/auth';
 import 'firebase/database';
 import { firebaseConfig, reactReduxFirebaseConfig } from './config';
 
+import { createBrowserHistory } from 'history';
+import { routerMiddleware } from 'connected-react-router';
+
+
 // Initialize Firebase instance
 firebase.initializeApp(firebaseConfig);
+export { firebase };
+
+// history
+export const history = createBrowserHistory();
 
 const store = createStore(
-    rootReducer,
+    createRootReducer(history),
     {},
     compose(
-        // enhance store with store.firebase
-        reactReduxFirebase(firebase, reactReduxFirebaseConfig),
+        applyMiddleware(routerMiddleware(history)),
 
         // thunk
         applyMiddleware(thunk.withExtraArgument(getFirebase)),

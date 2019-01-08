@@ -1,3 +1,4 @@
+import * as ROLES from './constants/roles';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -11,7 +12,13 @@ const firebaseConfig = {
 const reactReduxFirebaseConfig = {
     userProfile: 'users',
     useFirestoreForProfile: false,
-    enableLogging: true
+    enableLogging: true,
+    
+    profileFactory: user => ({
+        email: user.email,
+        role: ROLES.ROLE_USER
+    })
+
 };
 
 export { firebaseConfig, reactReduxFirebaseConfig };

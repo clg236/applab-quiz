@@ -15,13 +15,13 @@ function QuizzesPage() {
     }
 
     useEffect(() => {
-        api.quiz.get()
-            .then(result => {
-                setQuizzes(result);
-            })
-            .catch(() => {
-                setQuizzes([]);
-            });
+        // api.quiz.get()
+        //     .then(result => {
+        //         setQuizzes(result);
+        //     })
+        //     .catch(() => {
+        //         setQuizzes([]);
+        //     });
     }, [quizzes]);
 
     return (

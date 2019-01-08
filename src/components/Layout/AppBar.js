@@ -8,7 +8,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import classNames from 'classnames';
 import React, { useContext, useState } from 'react';
-import LayoutContext from './Context';
 import { DRAWER_WIDTH } from './Drawer';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
@@ -17,6 +16,7 @@ import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { connect } from 'react-redux';
+import ACTIONS from '../../actions';
 
 const styles = theme => ({
     toolbar: {
@@ -49,11 +49,10 @@ const styles = theme => ({
     }
 });
 
-function AppBarComponent({ classes, auth }) {
-    const layoutContext = useContext(LayoutContext);
+function AppBarComponent({ classes, auth, drawer, dispatch }) {
 
     function handleOpenDrawerClicked() {
-        layoutContext.setState({ ...layoutContext.state, drawerOpen: true });
+        dispatch(ACTIONS.LAYOUT.openDrawer());
     }
 
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
@@ -65,19 +64,21 @@ function AppBarComponent({ classes, auth }) {
         setMenuAnchorEl(null);
     }
 
+    const isDrawerOpen = drawer.open;
+
     return (
         <AppBar
             position="absolute"
-            className={classNames(classes.appBar, layoutContext.state.drawerOpen && classes.appBarShift)}
+            className={classNames(classes.appBar, isDrawerOpen && classes.appBarShift)}
         >
-            <Toolbar disableGutters={!layoutContext.state.drawerOpen} className={classes.toolbar}>
+            <Toolbar disableGutters={!isDrawerOpen} className={classes.toolbar}>
                 <IconButton
                     color="inherit"
                     aria-label="Open drawer"
                     onClick={handleOpenDrawerClicked}
                     className={classNames(
                         classes.menuButton,
-                        layoutContext.state.drawerOpen && classes.menuButtonHidden,
+                        isDrawerOpen && classes.menuButtonHidden,
                     )}
                 >
                     <MenuIcon />
@@ -89,10 +90,10 @@ function AppBarComponent({ classes, auth }) {
                     noWrap
                     className={classes.title}
                 >
-                    {layoutContext.state.title}
+                    The awesome quiz app
                 </Typography>
                 <IconButton color="inherit">
-                    <Badge badgeContent={layoutContext.state.badgeCount} color="secondary">
+                    <Badge badgeContent={4} color="secondary">
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
@@ -131,4 +132,4 @@ function AppBarComponent({ classes, auth }) {
     );
 }
 
-export default connect(({ firebase: { auth } }) => ({ auth }))(withStyles(styles)(AppBarComponent));
+export default connect(({ firebase: { auth }, drawer }) => ({ auth, drawer }))(withStyles(styles)(AppBarComponent));

@@ -8,10 +8,10 @@ function QuestionsPage() {
     const [questions, setQuestions] = useState([]);
 
     useEffect(() => {
-        api.question.get().then(result => {
-            setQuestions(result);
-            console.log("Questions: ", result);
-        });
+        // api.question.get().then(result => {
+        //     setQuestions(result);
+        //     console.log("Questions: ", result);
+        // });
     }, []);
     
     return (

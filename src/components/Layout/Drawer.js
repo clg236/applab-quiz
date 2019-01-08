@@ -12,11 +12,12 @@ import HelpIcon from '@material-ui/icons/Help';
 import HomeIcon from '@material-ui/icons/Home';
 import classNames from 'classnames';
 import React, { useContext } from 'react';
-import { withRouter } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
-import LayoutContext from './Context';
 import { withFirebase } from 'react-redux-firebase';
-
+import { push } from 'connected-react-router';
+import { Link } from 'react-router-dom';
+import ACTIONS from '../../actions';
+import { connect } from 'react-redux';
 
 const DRAWER_WIDTH = 240;
 
@@ -52,12 +53,11 @@ const styles = theme => ({
 
 
 function DrawerComponent(props) {
-    const { classes, firebase } = props;
+    const { classes, firebase, dispatch, drawer } = props;
 
     // layout context
-    const layoutContext = useContext(LayoutContext);
     const handleDrawerClose = () => {
-        layoutContext.setState({ ...layoutContext.state, drawerOpen: false });
+        dispatch(ACTIONS.LAYOUT.closeDrawer());
     }
 
     // firebase
@@ -67,24 +67,32 @@ function DrawerComponent(props) {
 
     // navigations
     const handleHomeMenuClicked = () => {
-        props.history.push(ROUTES.HOME);
+        console.log("home clicked");
+        // props.history.push(ROUTES.HOME);
+        dispatch(push(ROUTES.HOME));
     }
 
     const handleQuizMenuClicked = () => {
-        props.history.push(ROUTES.QUIZZES);
+
+        console.log("quizzes clicked");
+        // props.history.push(ROUTES.QUIZZES);
+
+        dispatch(push(ROUTES.QUIZZES));
     }
 
     const handleAllQuestionsMenuClicked = () => {
         props.history.push(ROUTES.ADMIN_QUESTIONS);
     }
 
+    const isDrawerOpen = drawer.open;
+
     return (
         <Drawer
             variant="permanent"
             classes={{
-                paper: classNames(classes.drawerPaper, !layoutContext.state.drawerOpen && classes.drawerPaperClose),
+                paper: classNames(classes.drawerPaper, !isDrawerOpen && classes.drawerPaperClose),
             }}
-            open={layoutContext.state.drawerOpen}
+            open={isDrawerOpen}
         >
             <div className={classes.toolbarIcon}>
                 <IconButton onClick={handleDrawerClose}>
@@ -94,7 +102,7 @@ function DrawerComponent(props) {
             <Divider />
             <List>
                 <div>
-                    <ListItem button onClick={handleHomeMenuClicked}>
+                    <ListItem button component={props => <Link {...props} to={ROUTES.HOME} />}>
                         <ListItemIcon>
                             <HomeIcon />
                         </ListItemIcon>
@@ -133,6 +141,6 @@ function DrawerComponent(props) {
     );
 }
 
-export default withFirebase(withStyles(styles)(withRouter(DrawerComponent)));
+export default connect(({drawer}) => ({drawer}))(withFirebase(withStyles(styles)(DrawerComponent)));
 export { DRAWER_WIDTH };
 
