@@ -6,8 +6,34 @@ import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import * as ROUTES from '../../constants/routes';
 import { push } from 'connected-react-router';
 
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+
+const QuestionListItem = ({ firebase, id, question }) => {
+
+    function handleDelete() {
+        firebase.remove(`questions/${id}`);
+    }
+
+    return (
+        <ListItem>
+            <ListItemText
+                primary={question.question}
+            />
+            <ListItemSecondaryAction>
+                <IconButton aria-label="Delete" onClick={handleDelete}>
+                    <DeleteIcon />
+                </IconButton>
+            </ListItemSecondaryAction>
+        </ListItem>
+    );
+};
 
 const QuestionsListPage = ({ firebase, questions, pushToHistory }) => {
     let content = "";
@@ -15,19 +41,15 @@ const QuestionsListPage = ({ firebase, questions, pushToHistory }) => {
     if (!isLoaded(questions)) {
         content = <CircularProgress />;
     } else if (isEmpty(questions)) {
-        content = "There is no questions.";
+        content = "There is no questions yet.";
     } else {
         content = (
-            <ol>
+            <List>
                 {Object.keys(questions).map(key => (
-                    <li key={key}>{questions[key].question}</li>
+                    <QuestionListItem key={key} id={key} question={questions[key]} firebase={firebase} />
                 ))}
-            </ol>
+            </List>
         );
-    }
-
-    const handleClicked = () => {
-        pushToHistory(ROUTES.ADMIN_CREATE_QUESTION);
     }
 
     return (
@@ -35,7 +57,6 @@ const QuestionsListPage = ({ firebase, questions, pushToHistory }) => {
             <h2>Questions</h2>
             {content}
             <p><Link to={ROUTES.ADMIN_CREATE_QUESTION}>Create a question</Link></p>
-            <p><button onClick={handleClicked}>Create a question</button></p>
         </div>
     );
 };
@@ -49,11 +70,5 @@ export default compose(
         }
     ]),
 
-    connect((state) => ({
-        questions: state.firebase.data.questions,
-    }), {
-        pushToHistory: push
-    })
-
-
+    connect((state) => ({questions: state.firebase.data.questions}), {pushToHistory: push}),
 )(QuestionsListPage);

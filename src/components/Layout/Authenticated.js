@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import DrawerComponent from './Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -23,8 +25,7 @@ const styles = theme => ({
 });
 
 
-function AuthenticatedLayout(props) {
-    const { classes } = props;
+function AuthenticatedLayout({ classes, location }) {
 
     return (
         <div className={classes.root}>
@@ -34,7 +35,7 @@ function AuthenticatedLayout(props) {
 
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                <Switch>
+                <Switch location={location}>
                     <Route exact path={ROUTES.HOME} component={HomePage} />
                     <Route exact path={ROUTES.QUIZZES} component={QuizzesPage} />
                     <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsListPage} />
@@ -47,4 +48,7 @@ function AuthenticatedLayout(props) {
     );
 }
 
-export default withStyles(styles)(AuthenticatedLayout);
+export default compose(
+    withStyles(styles),
+    connect(({ router: { location } }) => ({ location }))
+)(AuthenticatedLayout);
