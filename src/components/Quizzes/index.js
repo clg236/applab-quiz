@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import QuizListItem from './QuizListItem';
 import { QuestionList, QuestionListItem } from '../Questions';
 
-
 function QuizzesPage() {
     const api = useContext(ApiContext);
     const [quizzes, setQuizzes] = useState([]);

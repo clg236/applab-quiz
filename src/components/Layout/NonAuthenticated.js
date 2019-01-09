@@ -2,7 +2,7 @@ import React from 'react';
 
 import SignInPage from '../SignIn';
 
-function NonAuthenticatedLayout(props) {
+function NonAuthenticatedLayout() {
     return <SignInPage />
 }
 

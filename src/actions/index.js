@@ -1,4 +1,4 @@
-import * as LAYOUT from './layout';
+import * as LAYOUT from './Layout';
 
 const ACTIONS = {
     LAYOUT

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import DrawerComponent, { DRAWER_WIDTH } from './Drawer';
+import DrawerComponent from './Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBarComponent from './AppBar';
 import * as ROUTES from '../../constants/routes';
 import HomePage from '../Home';
 import QuizzesPage from '../Quizzes';
-import { QuestionsPage, CreateQuestionPage } from '../Questions';
 import { Route, Switch } from 'react-router-dom';
+import { QuestionsListPage, QuestionsCreatePage } from '../Admin';
 
 const styles = theme => ({
     root: {
@@ -25,7 +25,7 @@ const styles = theme => ({
 
 function AuthenticatedLayout(props) {
     const { classes } = props;
-    
+
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -37,8 +37,9 @@ function AuthenticatedLayout(props) {
                 <Switch>
                     <Route exact path={ROUTES.HOME} component={HomePage} />
                     <Route exact path={ROUTES.QUIZZES} component={QuizzesPage} />
-                    <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsPage} />
-                    <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={CreateQuestionPage} />
+                    <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsListPage} />
+                    <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={QuestionsCreatePage} />
+                    <Route render={() => (<div>404</div>)} />
                 </Switch>
 
             </main>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import * as ROUTES from '../../constants/routes';
@@ -18,7 +18,6 @@ import Divider from '@material-ui/core/Divider';
 import FormGroup from '@material-ui/core/FormGroup';
 
 import { withFirebase } from 'react-redux-firebase';
-
 
 const styles = theme => ({
     main: {

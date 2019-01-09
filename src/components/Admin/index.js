@@ -1,8 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+import QuestionsListPage from './QuestionsListPage';
+import QuestionsCreatePage from './QuestionsCreatePage';
 
 const Admin = () => (
     <p>Admin</p>
 )
 
 export default Admin;
+
+export { QuestionsListPage, QuestionsCreatePage };

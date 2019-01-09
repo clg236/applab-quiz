@@ -13,6 +13,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import classNames from 'classnames';
 import React, { useContext } from 'react';
 import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 import { withFirebase } from 'react-redux-firebase';
 import { push } from 'connected-react-router';
 import { Link } from 'react-router-dom';
@@ -53,7 +54,7 @@ const styles = theme => ({
 
 
 function DrawerComponent(props) {
-    const { classes, firebase, dispatch, drawer } = props;
+    const { classes, firebase, auth, profile, dispatch, drawer } = props;
 
     // layout context
     const handleDrawerClose = () => {
@@ -67,21 +68,11 @@ function DrawerComponent(props) {
 
     // navigations
     const handleHomeMenuClicked = () => {
-        console.log("home clicked");
-        // props.history.push(ROUTES.HOME);
         dispatch(push(ROUTES.HOME));
     }
 
     const handleQuizMenuClicked = () => {
-
-        console.log("quizzes clicked");
-        // props.history.push(ROUTES.QUIZZES);
-
         dispatch(push(ROUTES.QUIZZES));
-    }
-
-    const handleAllQuestionsMenuClicked = () => {
-        props.history.push(ROUTES.ADMIN_QUESTIONS);
     }
 
     const isDrawerOpen = drawer.open;
@@ -116,15 +107,20 @@ function DrawerComponent(props) {
                     </ListItem>
                 </div>
             </List>
-            <Divider />
-            <List>
-                <ListItem button onClick={handleAllQuestionsMenuClicked}>
-                    <ListItemIcon>
-                        <HelpIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="All Questions" />
-                </ListItem>
-            </List>
+            {/* {profile.role == ROLES.ROLE_ADMIN &&  */}
+                <>
+                    <Divider />
+                    <List>
+                        <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_QUESTIONS} />}>
+                            <ListItemIcon>
+                                <HelpIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="All Questions" />
+                        </ListItem>
+                    </List>
+                </>
+            {/* } */}
+            
             <Divider />
             <List>
                 <div>
@@ -141,6 +137,14 @@ function DrawerComponent(props) {
     );
 }
 
-export default connect(({drawer}) => ({drawer}))(withFirebase(withStyles(styles)(DrawerComponent)));
+const mapStateToProps = ({drawer, firebase: { auth, profile }}) => {
+    return {
+        drawer,
+        auth,
+        profile,
+    };
+};
+
+export default connect(mapStateToProps)(withFirebase(withStyles(styles)(DrawerComponent)));
 export { DRAWER_WIDTH };
 
