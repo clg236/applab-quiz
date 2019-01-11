@@ -21,10 +21,33 @@ const QuestionListItem = ({ firebase, id, question }) => {
         firebase.remove(`questions/${id}`);
     }
 
+    let text = question.question;
+    let icon = '';
+
+    switch (question.type) {
+        case 'single':
+            icon = '🔘';
+        break;
+
+        case 'multiple':
+            icon = '☐';
+        break;
+
+        case 'code':
+            icon = '👨‍💻';
+        break;
+        
+        case 'text':
+        default:
+            icon = '📖';
+    }
+
+    text = icon + text;
+
     return (
         <ListItem>
             <ListItemText
-                primary={question.question}
+                primary={text}
             />
             <ListItemSecondaryAction>
                 <IconButton aria-label="Delete" onClick={handleDelete}>
