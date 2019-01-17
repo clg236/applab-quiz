@@ -9,7 +9,7 @@ import * as ROUTES from '../../constants/routes';
 import HomePage from '../Home';
 import QuizzesPage from '../Quizzes';
 import { Route, Switch } from 'react-router-dom';
-import { QuestionsListPage, QuestionsCreatePage } from '../Admin';
+import { QuestionsListPage, QuestionsCreatePage, QuizzesListPage, QuizzesCreatePage } from '../Admin';
 
 const styles = theme => ({
     root: {
@@ -38,6 +38,8 @@ function AuthenticatedLayout({ classes, location }) {
                 <Switch location={location}>
                     <Route exact path={ROUTES.HOME} component={HomePage} />
                     <Route exact path={ROUTES.QUIZZES} component={QuizzesPage} />
+                    <Route exact path={ROUTES.ADMIN_QUIZZES} component={QuizzesListPage} />
+                    <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={QuizzesCreatePage} />
                     <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsListPage} />
                     <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={QuestionsCreatePage} />
                     <Route render={() => (<div>404</div>)} />

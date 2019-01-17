@@ -111,6 +111,14 @@ function DrawerComponent(props) {
                 <>
                     <Divider />
                     <List>
+                        <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_QUIZZES} />}>
+                            <ListItemIcon>
+                                <HelpIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Quizzes" />
+                        </ListItem>
+                    </List>
+                    <List>
                         <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_QUESTIONS} />}>
                             <ListItemIcon>
                                 <HelpIcon />
