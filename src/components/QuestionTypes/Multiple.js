@@ -5,13 +5,14 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import {Field, FieldArray} from 'formik';
+import {Typography} from "@material-ui/core";
 
 
 function OptionsFieldArray(props) {
     const {question, name, form: {touched, errors, handleChange, handleBlur, values}} = props;
 
     return (
-        <FormControl component="fieldset" error={Boolean(touched[name] && errors[name])}>
+        <FormControl required fullWidth error={Boolean(touched[name] && errors[name])}>
             <FormLabel component="h3">{question.title}</FormLabel>
             <FormGroup>
                 {question.options.map((option, i) => {

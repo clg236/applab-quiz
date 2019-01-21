@@ -1,23 +1,24 @@
 import React from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import { Field } from 'formik';
+import {connect, Field} from 'formik';
 import MonacoEditor from 'react-monaco-editor';
+import {compose} from "redux";
+import {Typography} from "@material-ui/core";
 
 
-
-function Code({ question, formik }) {
+function Code({question, formik}) {
     function handleCodeChange(value) {
-        formik.setFieldValue(question.name, value);
+        formik.setFieldValue(question.title, value);
     }
 
     return (
         <Field
-            name={question.name}
-            render={({ field, form: { handleBlur, touched, values, errors } }) => {
+            name={question.title}
+            render={({field, form: {handleBlur, touched, values, errors}}) => {
                 return (
-                    <FormControl fullWidth={true} error={Boolean(touched[field.name] && errors[field.name])}>
-                        <FormLabel>{question.question}</FormLabel>
+                    <FormControl required fullWidth error={Boolean(touched[field.name] && errors[field.name])}>
+                        <FormLabel component="h3">{question.title}</FormLabel>
                         <MonacoEditor
                             height="300"
                             language="javascript"
@@ -25,7 +26,6 @@ function Code({ question, formik }) {
                             value={values[field.name]}
                             onBlur={handleBlur}
                             onChange={handleCodeChange}
-                            defaultValue={question.placeholder}
                         />
                     </FormControl>
                 );
@@ -34,4 +34,6 @@ function Code({ question, formik }) {
     );
 }
 
-export default Code;
+export default compose(
+    connect,
+)(Code);

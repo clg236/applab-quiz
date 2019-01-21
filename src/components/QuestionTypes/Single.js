@@ -11,7 +11,7 @@ function Single({quiz, question}) {
         <Field
             name={question.title}
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
-                <FormControl component="fieldset" error={Boolean(touched[field.name] && errors[field.name])}>
+                <FormControl required fullWidth error={Boolean(touched[field.name] && errors[field.name])}>
                     <FormLabel component="h3">{question.title}</FormLabel>
                     <RadioGroup
                         aria-label={question.title}

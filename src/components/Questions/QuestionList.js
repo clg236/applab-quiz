@@ -8,9 +8,18 @@ import Button from "@material-ui/core/Button";
 import {firebaseConnect, withFirebase} from "react-redux-firebase";
 import {connect} from "react-redux";
 import {push} from "connected-react-router";
+import {withStyles} from "@material-ui/core";
 
 
-function QuestionList({user, quizID, quiz, submission, handleSubmit, values, errors, isValid, isSubmitting}) {
+const styles = theme => ({
+
+    submit: {
+        marginTop: theme.spacing.unit * 3,
+    },
+
+});
+
+function QuestionList({user, quizID, quiz, submission, handleSubmit, values, errors, isValid, isSubmitting, classes}) {
 
     return (
         <form onSubmit={handleSubmit}>
@@ -24,7 +33,7 @@ function QuestionList({user, quizID, quiz, submission, handleSubmit, values, err
                 <Grid item xs={12}>
                     {!submission && (
                         <Button color={"primary"} variant={"contained"} type={"submit"}
-                                disabled={!isValid || isSubmitting}>
+                                disabled={!isValid || isSubmitting} className={classes.submit}>
                             Submit
                         </Button>
                     )}
@@ -46,7 +55,7 @@ function calculateCorrectAnswers(quiz, answers) {
         let provided = question.title in answers ? answers[question.title].trim() : null;
 
         if (provided == null) {
-            return ;
+            return;
         }
 
         switch (question.type) {
@@ -106,6 +115,24 @@ export default compose(
     withFormik({
         mapPropsToValues: () => ({}),
 
+        // Custom sync validation
+        validate: (values, {quiz: {questions}}) => {
+            const errors = {};
+
+            questions.forEach(question => {
+                if (!(question.title in values)) {
+                    errors[question.title] = 'Required';
+                } else {
+                    if (question.type == 'multiple' && values[question.title].filter(Boolean).length === 0) {
+                        errors[question.title] = 'Required';
+                    }
+                }
+            });
+
+            return errors;
+        },
+
+
         handleSubmit: (values, actions) => {
             const {setSubmitting, props: {quizID, user, quiz, firebase: {setWithMeta}, pushToHistory}} = actions;
 
@@ -124,4 +151,6 @@ export default compose(
             });
         }
     }),
+
+    withStyles(styles),
 )(QuestionList);
