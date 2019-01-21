@@ -1,37 +1,52 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
-import { Field } from 'formik';
+import {Field, FieldArray} from 'formik';
 
-function Multiple({question}) {
+
+function OptionsFieldArray(props) {
+    const {question, name, form: {touched, errors, handleChange, handleBlur, values}} = props;
+
     return (
-        <Field
-            name={question.name}
-            render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
-                <FormControl component="fieldset" error={Boolean(touched[field.name] && errors[field.name])}>
-                    <FormLabel component="legend">{question.question}</FormLabel>
-                    <FormGroup>
-                        {question.options.map((option, i) => {
-                            const checkbox = (
-                                <Checkbox 
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={option}
-                                    checked={values[field.name] && typeof values[field.name][option] != 'undefined' ? values[field.name][option] : false}
-                                />
-                            );
+        <FormControl component="fieldset" error={Boolean(touched[name] && errors[name])}>
+            <FormLabel component="h3">{question.title}</FormLabel>
+            <FormGroup>
+                {question.options.map((option, i) => {
+                    const checkbox = (
+                        <Checkbox
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={option.option}
+                            checked={values[name] && typeof values[name][i] != 'undefined' ? values[name][i] : false}
+                        />
+                    );
 
-                            return (
-                                <FormControlLabel name={`${question.name}.${option}`} value={option} control={checkbox} label={option} key={i} />
-                            );
-                        })}
-                    </FormGroup>
-                </FormControl>
+                    return (
+                        <Field name={`${name}.${i}`} key={i}>
+                            {({field: {name}}) => (
+                                <FormControlLabel name={name} control={checkbox} label={option.option}/>
+                            )}
+                        </Field>
+                    );
+                })}
+            </FormGroup>
+        </FormControl>
+    );
+}
+
+
+function Multiple(props) {
+    const {question} = props;
+
+    return (
+        <FieldArray name={question.title}>
+            {props => (
+                <OptionsFieldArray question={question} {...props} />
             )}
-        />
+        </FieldArray>
     );
 }
 

@@ -1,25 +1,26 @@
 import React from 'react';
 import * as Types from '../QuestionTypes';
 
-function QuestionListItem({question, formik}) {
-    let content = '';
+function QuestionListItem(props) {
+
+    const question = props.question;
 
     switch (question.type) {
         case 'text':
-            content = <Types.Text question={question} formik={formik} />
+            return (<Types.Text {...props} />);
         break;
         case 'single':
-            content = <Types.Single question={question} formik={formik} />
+            return (<Types.Single {...props} />);
         break;
         case 'multiple':
-            content = <Types.Multiple question={question} formik={formik} />
+            return (<Types.Multiple {...props} />);
         break;
         case 'code':
-            content = <Types.Code question={question} formik={formik} />
+            return (<Types.Code {...props} />);
         break;
     }
 
-    return (<li>{content}</li>);
+    return (<div></div>);
 }
 
 export default QuestionListItem;

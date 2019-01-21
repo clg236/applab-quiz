@@ -1,21 +1,21 @@
 import AppBar from '@material-ui/core/AppBar';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import classNames from 'classnames';
-import React, { useContext, useState } from 'react';
-import { DRAWER_WIDTH } from './Drawer';
+import React, {useContext, useState} from 'react';
+import {DRAWER_WIDTH} from './Drawer';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
 
 
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import ACTIONS from '../../actions';
 
 const styles = theme => ({
@@ -49,13 +49,14 @@ const styles = theme => ({
     }
 });
 
-function AppBarComponent({ classes, auth, drawer, dispatch }) {
+function AppBarComponent({classes, auth, drawer, dispatch}) {
 
     function handleOpenDrawerClicked() {
         dispatch(ACTIONS.LAYOUT.openDrawer());
     }
 
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+
     function handleAccountClicked(e) {
         setMenuAnchorEl(e.currentTarget);
     }
@@ -81,7 +82,7 @@ function AppBarComponent({ classes, auth, drawer, dispatch }) {
                         isDrawerOpen && classes.menuButtonHidden,
                     )}
                 >
-                    <MenuIcon />
+                    <MenuIcon/>
                 </IconButton>
                 <Typography
                     component="h1"
@@ -94,7 +95,7 @@ function AppBarComponent({ classes, auth, drawer, dispatch }) {
                 </Typography>
                 <IconButton color="inherit">
                     <Badge badgeContent={4} color="secondary">
-                        <NotificationsIcon />
+                        <NotificationsIcon/>
                     </Badge>
                 </IconButton>
 
@@ -105,9 +106,9 @@ function AppBarComponent({ classes, auth, drawer, dispatch }) {
                     color="inherit"
                 >
                     {
-                        auth.photoURL ? 
-                            <Avatar alt={auth.name} src={auth.photoURL} /> : 
-                            <Avatar alt={auth.name}><AccountCircle /></Avatar>
+                        auth.photoURL ?
+                            <Avatar alt={auth.name} src={auth.photoURL}/> :
+                            <Avatar alt={auth.name}><AccountCircle/></Avatar>
                     }
                 </IconButton>
                 <Menu
@@ -132,4 +133,7 @@ function AppBarComponent({ classes, auth, drawer, dispatch }) {
     );
 }
 
-export default connect(({ firebase: { auth }, drawer }) => ({ auth, drawer }))(withStyles(styles)(AppBarComponent));
+export default connect(
+    ({firebase: {auth}, drawer}) => (
+        {auth, drawer}
+        ))(withStyles(styles)(AppBarComponent));

@@ -1,15 +1,20 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { withStyles } from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {withStyles} from '@material-ui/core/styles';
 import DrawerComponent from './Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBarComponent from './AppBar';
 import * as ROUTES from '../../constants/routes';
 import HomePage from '../Home';
-import QuizzesPage from '../Quizzes';
-import { Route, Switch } from 'react-router-dom';
-import { QuestionsListPage, QuestionsCreatePage, QuizzesListPage, QuizzesCreatePage } from '../Admin';
+import {ListPage as QuizzesListPage, DetailPage as QuizzesDetailPage} from '../Quizzes';
+import {Route, Switch} from 'react-router-dom';
+import {
+    QuestionsListPage,
+    QuestionsCreatePage,
+    QuizzesListPage as AdminQuizzesListPage,
+    QuizzesCreatePage
+} from '../Admin';
 
 const styles = theme => ({
     root: {
@@ -25,24 +30,27 @@ const styles = theme => ({
 });
 
 
-function AuthenticatedLayout({ classes, location }) {
+function AuthenticatedLayout({classes, location}) {
 
     return (
         <div className={classes.root}>
-            <CssBaseline />
-            <AppBarComponent />
-            <DrawerComponent />
+            <CssBaseline/>
+            <AppBarComponent/>
+            <DrawerComponent/>
 
             <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
+                <div className={classes.appBarSpacer}/>
                 <Switch location={location}>
-                    <Route exact path={ROUTES.HOME} component={HomePage} />
-                    <Route exact path={ROUTES.QUIZZES} component={QuizzesPage} />
-                    <Route exact path={ROUTES.ADMIN_QUIZZES} component={QuizzesListPage} />
-                    <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={QuizzesCreatePage} />
-                    <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsListPage} />
-                    <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={QuestionsCreatePage} />
-                    <Route render={() => (<div>404</div>)} />
+                    <Route exact path={ROUTES.LANDING} component={HomePage}/>
+                    <Route exact path={ROUTES.HOME} component={HomePage}/>
+                    <Route exact path={ROUTES.QUIZZES} component={QuizzesListPage}/>
+                    <Route path={ROUTES.QUIZ_DETAIL} component={QuizzesDetailPage}/>
+
+                    <Route exact path={ROUTES.ADMIN_QUIZZES} component={AdminQuizzesListPage}/>
+                    <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={QuizzesCreatePage}/>
+                    <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsListPage}/>
+                    <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={QuestionsCreatePage}/>
+                    <Route render={() => (<div>404</div>)}/>
                 </Switch>
 
             </main>
@@ -52,5 +60,5 @@ function AuthenticatedLayout({ classes, location }) {
 
 export default compose(
     withStyles(styles),
-    connect(({ router: { location } }) => ({ location }))
+    connect(({router: {location}}) => ({location}))
 )(AuthenticatedLayout);

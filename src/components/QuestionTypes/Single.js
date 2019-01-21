@@ -6,28 +6,28 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { Field } from 'formik';
 
-function Single({question}) {
+function Single({quiz, question}) {
     return (
         <Field
-            name={question.name}
+            name={question.title}
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
                 <FormControl component="fieldset" error={Boolean(touched[field.name] && errors[field.name])}>
-                    <FormLabel component="legend">{question.question}</FormLabel>
+                    <FormLabel component="h3">{question.title}</FormLabel>
                     <RadioGroup
-                        aria-label={question.question}
+                        aria-label={question.title}
                         name={field.name}
                     >
                         {question.options.map((option, i) => {
                             const radio = (
-                                <Radio 
+                                <Radio
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={option}
-                                    checked={Boolean(values[field.name] == option)}
+                                    value={option.option}
+                                    checked={Boolean(values[field.name] == option.option)}
                                 />
                             );
                             return (
-                                <FormControlLabel value={option} control={radio} label={option} key={i} />
+                                <FormControlLabel control={radio} label={option.option} key={i} />
                             );
                         })}
                     </RadioGroup>

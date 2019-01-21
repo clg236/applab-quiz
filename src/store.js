@@ -21,7 +21,11 @@ export const history = createBrowserHistory();
 
 const store = createStore(
     createRootReducer(history),
-    {},
+    {
+        drawer: {
+            open: true
+        }
+    },
     compose(
         applyMiddleware(routerMiddleware(history)),
 
