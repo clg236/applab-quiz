@@ -13,7 +13,9 @@ import {
     QuestionsListPage,
     QuestionsCreatePage,
     QuizzesListPage as AdminQuizzesListPage,
-    QuizzesCreatePage
+    QuizzesCreatePage,
+    UsersListPage as AdminUsersListPage,
+    UsersDetailPage as AdminUsersDetailPage
 } from '../Admin';
 
 const styles = theme => ({
@@ -50,6 +52,9 @@ function AuthenticatedLayout({classes, location}) {
                     <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={QuizzesCreatePage}/>
                     <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsListPage}/>
                     <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={QuestionsCreatePage}/>
+                    <Route exact path={ROUTES.ADMIN_USERS} component={AdminUsersListPage}/>
+                    <Route exact path={ROUTES.ADMIN_VIEW_USER} component={AdminUsersDetailPage}/>
+
                     <Route render={() => (<div>404</div>)}/>
                 </Switch>
 

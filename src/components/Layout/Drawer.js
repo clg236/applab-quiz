@@ -10,10 +10,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HelpIcon from '@material-ui/icons/Help';
 import HomeIcon from '@material-ui/icons/Home';
+import WcIcon from '@material-ui/icons/Wc';
 import classNames from 'classnames';
-import React, {useContext} from 'react';
+import React from 'react';
 import * as ROUTES from '../../constants/routes';
-import * as ROLES from '../../constants/roles';
 import {withFirebase} from 'react-redux-firebase';
 import {push} from 'connected-react-router';
 import {Link} from 'react-router-dom';
@@ -111,6 +111,14 @@ function DrawerComponent(props) {
             <>
                 <Divider/>
                 <List>
+                    <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_USERS}/>}>
+                        <ListItemIcon>
+                            <WcIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Users"/>
+                    </ListItem>
+                </List>
+                <List>
                     <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_QUIZZES}/>}>
                         <ListItemIcon>
                             <HelpIcon/>
@@ -123,7 +131,7 @@ function DrawerComponent(props) {
                         <ListItemIcon>
                             <HelpIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="All Questions"/>
+                        <ListItemText primary="Questions"/>
                     </ListItem>
                 </List>
             </>
