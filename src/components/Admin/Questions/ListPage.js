@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {firebaseConnect, isLoaded, isEmpty} from 'react-redux-firebase';
+import {firebaseConnect, isLoaded, isEmpty, getVal} from 'react-redux-firebase';
 import * as ROUTES from '../../../constants/routes';
 import {push} from 'connected-react-router';
 
@@ -19,17 +19,15 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 
-const QuizListItem = ({firebase, id, quiz}) => {
+const QuestionListItem = ({firebase, id, question}) => {
 
     function handleDelete() {
-        firebase.remove(`quizzes/${id}`);
+        firebase.remove(`questions/${id}`);
     }
 
-    let text = `${quiz.name} (${quiz.questions.length} questions)`;
-
     return (
-        <ListItem>
-            <ListItemText primary={text}/>
+        <ListItem disableGutters>
+            <ListItemText primary={`${question.title}`}/>
             <ListItemSecondaryAction>
                 <IconButton aria-label="Delete" onClick={handleDelete}>
                     <DeleteIcon/>
@@ -39,18 +37,18 @@ const QuizListItem = ({firebase, id, quiz}) => {
     );
 };
 
-const ListPage = ({firebase, quizzes}) => {
+const ListPage = ({firebase, questions}) => {
     let content = "";
 
-    if (!isLoaded(quizzes)) {
+    if (!isLoaded(questions)) {
         content = <CircularProgress/>;
-    } else if (isEmpty(quizzes)) {
-        content = "There is no quizzes yet.";
+    } else if (isEmpty(questions)) {
+        content = "There is no questions yet.";
     } else {
         content = (
             <List>
-                {Object.keys(quizzes).map(key => (
-                    <QuizListItem key={key} id={key} quiz={quizzes[key]} firebase={firebase}/>
+                {Object.keys(questions).map(key => (
+                    <QuestionListItem key={key} id={key} question={questions[key]} firebase={firebase}/>
                 ))}
             </List>
         );
@@ -58,13 +56,13 @@ const ListPage = ({firebase, quizzes}) => {
 
     return (
         <Grid container spacing={16} direction="column">
-            <Typography variant="h2">Quizzes</Typography>
+            <Typography variant="h2" gutterBottom>Questions</Typography>
 
-            <Grid item>{content}</Grid>
+            <Grid item md={12}>{content}</Grid>
 
-            <Grid>
-                <Button variant="contained" color="primary" component={Link} to={ROUTES.ADMIN_CREATE_QUIZ}>
-                    Create a quiz
+            <Grid item md={12}>
+                <Button variant="contained" color="primary" component={Link} to={ROUTES.ADMIN_CREATE_QUESTION}>
+                    Create a question
                     <AddCircleOutlinedIcon/>
                 </Button>
             </Grid>
@@ -76,14 +74,14 @@ const ListPage = ({firebase, quizzes}) => {
 export default compose(
     firebaseConnect(() => [
         {
-            path: 'quizzes',
+            path: 'questions',
             queryParams: ['orderByKey']
         }
     ]),
 
     connect(
         (state) => (
-            {quizzes: state.firebase.data.quizzes}
+            {questions: getVal(state.firebase.data, "questions")}
         ),
         {
             pushToHistory: push
