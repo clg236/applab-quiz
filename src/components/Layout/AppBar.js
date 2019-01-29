@@ -19,30 +19,16 @@ import {connect} from 'react-redux';
 import ACTIONS from '../../actions';
 
 const styles = theme => ({
-    toolbar: {
-        paddingRight: 24, // keep right padding when drawer closed
-    },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    appBarShift: {
-        marginLeft: DRAWER_WIDTH,
-        width: `calc(100% - ${DRAWER_WIDTH}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    menuButton: {
-        marginLeft: 12,
-        marginRight: 36,
+        paddingLeft: 0,
     },
     menuButtonHidden: {
         display: 'none',
+    },
+    btnToggle: {
+        marginLeft: 10,
+        marginRight: 10,
     },
     title: {
         flexGrow: 1,
@@ -51,8 +37,12 @@ const styles = theme => ({
 
 function AppBarComponent({classes, auth, drawer, dispatch}) {
 
-    function handleOpenDrawerClicked() {
-        dispatch(ACTIONS.LAYOUT.openDrawer());
+    function handleToggleDrawerClicked() {
+        if (drawer.open) {
+            dispatch(ACTIONS.LAYOUT.closeDrawer());
+        } else {
+            dispatch(ACTIONS.LAYOUT.openDrawer());
+        }
     }
 
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
@@ -65,22 +55,17 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
         setMenuAnchorEl(null);
     }
 
-    const isDrawerOpen = drawer.open;
-
     return (
         <AppBar
             position="absolute"
-            className={classNames(classes.appBar, isDrawerOpen && classes.appBarShift)}
+            className={classes.appBar}
         >
-            <Toolbar disableGutters={!isDrawerOpen} className={classes.toolbar}>
+            <Toolbar disableGutters>
                 <IconButton
                     color="inherit"
-                    aria-label="Open drawer"
-                    onClick={handleOpenDrawerClicked}
-                    className={classNames(
-                        classes.menuButton,
-                        isDrawerOpen && classes.menuButtonHidden,
-                    )}
+                    aria-label="Toggle drawer"
+                    onClick={handleToggleDrawerClicked}
+                    className={classes.btnToggle}
                 >
                     <MenuIcon/>
                 </IconButton>
@@ -91,7 +76,7 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
                     noWrap
                     className={classes.title}
                 >
-                    The awesome quiz app
+                    AppLab - Quiz
                 </Typography>
                 <IconButton color="inherit">
                     <Badge badgeContent={4} color="secondary">

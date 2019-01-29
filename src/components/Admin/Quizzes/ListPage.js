@@ -1,46 +1,62 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {firebaseConnect, isLoaded, isEmpty} from 'react-redux-firebase';
+import {firebaseConnect, isEmpty, isLoaded} from 'react-redux-firebase';
 import * as ROUTES from '../../../constants/routes';
 import {push} from 'connected-react-router';
-
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
-import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {withStyles} from "@material-ui/core";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
+import {default as MuiLink} from '@material-ui/core/Link';
+import Grid from "@material-ui/core/Grid";
+import {default as QuizDetail} from "./Quiz";
 
 
-const QuizListItem = ({firebase, id, quiz}) => {
+const styles = theme => ({
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 3,
+        height: '100vh',
+        overflow: 'auto',
+    },
 
-    function handleDelete() {
-        firebase.remove(`quizzes/${id}`);
+    list: {
+        width: '100%',
+        overflowX: 'auto',
+        marginBottom: theme.spacing.unit * 3,
     }
+});
 
+
+const QuizListItem = ({firebase, id, quiz, setSelectedQuiz}) => {
     let text = `${quiz.name} (${quiz.questions.length} questions)`;
 
+    function handleQuizClicked() {
+        setSelectedQuiz(quiz);
+    }
+
     return (
-        <ListItem>
-            <ListItemText primary={text}/>
-            <ListItemSecondaryAction>
-                <IconButton aria-label="Delete" onClick={handleDelete}>
-                    <DeleteIcon/>
-                </IconButton>
-            </ListItemSecondaryAction>
-        </ListItem>
+        <TableRow>
+            <TableCell scope="row">
+                <Typography variant="body1">
+                    <MuiLink href={'javascript:;'} onClick={handleQuizClicked}>{text}</MuiLink>
+                </Typography>
+            </TableCell>
+        </TableRow>
     );
 };
 
-const ListPage = ({firebase, quizzes}) => {
+const ListPage = ({classes, firebase, quizzes}) => {
     let content = "";
+
+    let [selectedQuiz, setSelectedQuiz] = useState(null);
 
     if (!isLoaded(quizzes)) {
         content = <CircularProgress/>;
@@ -48,27 +64,40 @@ const ListPage = ({firebase, quizzes}) => {
         content = "There is no quizzes yet.";
     } else {
         content = (
-            <List>
-                {Object.keys(quizzes).map(key => (
-                    <QuizListItem key={key} id={key} quiz={quizzes[key]} firebase={firebase}/>
-                ))}
-            </List>
+            <Table className={classes.table}>
+                <TableBody>
+                    {Object.keys(quizzes).map(key => (
+                        <QuizListItem key={key} id={key} quiz={{id: key, ...quizzes[key]}} firebase={firebase} setSelectedQuiz={setSelectedQuiz}/>
+                    ))}
+                </TableBody>
+            </Table>
         );
     }
 
     return (
-        <Grid container spacing={16} direction="column">
-            <Typography variant="h2">Quizzes</Typography>
-
-            <Grid item>{content}</Grid>
-
-            <Grid>
-                <Button variant="contained" color="primary" component={Link} to={ROUTES.ADMIN_CREATE_QUIZ}>
-                    Create a quiz
+        <main className={classes.content}>
+            <Typography variant="h4" gutterBottom component="h2">
+                Quizzes
+                <Typography variant="subheading" gutterBottom component={Link} to={ROUTES.ADMIN_CREATE_QUIZ} inline style={{marginLeft: 5}}>
                     <AddCircleOutlinedIcon/>
-                </Button>
+                </Typography>
+            </Typography>
+
+
+            <Grid container spacing={16}>
+                <Grid item md={selectedQuiz ? 3 : 12} xs={12}>
+                    <Paper className={classes.list}>
+                        {content}
+                    </Paper>
+                </Grid>
+
+                {selectedQuiz && (
+                    <Grid item md={9} xs={12}>
+                        <QuizDetail quiz={selectedQuiz}/>
+                    </Grid>
+                )}
             </Grid>
-        </Grid>
+        </main>
     );
 };
 
@@ -89,4 +118,6 @@ export default compose(
             pushToHistory: push
         }
     ),
+
+    withStyles(styles)
 )(ListPage);

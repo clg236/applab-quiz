@@ -10,7 +10,7 @@ import {push} from "connected-react-router";
 import * as ROUTES from "../../../constants/routes";
 
 
-let Form = ({handleSubmit, values, errors}) => {
+let QuizForm = ({handleSubmit, values, errors}) => {
     return (
         <div>
             <form onSubmit={handleSubmit}>
@@ -64,4 +64,4 @@ export default compose(
             });
         }
     }),
-)(Form);
+)(QuizForm);

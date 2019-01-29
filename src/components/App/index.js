@@ -1,11 +1,12 @@
 import React from 'react';
 import Layout from '../Layout';
 
-import { Provider } from 'react-redux';
-import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
-import { ConnectedRouter } from 'connected-react-router'
-import store, { firebase, history } from '../../store';
-import { reactReduxFirebaseConfig } from '../../config';
+import {Provider} from 'react-redux';
+import {ReactReduxFirebaseProvider} from 'react-redux-firebase';
+import {ConnectedRouter} from 'connected-react-router'
+import store, {firebase, history} from '../../store';
+import {reactReduxFirebaseConfig} from '../../config';
+import {SnackbarProvider} from 'notistack';
 
 
 function App() {
@@ -19,10 +20,11 @@ function App() {
         <Provider store={store}>
             <ReactReduxFirebaseProvider {...rrfProps}>
                 <ConnectedRouter history={history}>
-                    <Layout />
+                    <SnackbarProvider>
+                        <Layout/>
+                    </SnackbarProvider>
                 </ConnectedRouter>
             </ReactReduxFirebaseProvider>
-
         </Provider>
     );
 }
