@@ -9,11 +9,11 @@ import {Typography} from "@material-ui/core";
 
 
 function OptionsFieldArray(props) {
-    const {question, name, form: {touched, errors, handleChange, handleBlur, values}} = props;
+    const {question, name, index, form: {touched, errors, handleChange, handleBlur, values}} = props;
 
     return (
         <FormControl required fullWidth error={Boolean(touched[name] && errors[name])}>
-            <FormLabel component="h3">{question.title}</FormLabel>
+            <FormLabel>{`${index + 1}. ${question.title}`}</FormLabel>
             <FormGroup>
                 {question.options.map((option, i) => {
                     const checkbox = (
@@ -40,12 +40,12 @@ function OptionsFieldArray(props) {
 
 
 function Multiple(props) {
-    const {question} = props;
+    const {index, question} = props;
 
     return (
         <FieldArray name={question.title}>
             {props => (
-                <OptionsFieldArray question={question} {...props} />
+                <OptionsFieldArray index={index} question={question} {...props} />
             )}
         </FieldArray>
     );

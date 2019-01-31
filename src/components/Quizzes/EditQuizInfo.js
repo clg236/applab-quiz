@@ -9,8 +9,8 @@ import {withSnackbar} from 'notistack';
 const styles = theme => ({});
 
 
-const QuizInfo = (props) => {
-    const {classes, quiz, handleSubmit} = props;
+const EditQuizInfo = (props) => {
+    const {classes, quiz, handleSubmit, values, errors, isSubmitting, isValid} = props;
 
     return (
         <form onSubmit={handleSubmit}>
@@ -19,13 +19,15 @@ const QuizInfo = (props) => {
                     <Field
                         name="name"
                         render={({field}) => (
-                            <TextField label="Name" required fullWidth={true} {...field} />
+                            <TextField label="Name" required fullWidth={true} {...field}
+                                       error={Boolean(errors[field.name])}/>
                         )}
+
                     />
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Button color="primary" variant="contained" type="submit">
+                    <Button color="primary" variant="contained" type="submit" disabled={isSubmitting || !isValid}>
                         {quiz && quiz.id ? "Save" : "Submit"}
                     </Button>
                 </Grid>
@@ -40,10 +42,22 @@ export default compose(
     withSnackbar,
 
     withFormik({
+        enableReinitialize: true,
+
         mapPropsToValues: ({quiz}) => {
             return {
                 name: quiz && quiz.id ? quiz.name : ""
             };
+        },
+
+        validate: values => {
+            const errors = {};
+
+            if (!values.name) {
+                errors.name = 'Required';
+            }
+
+            return errors;
         },
 
         handleSubmit: (values, actions) => {
@@ -56,9 +70,12 @@ export default compose(
                 promise = pushWithMeta("quizzes", values);
             }
 
-            promise.then(() => enqueueSnackbar("Saved!"));
+            promise.then(() => {
+                actions.setSubmitting(false);
+                enqueueSnackbar("Saved!");
+            });
         }
     }),
 
     withStyles(styles)
-)(QuizInfo);
+)(EditQuizInfo);

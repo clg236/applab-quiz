@@ -1,15 +1,15 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import {TextField} from '../Form';
 import { Field } from 'formik';
 
-function Text({quiz, question}) {
+function Text({index, quiz, question}) {
     return (
         <Field
             name={question.title}
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
                 <TextField
                     name={field.name}
-                    label={question.title}
+                    label={`${index + 1}. ${question.title}`}
                     value={values[field.name]}
                     required
                     multiline={true}

@@ -10,4 +10,6 @@ function Layout({ auth }) {
     );
 }
 
-export default connect(({ firebase: { auth } }) => ({ auth }))(Layout);
+export default connect(
+    ({ firebase: { auth } }) => ({ auth })
+)(Layout);

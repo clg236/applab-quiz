@@ -1,0 +1,67 @@
+{
+  "users": {
+    "user-1": {
+      "responses": {
+        "quiz-1": {
+          "response-1": true
+        }
+      },
+      "displayName": "Xu Li"
+    },
+    "user-2": {}
+  },
+  "quizzes": {
+    "quiz-1": {
+      "name": "General Quiz",
+      "questions": [
+        {
+          "title": "What's your name?",
+          "type": "text",
+          "answers": [
+            "Xu",
+            "Li"
+          ]
+        },
+        {
+          "title": "Today is Sunday!",
+          "type": "single",
+          "options": [
+            {
+              "option": "Yes"
+            },
+            {
+              "option": "No"
+            }
+          ],
+          "answers": [
+            "Yes"
+          ]
+        }
+      ],
+      "responses": [
+        {
+          "id": "response-1",
+          "createdAt": "...",
+          "createdBy": "user-1",
+          "score": 5,
+          "user": {
+            "uid": "user-1",
+            "displayName": "Xu Li",
+            "photoURL": "..."
+          }
+        }
+      ]
+    }
+  },
+  "responses": {
+    "response-1": {
+      "createdAt": "...",
+      "createdBy": "user-1",
+      "score": 5,
+      "answers": [
+        "Xu",
+        "Yes"
+      ]
+    }
+  }
+}

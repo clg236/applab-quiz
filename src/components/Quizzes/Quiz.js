@@ -3,7 +3,7 @@ import {compose} from 'redux';
 import Typography from '@material-ui/core/Typography';
 import Paper from "@material-ui/core/Paper";
 import {withStyles} from "@material-ui/core";
-import {QuestionList} from "../Questions";
+import {QuestionsForm} from "../Questions";
 
 const styles = theme => ({
     root: {
@@ -24,7 +24,7 @@ const Quiz = (props) => {
                 {quiz.description}
             </Typography>
 
-            <QuestionList quiz={quiz}/>
+            <QuestionsForm quiz={quiz}/>
         </Paper>
     );
 };

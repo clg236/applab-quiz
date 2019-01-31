@@ -7,7 +7,6 @@ import {withFirebase} from "react-redux-firebase";
 import {connect} from "react-redux";
 import {push} from "connected-react-router";
 import * as ROUTES from "../../../constants/routes";
-import Question from "./Form/Question";
 
 let Form = ({handleSubmit, values, errors, isSubmitting, isValid}) => {
     return (
@@ -15,7 +14,6 @@ let Form = ({handleSubmit, values, errors, isSubmitting, isValid}) => {
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={24}>
 
-                    <Question/>
 
                     <Grid item xs={12}>
                         <Button color="primary" variant="contained" type="submit"

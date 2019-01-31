@@ -7,9 +7,10 @@ import {
     Grid,
     Radio,
     RadioGroup,
-    TextField
+    TextField,
+    withStyles
 } from "@material-ui/core";
-import {connect, Field, FieldArray, getIn} from "formik";
+import {Field, FieldArray, getIn, withFormik} from "formik";
 import React, {useState} from "react";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
@@ -19,17 +20,20 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import Checkbox from "@material-ui/core/Checkbox";
 import ListItemText from "@material-ui/core/ListItemText";
+import {compose} from "redux";
+import {withFirebase} from "react-redux-firebase";
+import {withSnackbar} from "notistack";
 
 const EmptyQuestion = {title: ''};
 const EmptyQuestionOption = {option: ''};
 
+const styles = theme => ({});
 
 const QuestionOptionControl = (props) => {
 
@@ -180,7 +184,7 @@ let QuestionsFieldArray = ({form: {values: {questions}}, push, remove}) => {
         <>
             {questions.map((question, index) => (
                 <QuestionControl key={index} question={question} questionIndex={index}
-                                 expanded={expanded && expanded[index]} remove={remove} />
+                                 expanded={expanded && expanded[index]} remove={remove}/>
             ))}
 
             <div>
@@ -193,16 +197,44 @@ let QuestionsFieldArray = ({form: {values: {questions}}, push, remove}) => {
 };
 
 
-const Questions = () => {
+const EditQuestions = (props) => {
+    const {handleSubmit} = props;
 
     return (
-        <Grid item xs={12}>
-            <fieldset>
-                <legend>Questions</legend>
-                <FieldArray name="questions" component={QuestionsFieldArray}/>
-            </fieldset>
-        </Grid>
+        <form onSubmit={handleSubmit}>
+            <Grid container spacing={24}>
+                <Grid item md={12}>
+                    <FieldArray name="questions" component={QuestionsFieldArray}/>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Button color="primary" variant="contained" type="submit">Save</Button>
+                </Grid>
+            </Grid>
+        </form>
     );
 };
 
-export default Questions;
+
+export default compose(
+    withFirebase,
+
+    withSnackbar,
+
+    withFormik({
+        enableReinitialize: true,
+
+        mapPropsToValues: ({quiz}) => {
+            return {
+                questions: quiz.questions ? quiz.questions : []
+            };
+        },
+
+        handleSubmit: (values, actions) => {
+            const {props: {quiz, firebase: {updateWithMeta}, enqueueSnackbar}} = actions;
+            updateWithMeta(`quizzes/${quiz.id}`, values).then(() => enqueueSnackbar("Saved!"));
+        }
+    }),
+
+    withStyles(styles)
+)(EditQuestions);

@@ -7,16 +7,16 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBarComponent from './AppBar';
 import * as ROUTES from '../../constants/routes';
 import HomePage from '../Home';
-import {ListPage as QuizzesListPage, DetailPage as QuizzesDetailPage} from '../Quizzes';
+import {ListPage as QuizzesListPage} from '../Quizzes';
 import {Route, Switch} from 'react-router-dom';
 import {
     QuestionsListPage,
     QuestionsCreatePage,
-    QuizzesListPage as AdminQuizzesListPage,
-    QuizzesCreatePage,
     UsersListPage as AdminUsersListPage,
     UsersDetailPage as AdminUsersDetailPage
 } from '../Admin';
+
+import {CreateQuizPage, AdminListQuizzesPage, ListQuizzesPage} from "../../containers/Quizzes";
 
 const styles = theme => ({
     root: {
@@ -45,11 +45,11 @@ function AuthenticatedLayout({classes, location}) {
                 <Switch location={location}>
                     <Route exact path={ROUTES.LANDING} component={HomePage}/>
                     <Route exact path={ROUTES.HOME} component={HomePage}/>
-                    <Route exact path={ROUTES.QUIZZES} component={QuizzesListPage}/>
-                    <Route path={ROUTES.QUIZ_DETAIL} component={QuizzesDetailPage}/>
+                    <Route exact path={ROUTES.QUIZZES} component={ListQuizzesPage}/>
 
-                    <Route exact path={ROUTES.ADMIN_QUIZZES} component={AdminQuizzesListPage}/>
-                    <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={QuizzesCreatePage}/>
+
+                    <Route exact path={ROUTES.ADMIN_QUIZZES} component={AdminListQuizzesPage}/>
+                    <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={CreateQuizPage}/>
                     <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsListPage}/>
                     <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={QuestionsCreatePage}/>
                     <Route exact path={ROUTES.ADMIN_USERS} component={AdminUsersListPage}/>

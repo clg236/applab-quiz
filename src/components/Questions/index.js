@@ -1,5 +1,4 @@
 import React from 'react';
-import QuestionList from './QuestionList';
-import QuestionListItem from './QuestionListItem';
 
-export { QuestionList, QuestionListItem };
+export { default as EditQuestions } from './EditQuestions';
+export { default as QuestionsForm } from './QuestionsForm';

@@ -4,10 +4,9 @@ import FormLabel from '@material-ui/core/FormLabel';
 import {connect, Field} from 'formik';
 import MonacoEditor from 'react-monaco-editor';
 import {compose} from "redux";
-import {Typography} from "@material-ui/core";
 
 
-function Code({question, formik}) {
+function Code({question, index, formik}) {
     function handleCodeChange(value) {
         formik.setFieldValue(question.title, value);
     }
@@ -18,7 +17,7 @@ function Code({question, formik}) {
             render={({field, form: {handleBlur, touched, values, errors}}) => {
                 return (
                     <FormControl required fullWidth error={Boolean(touched[field.name] && errors[field.name])}>
-                        <FormLabel component="h3">{question.title}</FormLabel>
+                        <FormLabel style={{marginBottom: 10}}>{`${index + 1}. ${question.title}`}</FormLabel>
                         <MonacoEditor
                             height="300"
                             language="javascript"

@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {firebaseConnect, isEmpty, isLoaded} from 'react-redux-firebase';
-import * as ROUTES from '../../../constants/routes';
+import {firebaseConnect, getVal, isEmpty, isLoaded} from 'react-redux-firebase';
+import * as ROUTES from '../../constants/routes';
 import {push} from 'connected-react-router';
 import Typography from '@material-ui/core/Typography';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
@@ -16,7 +16,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import {default as MuiLink} from '@material-ui/core/Link';
 import Grid from "@material-ui/core/Grid";
-import {default as QuizDetail} from "./Quiz";
+import {QuizForm} from "../../components/Quizzes";
 
 
 const styles = theme => ({
@@ -36,7 +36,7 @@ const styles = theme => ({
 
 
 const QuizListItem = ({firebase, id, quiz, setSelectedQuiz}) => {
-    let text = `${quiz.name} (${quiz.questions.length} questions)`;
+    let text = `${quiz.name} (${quiz.questions ? quiz.questions.length : 0} questions)`;
 
     function handleQuizClicked() {
         setSelectedQuiz(quiz);
@@ -53,7 +53,7 @@ const QuizListItem = ({firebase, id, quiz, setSelectedQuiz}) => {
     );
 };
 
-const ListPage = ({classes, firebase, quizzes}) => {
+const AdminListQuizzes = ({classes, firebase, quizzes}) => {
     let content = "";
 
     let [selectedQuiz, setSelectedQuiz] = useState(null);
@@ -93,7 +93,7 @@ const ListPage = ({classes, firebase, quizzes}) => {
 
                 {selectedQuiz && (
                     <Grid item md={9} xs={12}>
-                        <QuizDetail quiz={selectedQuiz}/>
+                        <QuizForm quiz={selectedQuiz}/>
                     </Grid>
                 )}
             </Grid>
@@ -111,13 +111,13 @@ export default compose(
     ]),
 
     connect(
-        (state) => (
-            {quizzes: state.firebase.data.quizzes}
-        ),
+        (state) => ({
+            quizzes: getVal(state.firebase.data, "quizzes")
+        }),
         {
             pushToHistory: push
         }
     ),
 
     withStyles(styles)
-)(ListPage);
+)(AdminListQuizzes);

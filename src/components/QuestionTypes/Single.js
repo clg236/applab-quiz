@@ -6,13 +6,13 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { Field } from 'formik';
 
-function Single({quiz, question}) {
+function Single({index, quiz, question}) {
     return (
         <Field
             name={question.title}
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
                 <FormControl required fullWidth error={Boolean(touched[field.name] && errors[field.name])}>
-                    <FormLabel component="h3">{question.title}</FormLabel>
+                    <FormLabel>{`${index + 1}. ${question.title}`}</FormLabel>
                     <RadioGroup
                         aria-label={question.title}
                         name={field.name}

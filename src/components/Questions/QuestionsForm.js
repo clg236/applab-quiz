@@ -1,43 +1,44 @@
 import React from 'react';
-import QuestionListItem from './QuestionListItem';
 import {withFormik} from 'formik';
 import {compose} from "redux";
-import * as ROUTES from "../../constants/routes";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import {firebaseConnect, withFirebase} from "react-redux-firebase";
+import {firebaseConnect, getVal, withFirebase} from "react-redux-firebase";
 import {connect} from "react-redux";
-import {push} from "connected-react-router";
 import {withStyles} from "@material-ui/core";
+import * as Types from '../QuestionTypes';
+import {withSnackbar} from "notistack";
 
 
 const styles = theme => ({
-
     submit: {
         marginTop: theme.spacing.unit * 3,
     },
-
 });
 
-function QuestionList({user, quizID, quiz, submission, handleSubmit, values, errors, isValid, isSubmitting, classes}) {
+function QuestionsForm(props) {
+    const {quiz, response, handleSubmit, values, errors, isValid, isSubmitting, classes} = props;
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid container>
+            <Grid container spacing={24}>
                 {quiz.questions.map((question, i) => (
                     <Grid item xs={12} key={i}>
-                        <QuestionListItem user={user} quizID={quizID} quiz={quiz} question={question}/>
+                        {question.type == 'text' && <Types.Text index={i} question={question} {...props} />}
+                        {question.type == 'single' && <Types.Single index={i} question={question} {...props} />}
+                        {question.type == 'multiple' && <Types.Multiple index={i} question={question} {...props} />}
+                        {question.type == 'code' && <Types.Code index={i} question={question} {...props} />}
                     </Grid>
                 ))}
 
-                <Grid item xs={12}>
-                    {!submission && (
-                        <Button color={"primary"} variant={"contained"} type={"submit"}
+                {!response && (
+                    <Grid item xs={12}>
+                        <Button color="primary" variant="contained" type="submit"
                                 disabled={!isValid || isSubmitting} className={classes.submit}>
                             Submit
                         </Button>
-                    )}
-                </Grid>
+                    </Grid>
+                )}
 
                 {JSON.stringify(values, null, 2)}
             </Grid>
@@ -50,6 +51,8 @@ function QuestionList({user, quizID, quiz, submission, handleSubmit, values, err
 function calculateCorrectAnswers(quiz, answers) {
     let correct_answers = 0;
     let correct = '';
+
+    return quiz.questions.length;
 
     quiz.questions.forEach((question) => {
         let provided = question.title in answers ? answers[question.title].trim() : null;
@@ -108,12 +111,43 @@ function calculateCorrectAnswers(quiz, answers) {
 export default compose(
     withFirebase,
 
-    connect(null, {
-        pushToHistory: push
+    withSnackbar,
+
+    connect(
+        (state, {responseId}) => {
+            return ({
+                user: state.firebase.auth,
+                response: responseId ? getVal(state.firebase.data, `responses/${responseId}`) : null
+            });
+        }
+    ),
+
+    firebaseConnect(({responseId}) => {
+
+        if (!responseId) {
+            return [];
+        }
+
+        return [
+            {
+                path: `responses/${responseId}`
+            }
+        ];
     }),
 
+
     withFormik({
-        mapPropsToValues: () => ({}),
+        enableReinitialize: true,
+
+        mapPropsToValues: (props) => {
+            const {response} = props;
+
+            if (response) {
+                return response.answers;
+            }
+
+            return {};
+        },
 
         // Custom sync validation
         validate: (values, {quiz: {questions}}) => {
@@ -123,6 +157,7 @@ export default compose(
                 if (!(question.title in values)) {
                     errors[question.title] = 'Required';
                 } else {
+                    // if it's a multiple type question, there should be at least one answer provided.
                     if (question.type == 'multiple' && values[question.title].filter(Boolean).length === 0) {
                         errors[question.title] = 'Required';
                     }
@@ -134,23 +169,29 @@ export default compose(
 
 
         handleSubmit: (values, actions) => {
-            const {setSubmitting, props: {quizID, user, quiz, firebase: {setWithMeta}, pushToHistory}} = actions;
+            const {setSubmitting, props: {user: {uid, displayName, photoURL}, quiz, firebase: {set, pushWithMeta}, enqueueSnackbar}} = actions;
+            const score = calculateCorrectAnswers(quiz, values);
 
-            const data = {
-                name: quiz.name,
+            pushWithMeta("responses", {
                 answers: values,
-                correct_answers: calculateCorrectAnswers(quiz, values),
-                total_questions: quiz.questions.length,
-            };
-
-            Promise.all(
-                setWithMeta(`users/${user.uid}/quizzes/${quizID}`, data)
-            ).then(() => {
-                setSubmitting(false);
-                pushToHistory(ROUTES.QUIZZES);
+                score: score,
+                user: {uid, displayName, photoURL}
+            }).then(ref => {
+                Promise.all([
+                    set(`users/${uid}/responses/${quiz.id}/${ref.key}`, true),
+                    pushWithMeta(`quizzes/${quiz.id}/responses`, {
+                        id: ref.key,
+                        score: score,
+                        user: {uid, displayName, photoURL}
+                    })
+                ]).then(() => {
+                    setSubmitting(false);
+                    enqueueSnackbar("Saved!");
+                });
             });
         }
     }),
 
+
     withStyles(styles),
-)(QuestionList);
+)(QuestionsForm);
