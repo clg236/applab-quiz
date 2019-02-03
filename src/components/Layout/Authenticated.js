@@ -17,6 +17,8 @@ import {
 } from '../Admin';
 
 import {CreateQuizPage, AdminListQuizzesPage, ListQuizzesPage} from "../../containers/Quizzes";
+import {SubmissionDetailPage} from "../../containers/Submissions";
+
 
 const styles = theme => ({
     root: {
@@ -46,6 +48,8 @@ function AuthenticatedLayout({classes, location}) {
                     <Route exact path={ROUTES.LANDING} component={HomePage}/>
                     <Route exact path={ROUTES.HOME} component={HomePage}/>
                     <Route exact path={ROUTES.QUIZZES} component={ListQuizzesPage}/>
+
+                    <Route exact path={ROUTES.QUIZ_SUBMISSION_DETAIL} component={SubmissionDetailPage}/>
 
 
                     <Route exact path={ROUTES.ADMIN_QUIZZES} component={AdminListQuizzesPage}/>

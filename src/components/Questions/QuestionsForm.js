@@ -5,33 +5,39 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import {firebaseConnect, getVal, withFirebase} from "react-redux-firebase";
 import {connect} from "react-redux";
-import {withStyles} from "@material-ui/core";
-import * as Types from '../QuestionTypes';
+import {Typography, withStyles} from "@material-ui/core";
+import QuestionTypes from '../QuestionTypes';
 import {withSnackbar} from "notistack";
 
 
 const styles = theme => ({
     submit: {
-        marginTop: theme.spacing.unit * 3,
+        marginTop: theme.spacing.unit,
     },
 });
 
 function QuestionsForm(props) {
-    const {quiz, response, handleSubmit, values, errors, isValid, isSubmitting, classes} = props;
+    const {quiz, submission, handleSubmit, values, errors, isValid, isSubmitting, classes} = props;
+
+    const deadlinePassed = false;
 
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={24}>
-                {quiz.questions.map((question, i) => (
-                    <Grid item xs={12} key={i}>
-                        {question.type == 'text' && <Types.Text index={i} question={question} {...props} />}
-                        {question.type == 'single' && <Types.Single index={i} question={question} {...props} />}
-                        {question.type == 'multiple' && <Types.Multiple index={i} question={question} {...props} />}
-                        {question.type == 'code' && <Types.Code index={i} question={question} {...props} />}
-                    </Grid>
-                ))}
 
-                {!response && (
+                {deadlinePassed && <Typography>Deadline passed.</Typography>}
+
+                {quiz.questions.map((question, i) => {
+                    const QuestionTypeControl = question.type && question.type in QuestionTypes ? QuestionTypes[question.type].ViewControl : null;
+
+                    return (
+                        <Grid item xs={12} key={i}>
+                            {QuestionTypeControl && <QuestionTypeControl index={i} question={question} {...props} />}
+                        </Grid>
+                    );
+                })}
+
+                {!submission && !deadlinePassed && (
                     <Grid item xs={12}>
                         <Button color="primary" variant="contained" type="submit"
                                 disabled={!isValid || isSubmitting} className={classes.submit}>
@@ -114,23 +120,23 @@ export default compose(
     withSnackbar,
 
     connect(
-        (state, {responseId}) => {
+        (state, {submissionID}) => {
             return ({
                 user: state.firebase.auth,
-                response: responseId ? getVal(state.firebase.data, `responses/${responseId}`) : null
+                submission: submissionID ? getVal(state.firebase.data, `quizSubmissions/${submissionID}`) : null
             });
         }
     ),
 
-    firebaseConnect(({responseId}) => {
+    firebaseConnect(({submissionID}) => {
 
-        if (!responseId) {
+        if (!submissionID) {
             return [];
         }
 
         return [
             {
-                path: `responses/${responseId}`
+                path: `quizSubmissions/${submissionID}`
             }
         ];
     }),
@@ -140,50 +146,54 @@ export default compose(
         enableReinitialize: true,
 
         mapPropsToValues: (props) => {
-            const {response} = props;
+            const {quiz, submission} = props;
+            const values = {};
 
-            if (response) {
-                return response.answers;
-            }
+            quiz.questions.map(question => {
+                const type = question.type;
 
-            return {};
-        },
-
-        // Custom sync validation
-        validate: (values, {quiz: {questions}}) => {
-            const errors = {};
-
-            questions.forEach(question => {
-                if (!(question.title in values)) {
-                    errors[question.title] = 'Required';
-                } else {
-                    // if it's a multiple type question, there should be at least one answer provided.
-                    if (question.type == 'multiple' && values[question.title].filter(Boolean).length === 0) {
-                        errors[question.title] = 'Required';
+                if (type in QuestionTypes) {
+                    if (submission && submission.answers && question.title in submission.answers) {
+                        values[question.title] = submission.answers[question.title];
+                    } else {
+                        values[question.title] = QuestionTypes[type].defaultValue;
                     }
                 }
             });
 
-            return errors;
+            return values;
         },
 
-
         handleSubmit: (values, actions) => {
-            const {setSubmitting, props: {user: {uid, displayName, photoURL}, quiz, firebase: {set, pushWithMeta}, enqueueSnackbar}} = actions;
-            const score = calculateCorrectAnswers(quiz, values);
+            const {setSubmitting, props: {user: {uid, displayName, photoURL}, quiz, firebase: {set, updateWithMeta, pushWithMeta}, enqueueSnackbar}} = actions;
 
-            pushWithMeta("responses", {
+            let score = 0;
+            quiz.questions.forEach(question => {
+                const type = question.type;
+
+                if (type in QuestionTypes) {
+                    if (QuestionTypes[type].isCorrect(question, values[question.title])) {
+                        score++;
+                    }
+                }
+            });
+
+            pushWithMeta("quizSubmissions", {
                 answers: values,
                 score: score,
-                user: {uid, displayName, photoURL}
+                user: {uid, displayName, photoURL},
+                quiz: {
+                    id: quiz.id,
+                    name: quiz.name
+                }
             }).then(ref => {
                 Promise.all([
-                    set(`users/${uid}/responses/${quiz.id}/${ref.key}`, true),
-                    pushWithMeta(`quizzes/${quiz.id}/responses`, {
-                        id: ref.key,
-                        score: score,
-                        user: {uid, displayName, photoURL}
-                    })
+                    updateWithMeta(`userQuizzes/${uid}/${quiz.id}`, {
+                        lastSubmissionScore: score,
+                        lastSubmissionID: ref.key
+                    }),
+                    set(`userQuizzes/${uid}/${quiz.id}/submissions/${ref.key}`, true),
+                    set(`quizzes/${quiz.id}/submissions/${ref.key}`, true)
                 ]).then(() => {
                     setSubmitting(false);
                     enqueueSnackbar("Saved!");

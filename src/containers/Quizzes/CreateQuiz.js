@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {compose} from "redux";
 import {withStyles} from "@material-ui/core";
-import {QuizForm} from "../../components/Quizzes"
+import {QuizDetail} from "../../components/Quizzes"
 
 const styles = theme => ({
     root: {
@@ -19,7 +19,7 @@ let CreateQuiz = ({classes}) => {
         <main className={classes.root}>
             <Typography variant="h4" gutterBottom component="h2">Create a quiz</Typography>
 
-            <QuizForm/>
+            <QuizDetail/>
         </main>
     );
 };

@@ -31,7 +31,7 @@ const styles = theme => ({
 });
 
 
-const ListQuizzes = ({classes, user}) => {
+const SubmissionDetail = ({classes, user}) => {
 
     let [selectedQuiz, setSelectedQuiz] = useState(null);
     let [submissionID, setSubmissionID] = useState(0);
@@ -99,4 +99,4 @@ export default compose(
 
 
     withStyles(styles)
-)(ListQuizzes);
+)(SubmissionDetail);

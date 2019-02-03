@@ -1,14 +1,9 @@
 {
   "users": {
     "user-1": {
-      "responses": {
-        "quiz-1": {
-          "response-1": true
-        }
-      },
-      "displayName": "Xu Li"
-    },
-    "user-2": {}
+      "displayName": "Xu Li",
+      "photoURL": "..."
+    }
   },
   "quizzes": {
     "quiz-1": {
@@ -16,7 +11,7 @@
       "questions": [
         {
           "title": "What's your name?",
-          "type": "text",
+          "type": "short-text",
           "answers": [
             "Xu",
             "Li"
@@ -38,30 +33,88 @@
           ]
         }
       ],
-      "responses": [
-        {
-          "id": "response-1",
-          "createdAt": "...",
-          "createdBy": "user-1",
-          "score": 5,
-          "user": {
-            "uid": "user-1",
-            "displayName": "Xu Li",
-            "photoURL": "..."
-          }
-        }
-      ]
+      "deadline": "2019-01-01",
+      "published": true,
+      "submissions": {
+        "submission-1": true
+      }
     }
   },
-  "responses": {
-    "response-1": {
+  "assignments": {
+    "assignment-1": {
+      "name": "Industry research",
+      "deadline": "2019-01-01",
+      "questions": [
+        {
+          "title": "What's your name?",
+          "type": "short-text",
+          "answers": [
+            "Xu",
+            "Li"
+          ]
+        },
+        {
+          "title": "Today is Sunday!",
+          "type": "single",
+          "options": [
+            {
+              "option": "Yes"
+            },
+            {
+              "option": "No"
+            }
+          ],
+          "answers": [
+            "Yes"
+          ]
+        }
+      ],
+      "submissions": {
+        "submission-1": true
+      }
+    }
+  },
+  "quizSubmissions": {
+    "submission-1": {
       "createdAt": "...",
       "createdBy": "user-1",
       "score": 5,
       "answers": [
         "Xu",
         "Yes"
-      ]
+      ],
+      "quiz": {
+        "id": "quiz-1"
+      },
+      "comments": {
+        "comment-1": {
+          "user": {
+            "uid": "user-1",
+            "displayName": "Xu Li",
+            "photoURL": "..."
+          },
+          "comment": "Awesome!",
+          "createdAt": "...",
+          "createdBy": "user-1"
+        }
+      },
+      "user": {
+        "uid": "user-1",
+        "displayName": "Xu Li",
+        "photoURL": "..."
+      }
+    }
+  },
+
+  "userQuizzes": {
+    "user-1": {
+      "quiz-1": {
+        "lastSubmissionID": "submission-1",
+        "lastSubmissionScore": 5,
+        "submissions": {
+          "submission-1": true
+        }
+      }
     }
   }
 }

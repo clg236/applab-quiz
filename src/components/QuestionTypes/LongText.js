@@ -2,7 +2,7 @@ import React from 'react';
 import {TextField} from '../Form';
 import { Field } from 'formik';
 
-function Text({index, quiz, question}) {
+function LongText({index, quiz, question}) {
     return (
         <Field
             name={question.title}
@@ -12,7 +12,7 @@ function Text({index, quiz, question}) {
                     label={`${index + 1}. ${question.title}`}
                     value={values[field.name]}
                     required
-                    multiline={true}
+                    multiline
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(touched[field.name] && errors[field.name])}
@@ -22,4 +22,4 @@ function Text({index, quiz, question}) {
     );
 }
 
-export default Text;
+export default LongText;

@@ -4,9 +4,9 @@ import Paper from "@material-ui/core/Paper";
 import {withStyles} from "@material-ui/core";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import EditQuizInfo from "./EditQuizInfo";
-import {EditQuestions as EditQuizQuestions} from "../Questions";
-import Responses from "./Responses";
+import EditQuizInfoForm from "./EditQuizInfoForm";
+import {EditQuestionsForm as EditQuestionsForm} from "../Questions";
+import {SubmissionList} from "../Submissions";
 
 const styles = theme => ({
     root: {
@@ -21,10 +21,12 @@ const styles = theme => ({
 });
 
 
-const QuizForm = (props) => {
-    const {classes, quiz, showResponses} = props;
+const QuizDetail = (props) => {
+    const {classes, quiz, showSubmissions} = props;
 
     const [selectedTab, setSelectedTab] = useState(0);
+    const numQuestions = quiz.questions ? quiz.questions.length : 0;
+    const numSubmissions = quiz.submissions ? Object.keys(quiz.submissions).length : 0;
 
     return (
         <Paper className={classes.root}>
@@ -35,14 +37,14 @@ const QuizForm = (props) => {
                 onChange={(event, value) => setSelectedTab(value)}
             >
                 <Tab label="Basic" />
-                <Tab label="Questions" disabled={!quiz || !quiz.id}/>
-                {showResponses && <Tab label="Responses" />}
+                <Tab label={`Questions (${numQuestions})`} disabled={!quiz || !quiz.id}/>
+                {showSubmissions && <Tab label={`Submissions (${numSubmissions})`} />}
             </Tabs>
 
             <div className={classes.tabContainer}>
-                {selectedTab === 0 && (<EditQuizInfo quiz={quiz} />)}
-                {selectedTab === 1 && (<EditQuizQuestions quiz={quiz} />)}
-                {showResponses && selectedTab === 2 && (<Responses quiz={quiz} />)}
+                {selectedTab === 0 && (<EditQuizInfoForm quiz={quiz} />)}
+                {selectedTab === 1 && (<EditQuestionsForm quiz={quiz} />)}
+                {showSubmissions && selectedTab === 2 && (<SubmissionList quiz={quiz} />)}
             </div>
         </Paper>
     );
@@ -50,4 +52,4 @@ const QuizForm = (props) => {
 
 export default compose(
     withStyles(styles)
-)(QuizForm);
+)(QuizDetail);

@@ -50,5 +50,10 @@ function Multiple(props) {
         </FieldArray>
     );
 }
+//
+// // if it's a multiple type question, there should be at least one answer provided.
+// if (question.type == 'multiple' && values[question.title].filter(Boolean).length === 0) {
+//     errors[question.title] = 'Required';
+// }
 
 export default Multiple;

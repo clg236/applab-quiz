@@ -8,6 +8,7 @@ export const ADMIN = '/admin';
 export const PASSWORD_FORGET = 'pw-forget';
 export const QUIZZES = '/quizzes';
 export const QUIZ_DETAIL = '/quizzes/:id';
+export const QUIZ_SUBMISSION_DETAIL = '/quizzes/:quizID/submissions/:submissionID';
 export const ADMIN_QUIZZES = '/admin/quizzes';
 export const ADMIN_CREATE_QUIZ = '/admin/quizzes/create';
 export const ADMIN_QUESTIONS = '/admin/questions';
