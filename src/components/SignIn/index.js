@@ -18,8 +18,20 @@ import Divider from '@material-ui/core/Divider';
 import FormGroup from '@material-ui/core/FormGroup';
 
 import { withFirebase } from 'react-redux-firebase';
+import { Grid } from '@material-ui/core';
 
 const styles = theme => ({
+
+    root: {
+        display: 'flex',
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 3,
+        height: '100vh',
+        overflow: 'auto',
+    },
+
     main: {
         width: 'auto',
         display: 'block', // Fix IE 11 issue.
@@ -102,29 +114,33 @@ function SignIn(props) {
     const { email, password, error } = state;
 
     return (
-        <div className={classes.main}>
-            <CssBaseline />
-            <Paper className={classes.paper}>
-                <Avatar className={classes.avatar}><LockIcon /></Avatar>
-                <Typography component="h1" variant="h5">Sign in</Typography>
-                <form className={classes.form} onSubmit={handleFormSubmit}>
-                    <FormControl margin="normal" required fullWidth>
-                        <InputLabel htmlFor="email">Email Address</InputLabel>
-                        <Input id="email" name="email" autoComplete="email" autoFocus value={email} onChange={handleInputChange} placeholder="Email Address" />
-                    </FormControl>
+        <div>
+            <div className={classes.main}>
+                <CssBaseline />
+                <Grid xs={12}>
+                <Paper className={classes.paper}>
+                    <Avatar className={classes.avatar}><LockIcon /></Avatar>
+                    <Typography component="h1" variant="h5">Sign in</Typography>
+                    <form className={classes.form} onSubmit={handleFormSubmit}>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="email">Email Address</InputLabel>
+                            <Input id="email" name="email" autoComplete="email" autoFocus value={email} onChange={handleInputChange} placeholder="Email Address" />
+                        </FormControl>
 
-                    <FormControl margin="normal" required fullWidth>
-                        <InputLabel htmlFor="password">Password</InputLabel>
-                        <Input name="password" type="password" id="password" autoComplete="current-password" value={password} onChange={handleInputChange} placeholder="Password" />
-                    </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="password">Password</InputLabel>
+                            <Input name="password" type="password" id="password" autoComplete="current-password" value={password} onChange={handleInputChange} placeholder="Password" />
+                        </FormControl>
 
-                    <FormGroup>
-                        <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Sign in</Button>
-                        <Divider variant="middle" />
-                        <Button onClick={handleSignInWithGoogleClicked} type="submit" fullWidth variant="contained" color="secondary" >Sign in with Google</Button>
-                    </FormGroup>
-                </form>
-            </Paper>
+                        <FormGroup>
+                            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Sign in</Button>
+                            <Divider variant="middle" />
+                            <Button onClick={handleSignInWithGoogleClicked} type="submit" fullWidth variant="contained" color="secondary" >Sign in with Google</Button>
+                        </FormGroup>
+                    </form>
+                </Paper>
+                </Grid>
+            </div>
         </div>
     );
     
