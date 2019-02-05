@@ -22,7 +22,7 @@ const SubmissionListItem = (props) => {
             <TableCell>{submission.score}</TableCell>
             <TableCell>{(new Date(submission.createdAt)).toISOString()}</TableCell>
             <TableCell>
-                <Button size="small" color="primary" component={Link} to={`/quiz/${submission.quiz.id}/submissions/${submission.id}`}>View</Button>
+                <Button size="small" color="primary" component={Link} to={`/quizzes/${submission.quiz.id}/submissions/${submission.id}`}>View</Button>
                 <Button size="small" color="secondary" onClick={handleDeleteClicked}>Delete</Button>
             </TableCell>
         </TableRow>

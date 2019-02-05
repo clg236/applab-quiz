@@ -2,7 +2,7 @@ import React from "react";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {firebaseConnect, getVal, isEmpty, isLoaded} from "react-redux-firebase";
-import {withStyles} from "@material-ui/core";
+import {Typography, withStyles} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -33,23 +33,25 @@ const QuizList = function (props) {
         content = <CircularProgress/>;
     } else {
 
-        let publishedQuizzes = [];
+        const publishedQuizzes = {};
 
-        Object.keys(quizzes).map(key => {
-            const quiz = quizzes[key];
-            if (!user || !("published" in quiz) || quiz.published) {
-                publishedQuizzes.push({id: key, ...quiz});
-            }
-        });
+        if (!isEmpty(quizzes)) {
+            Object.keys(quizzes).map(key => {
+                const quiz = quizzes[key];
+                if (!user || !("published" in quiz) || quiz.published) {
+                    publishedQuizzes[key] = quiz;
+                }
+            });
+        }
 
         if (isEmpty(publishedQuizzes)) {
-            content = "";
+            content = <Typography variant="body1">There is no quiz yet.</Typography>;
         } else {
             content = (
                 <Table className={classes.table}>
                     <TableBody>
-                        {publishedQuizzes.map((quiz, i) => (
-                            <QuizListItem key={i} quiz={quiz} {...props}/>
+                        {Object.keys(publishedQuizzes).map(key => (
+                            <QuizListItem key={key} quizID={key} quiz={publishedQuizzes[key]} {...props}/>
                         ))}
                     </TableBody>
                 </Table>

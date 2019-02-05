@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {firebaseConnect, getVal, isLoaded} from 'react-redux-firebase';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {withStyles} from "@material-ui/core";
+import {Divider, withStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import {QuestionsForm} from "../../components/Questions";
-import {QuizList} from "../../components/Quizzes";
+import {CommentForm, CommentList} from "../../components/Comments";
+import classnames from "classnames";
 
 
 const styles = theme => ({
@@ -19,59 +19,53 @@ const styles = theme => ({
         overflow: 'auto',
     },
 
-    list: {
-        width: '100%',
-        overflowX: 'auto',
-        marginBottom: theme.spacing.unit * 3,
+    paper: {
+        ...theme.mixins.gutters(),
+        paddingTop: theme.spacing.unit * 2,
+        paddingBottom: theme.spacing.unit * 2,
     },
 
     form: {
-        padding: theme.spacing.unit * 3,
+        marginTop: theme.spacing.unit * 2
+    },
+
+    comments: {
+        marginTop: theme.spacing.unit * 2
+    },
+
+    commentForm: {
+        marginTop: theme.spacing.unit * 2
     }
 });
 
 
-const SubmissionDetail = ({classes, user}) => {
-
-    let [selectedQuiz, setSelectedQuiz] = useState(null);
-    let [submissionID, setSubmissionID] = useState(0);
-
-    function handleQuizSelected(quiz, submissionID) {
-        if (selectedQuiz && quiz.id == selectedQuiz.id) {
-            setSelectedQuiz(null);
-            setSubmissionID(0);
-        } else {
-            setSelectedQuiz(quiz);
-            setSubmissionID(submissionID);
-        }
-    }
+const SubmissionDetail = ({classes, quizID, quiz, submissionID, submission}) => {
 
     return (
         <main className={classes.content}>
-            <Typography variant="h4" gutterBottom component="h2">
-                Quizzes
-            </Typography>
-
-            <Grid container spacing={16}>
-                {!isLoaded(user) ? <CircularProgress/> : (
+            {!isLoaded(quiz) || !isLoaded(submission)
+                ? <CircularProgress/> : (
                     <>
-                        <Grid item md={selectedQuiz ? 3 : 12} xs={12}>
-                            <Paper className={classes.list}>
-                                <QuizList user={user} onQuizSelected={handleQuizSelected}/>
-                            </Paper>
-                        </Grid>
+                        <Typography variant="h4" gutterBottom component="h2">
+                            {quiz.name}
+                        </Typography>
 
-                        {selectedQuiz && (
-                            <Grid item md={9} xs={12}>
-                                <Paper className={classes.form}>
-                                    <QuestionsForm quiz={selectedQuiz} submissionID={submissionID}/>
-                                </Paper>
-                            </Grid>
-                        )}
+                        <Paper className={classnames(classes.paper, classes.form)}>
+                            <QuestionsForm quizID={quizID} submissionID={submissionID}/>
+                        </Paper>
+
+                        <Paper className={classnames(classes.paper, classes.comments)}>
+                            <Typography variant="h5" gutterBottom component="h3">Comments</Typography>
+                            <CommentList submissionID={submissionID}/>
+
+                            <div className={classes.commentForm}>
+                                <Typography variant="h6" gutterBottom component="h4">Leave a comment</Typography>
+                                <CommentForm submissionID={submissionID}/>
+                            </div>
+                        </Paper>
                     </>
-                )}
-
-            </Grid>
+                )
+            }
         </main>
     );
 };
@@ -79,24 +73,30 @@ const SubmissionDetail = ({classes, user}) => {
 
 export default compose(
     connect(
-        (state) => {
-            const uid = state.firebase.auth.uid;
-            const user = getVal(state.firebase.data, `users/${uid}`);
+        (state, props) => {
+            const {match: {params: {quizID, submissionID}}} = props;
+
             return ({
-                uid: uid,
-                user: user ? {uid: uid, ...user} : null,
+                quizID,
+                submissionID,
+                quiz: getVal(state.firebase.data, `quizzes/${quizID}`),
+                submission: getVal(state.firebase.data, `quizSubmissions/${submissionID}`)
             });
         }
     ),
 
-    firebaseConnect(({uid}) => {
+    firebaseConnect(props => {
+        const {match: {params: {quizID, submissionID}}} = props;
+
         return [
             {
-                path: `users/${uid}`,
-            }
+                path: `quizzes/${quizID}`
+            },
+            {
+                path: `quizSubmissions/${submissionID}`
+            },
         ];
     }),
-
 
     withStyles(styles)
 )(SubmissionDetail);

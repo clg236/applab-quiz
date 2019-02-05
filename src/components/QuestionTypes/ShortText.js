@@ -9,40 +9,40 @@ function validate(value) {
     return !value ? 'Required' : '';
 }
 
+function isCorrect(question, value) {
+    return true;
+}
+
 function ShortTextEditControl({questionIndex, question}) {
     return (
-        <>
-            <Grid item xs={12}>
-                <EditTitleControl name={`questions.${questionIndex}.title`} />
-            </Grid>
-        </>
+        <Grid item xs={12}>
+            <EditTitleControl name={`questions.${questionIndex}.title`}/>
+        </Grid>
     );
 }
 
-function ShortTextViewControl({index, quiz, question, submission}) {
+function ShortTextViewControl(props) {
+    const {index, quiz, question, submission, deadlinePassed} = props;
+
     return (
         <Field
-            name={question.title}
+            name={`answers.${question.id}`}
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
                 <TextField
-                    name={field.name}
                     label={`${index + 1}. ${question.title}`}
-                    value={values[field.name]}
                     required
                     multiline={false}
+                    error={Boolean(touched[field.name] && errors[field.name])}
+                    disabled={!!submission || deadlinePassed}
+                    value={field.value || ''}
+                    name={field.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(touched[field.name] && errors[field.name])}
-                    disabled={!!submission}
                 />
             )}
             validate={validate}
         />
     );
-}
-
-function isCorrect(question, value) {
-    return true;
 }
 
 export default {

@@ -26,14 +26,14 @@ const styles = theme => ({
 });
 
 const AdminListQuizzes = ({classes}) => {
-    let [selectedQuiz, setSelectedQuiz] = useState(null);
+    let [selectedQuizID, setSelectedQuizID] = useState('');
 
 
-    function handleQuizSelected(quiz) {
-        if (selectedQuiz && quiz.id == selectedQuiz.id) {
-            setSelectedQuiz(null);
+    function handleQuizSelected(id) {
+        if (selectedQuizID && id == selectedQuizID) {
+            setSelectedQuizID('');
         } else {
-            setSelectedQuiz(quiz);
+            setSelectedQuizID(id);
         }
     }
 
@@ -48,15 +48,15 @@ const AdminListQuizzes = ({classes}) => {
 
 
             <Grid container spacing={16}>
-                <Grid item md={selectedQuiz ? 3 : 12} xs={12}>
+                <Grid item md={selectedQuizID ? 3 : 12} xs={12}>
                     <Paper className={classes.list}>
-                        <QuizList onQuizSelected={handleQuizSelected} hideStats={selectedQuiz ? true: false}/>
+                        <QuizList onQuizSelected={handleQuizSelected} hideStats={selectedQuizID ? true: false}/>
                     </Paper>
                 </Grid>
 
-                {selectedQuiz && (
+                {selectedQuizID != '' && (
                     <Grid item md={9} xs={12}>
-                        <QuizDetail quiz={selectedQuiz} showSubmissions/>
+                        <QuizDetail quizID={selectedQuizID}/>
                     </Grid>
                 )}
             </Grid>

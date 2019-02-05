@@ -13,13 +13,14 @@ const styles = theme => ({
     }
 });
 
-let CreateQuiz = ({classes}) => {
+const AdminCreateQuiz = props => {
+    const {classes, match: {params: {id}}} = props;
 
     return (
         <main className={classes.root}>
-            <Typography variant="h4" gutterBottom component="h2">Create a quiz</Typography>
+            <Typography variant="h4" gutterBottom component="h2">Quiz Detail</Typography>
 
-            <QuizDetail/>
+            <QuizDetail quizID={id} />
         </main>
     );
 };
@@ -27,4 +28,4 @@ let CreateQuiz = ({classes}) => {
 
 export default compose(
     withStyles(styles)
-)(CreateQuiz);
+)(AdminCreateQuiz);

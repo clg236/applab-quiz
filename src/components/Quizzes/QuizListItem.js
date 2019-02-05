@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 
 function QuizListItem(props) {
 
-    const {user, quiz, submissions, onQuizSelected, hideStats} = props;
+    const {user, quizID, quiz, submissions, onQuizSelected, hideStats} = props;
 
     let text = quiz.name;
     let submission = null;
@@ -15,8 +15,8 @@ function QuizListItem(props) {
     const numSubmissions = quiz.submissions ? Object.keys(quiz.submissions).length : 0;
 
     if (user) {
-        if (submissions && quiz.id in submissions) {
-            submission = submissions[quiz.id];
+        if (submissions && quizID in submissions) {
+            submission = submissions[quizID];
             text += ` (${submission.lastSubmissionScore}/${numQuestions})`;
         }
     } else {
@@ -26,7 +26,7 @@ function QuizListItem(props) {
     }
 
     function handleQuizClicked() {
-        onQuizSelected && onQuizSelected(quiz, submission ? submission.lastSubmissionID : 0);
+        onQuizSelected && onQuizSelected(quizID, submission ? submission.lastSubmissionID : "");
     }
 
     return (

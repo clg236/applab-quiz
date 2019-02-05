@@ -9,6 +9,9 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import {QuestionsForm} from "../../components/Questions";
 import {QuizList} from "../../components/Quizzes";
+import {CommentForm, CommentList} from "../../components/Comments";
+import classnames from "classnames";
+
 
 
 const styles = theme => ({
@@ -25,23 +28,31 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit * 3,
     },
 
-    form: {
+    paperPadding: {
         padding: theme.spacing.unit * 3,
+    },
+
+    comments: {
+        marginTop: theme.spacing.unit * 2
+    },
+
+    commentForm: {
+        marginTop: theme.spacing.unit * 2
     }
 });
 
 
 const ListQuizzes = ({classes, user}) => {
 
-    let [selectedQuiz, setSelectedQuiz] = useState(null);
-    let [submissionID, setSubmissionID] = useState(0);
+    let [selectedQuizID, setSelectedQuizID] = useState('');
+    let [submissionID, setSubmissionID] = useState('');
 
-    function handleQuizSelected(quiz, submissionID) {
-        if (selectedQuiz && quiz.id == selectedQuiz.id) {
-            setSelectedQuiz(null);
-            setSubmissionID(0);
+    function handleQuizSelected(quizID, submissionID) {
+        if (selectedQuizID && quizID == selectedQuizID) {
+            setSelectedQuizID('');
+            setSubmissionID('');
         } else {
-            setSelectedQuiz(quiz);
+            setSelectedQuizID(quizID);
             setSubmissionID(submissionID);
         }
     }
@@ -53,22 +64,30 @@ const ListQuizzes = ({classes, user}) => {
             </Typography>
 
             <Grid container spacing={16}>
-                {!isLoaded(user) ? <CircularProgress/> : (
-                    <>
-                        <Grid item md={selectedQuiz ? 3 : 12} xs={12}>
-                            <Paper className={classes.list}>
-                                <QuizList user={user} onQuizSelected={handleQuizSelected}/>
-                            </Paper>
-                        </Grid>
+                <Grid item md={selectedQuizID ? 3 : 12} xs={12}>
+                    <Paper className={classes.list}>
+                        <QuizList user={user} onQuizSelected={handleQuizSelected}/>
+                    </Paper>
+                </Grid>
 
-                        {selectedQuiz && (
-                            <Grid item md={9} xs={12}>
-                                <Paper className={classes.form}>
-                                    <QuestionsForm quiz={selectedQuiz} submissionID={submissionID}/>
-                                </Paper>
-                            </Grid>
+                {selectedQuizID && (
+                    <Grid item md={9} xs={12}>
+                        <Paper className={classes.paperPadding}>
+                            <QuestionsForm quizID={selectedQuizID} submissionID={submissionID}/>
+                        </Paper>
+
+                        {submissionID && (
+                            <Paper className={classnames(classes.comments, classes.paperPadding)}>
+                                <Typography variant="h5" gutterBottom component="h3">Comments</Typography>
+                                <CommentList submissionID={submissionID}/>
+
+                                <div className={classes.commentForm}>
+                                    <Typography variant="h6" gutterBottom component="h4">Leave a comment</Typography>
+                                    <CommentForm submissionID={submissionID}/>
+                                </div>
+                            </Paper>
                         )}
-                    </>
+                    </Grid>
                 )}
 
             </Grid>
@@ -80,23 +99,11 @@ const ListQuizzes = ({classes, user}) => {
 export default compose(
     connect(
         (state) => {
-            const uid = state.firebase.auth.uid;
-            const user = getVal(state.firebase.data, `users/${uid}`);
             return ({
-                uid: uid,
-                user: user ? {uid: uid, ...user} : null,
+                user: state.firebase.auth
             });
         }
     ),
-
-    firebaseConnect(({uid}) => {
-        return [
-            {
-                path: `users/${uid}`,
-            }
-        ];
-    }),
-
 
     withStyles(styles)
 )(ListQuizzes);

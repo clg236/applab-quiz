@@ -12,7 +12,7 @@ const firebaseConfig = {
 const reactReduxFirebaseConfig = {
     userProfile: 'users',
     useFirestoreForProfile: false,
-    enableLogging: true,
+    enableLogging: false,
     
     profileFactory: user => ({
         email: user.email,

@@ -102,7 +102,8 @@ let QuestionOptionsFieldArray = (props) => {
 };
 
 
-const EditQuestionControl = ({question, questionIndex, expanded, remove}) => {
+const EditQuestionControl = props => {
+    const {question, questionIndex, expanded, remove} = props;
 
     function deleteQuestion() {
         remove(questionIndex);
@@ -117,6 +118,7 @@ const EditQuestionControl = ({question, questionIndex, expanded, remove}) => {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <Grid container spacing={24}>
+                    <Field type="hidden" name={`questions.${questionIndex}.id`} />
                     <Grid item xs={12}>
                         <Field
                             name={`questions.${questionIndex}.type`}

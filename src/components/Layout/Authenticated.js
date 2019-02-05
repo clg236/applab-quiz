@@ -16,7 +16,7 @@ import {
     UsersDetailPage as AdminUsersDetailPage
 } from '../Admin';
 
-import {CreateQuizPage, AdminListQuizzesPage, ListQuizzesPage} from "../../containers/Quizzes";
+import {AdminCreateQuizPage, AdminEditQuizPage, AdminListQuizzesPage, ListQuizzesPage} from "../../containers/Quizzes";
 import {SubmissionDetailPage} from "../../containers/Submissions";
 
 
@@ -49,11 +49,11 @@ function AuthenticatedLayout({classes, location}) {
                     <Route exact path={ROUTES.HOME} component={HomePage}/>
                     <Route exact path={ROUTES.QUIZZES} component={ListQuizzesPage}/>
 
-                    <Route exact path={ROUTES.QUIZ_SUBMISSION_DETAIL} component={SubmissionDetailPage}/>
-
+                    <Route path={ROUTES.QUIZ_SUBMISSION_DETAIL} component={SubmissionDetailPage}/>
 
                     <Route exact path={ROUTES.ADMIN_QUIZZES} component={AdminListQuizzesPage}/>
-                    <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={CreateQuizPage}/>
+                    <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={AdminCreateQuizPage}/>
+                    <Route path={ROUTES.ADMIN_Edit_QUIZ} component={AdminEditQuizPage}/>
                     <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsListPage}/>
                     <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={QuestionsCreatePage}/>
                     <Route exact path={ROUTES.ADMIN_USERS} component={AdminUsersListPage}/>

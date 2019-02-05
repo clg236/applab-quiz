@@ -3,11 +3,14 @@ import {withFormik} from 'formik';
 import {compose} from "redux";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import {firebaseConnect, getVal, withFirebase} from "react-redux-firebase";
+import {firebaseConnect, getVal, isLoaded, withFirebase} from "react-redux-firebase";
 import {connect} from "react-redux";
-import {Typography, withStyles} from "@material-ui/core";
+import {CircularProgress, Typography, withStyles} from "@material-ui/core";
 import QuestionTypes from '../QuestionTypes';
 import {withSnackbar} from "notistack";
+import moment from "moment";
+import Moment from 'react-moment';
+import {push} from "connected-react-router";
 
 
 const styles = theme => ({
@@ -17,22 +20,32 @@ const styles = theme => ({
 });
 
 function QuestionsForm(props) {
-    const {quiz, submission, handleSubmit, values, errors, isValid, isSubmitting, classes} = props;
+    const {quiz, submissionID, submission, handleSubmit, values, errors, isValid, isSubmitting, classes} = props;
 
-    const deadlinePassed = false;
+    if (!isLoaded(quiz) || (submissionID && !isLoaded(submission))) {
+        return <CircularProgress/>;
+    }
+
+    const deadlinePassed = quiz.deadline ? moment(quiz.deadline).isBefore(moment()) : false;
 
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={24}>
 
-                {deadlinePassed && <Typography>Deadline passed.</Typography>}
+                {deadlinePassed && (
+                    <>
+                        <Grid item xs={12}>
+                            <Typography color="secondary">Deadline (<Moment>{quiz.deadline}</Moment>) has passed.</Typography>
+                        </Grid>
+                    </>
+                )}
 
-                {quiz.questions.map((question, i) => {
+                {quiz.questions && quiz.questions.map((question, i) => {
                     const QuestionTypeControl = question.type && question.type in QuestionTypes ? QuestionTypes[question.type].ViewControl : null;
 
                     return (
                         <Grid item xs={12} key={i}>
-                            {QuestionTypeControl && <QuestionTypeControl index={i} question={question} {...props} />}
+                            {QuestionTypeControl && <QuestionTypeControl index={i} question={question} deadlinePassed={deadlinePassed} {...props} />}
                         </Grid>
                     );
                 })}
@@ -46,7 +59,6 @@ function QuestionsForm(props) {
                     </Grid>
                 )}
 
-                {JSON.stringify(values, null, 2)}
             </Grid>
 
         </form>
@@ -115,88 +127,114 @@ function calculateCorrectAnswers(quiz, answers) {
 }
 
 export default compose(
-    withFirebase,
-
     withSnackbar,
 
     connect(
-        (state, {submissionID}) => {
-            return ({
+        (state, {quizID, submissionID}) => {
+            return {
+                uid: state.firebase.auth.uid,
                 user: state.firebase.auth,
+                quiz: getVal(state.firebase.data, `quizzes/${quizID}`),
                 submission: submissionID ? getVal(state.firebase.data, `quizSubmissions/${submissionID}`) : null
-            });
+            };
+        }, {
+            pushToHistory: push
         }
     ),
 
-    firebaseConnect(({submissionID}) => {
+    firebaseConnect(({quizID, submissionID}) => {
+        const queries = [{
+            path: `quizzes/${quizID}`
+        }];
 
-        if (!submissionID) {
-            return [];
+        if (submissionID) {
+            queries.push({
+                path: `quizSubmissions/${submissionID}`
+            })
         }
 
-        return [
-            {
-                path: `quizSubmissions/${submissionID}`
-            }
-        ];
+        return queries;
     }),
 
 
     withFormik({
         enableReinitialize: true,
 
-        mapPropsToValues: (props) => {
-            const {quiz, submission} = props;
-            const values = {};
+        mapPropsToValues: props => {
+            const {quiz, submissionID, submission} = props;
+            const values = {
+                answers: {}
+            };
 
-            quiz.questions.map(question => {
-                const type = question.type;
+            if (isLoaded(quiz) && quiz.questions && (!submissionID || isLoaded(submission))) {
+                quiz.questions.map(question => {
+                    const type = question.type;
 
-                if (type in QuestionTypes) {
-                    if (submission && submission.answers && question.title in submission.answers) {
-                        values[question.title] = submission.answers[question.title];
-                    } else {
-                        values[question.title] = QuestionTypes[type].defaultValue;
+                    if (type in QuestionTypes) {
+                        if (submission && submission.answers && question.id in submission.answers) {
+                            values['answers'][question.id] = submission.answers[question.id];
+                        } else {
+                            values['answers'][question.id] = QuestionTypes[type].defaultValue;
+                        }
                     }
-                }
-            });
+                });
+            }
 
             return values;
         },
 
         handleSubmit: (values, actions) => {
-            const {setSubmitting, props: {user: {uid, displayName, photoURL}, quiz, firebase: {set, updateWithMeta, pushWithMeta}, enqueueSnackbar}} = actions;
+            const {
+                setSubmitting,
+                props: {
+                    user: {
+                        uid, displayName, photoURL
+                    },
+                    quizID,
+                    quiz,
+                    firebase: {
+                        set, updateWithMeta, pushWithMeta
+                    },
+                    enqueueSnackbar,
+                    pushToHistory
+                }
+            } = actions;
+
+            if (!quiz.questions) {
+                return ;
+            }
 
             let score = 0;
             quiz.questions.forEach(question => {
                 const type = question.type;
 
                 if (type in QuestionTypes) {
-                    if (QuestionTypes[type].isCorrect(question, values[question.title])) {
+                    if (QuestionTypes[type].isCorrect(question, values['answers'][question.id])) {
                         score++;
                     }
                 }
             });
 
             pushWithMeta("quizSubmissions", {
-                answers: values,
+                answers: values['answers'],
                 score: score,
                 user: {uid, displayName, photoURL},
                 quiz: {
-                    id: quiz.id,
+                    id: quizID,
                     name: quiz.name
                 }
             }).then(ref => {
                 Promise.all([
-                    updateWithMeta(`userQuizzes/${uid}/${quiz.id}`, {
+                    updateWithMeta(`userQuizzes/${uid}/${quizID}`, {
                         lastSubmissionScore: score,
                         lastSubmissionID: ref.key
                     }),
-                    set(`userQuizzes/${uid}/${quiz.id}/submissions/${ref.key}`, true),
-                    set(`quizzes/${quiz.id}/submissions/${ref.key}`, true)
+                    set(`userQuizzes/${uid}/${quizID}/submissions/${ref.key}`, true),
+                    set(`quizzes/${quizID}/submissions/${ref.key}`, true)
                 ]).then(() => {
                     setSubmitting(false);
-                    enqueueSnackbar("Saved!");
+                    enqueueSnackbar("Submitted!");
+                    pushToHistory(`/quizzes/${quizID}/submissions/${ref.key}`);
                 });
             });
         }

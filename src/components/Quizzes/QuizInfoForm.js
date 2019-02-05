@@ -1,19 +1,30 @@
 import React from 'react';
 import {compose} from 'redux';
-import {Grid, withStyles} from "@material-ui/core";
+import {CircularProgress, Grid, withStyles} from "@material-ui/core";
 import {Field, withFormik} from "formik";
 import Button from "@material-ui/core/Button";
-import {withFirebase} from "react-redux-firebase";
+import {firebaseConnect, getVal, isEmpty, isLoaded, withFirebase} from "react-redux-firebase";
 import {withSnackbar} from 'notistack';
 import TextField from "../Form/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+import {connect} from "react-redux";
+import {push} from "connected-react-router";
 
 const styles = theme => ({});
 
+const INITIAL_VALUES = {
+    name: "",
+    deadline: "",
+    published: true
+};
 
-const EditQuizInfoForm = (props) => {
-    const {classes, quiz, handleSubmit, values, errors, isSubmitting, isValid} = props;
+const QuizInfoForm = (props) => {
+    const {classes, quizID, quiz, handleSubmit, values, errors, isSubmitting, isValid} = props;
+
+    if (quizID && !isLoaded(quiz)) {
+        return <CircularProgress/>;
+    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -58,12 +69,10 @@ const EditQuizInfoForm = (props) => {
 
                 <Grid item xs={12}>
                     <Button color="primary" variant="contained" type="submit" disabled={isSubmitting || !isValid}>
-                        {quiz && quiz.id ? "Save" : "Submit"}
+                        {quizID && quiz ? "Save" : "Submit"}
                     </Button>
                 </Grid>
             </Grid>
-
-
         </form>
     );
 };
@@ -73,15 +82,45 @@ export default compose(
 
     withSnackbar,
 
+    connect(
+        (state, {quizID}) => ({
+            quiz: quizID ? getVal(state.firebase.data, `quizzes/${quizID}`) : null
+        }),
+        {
+            pushToHistory: push
+        }
+    ),
+
+    firebaseConnect(({quizID}) => {
+        const queries = [];
+
+        if (quizID) {
+            queries.push({
+                path: `quizzes/${quizID}`
+            })
+        }
+
+        return queries;
+    }),
+
+
     withFormik({
         enableReinitialize: true,
 
-        mapPropsToValues: ({quiz}) => {
-            return {
-                name: quiz && "name" in quiz ? quiz.name : "",
-                deadline: quiz && "deadline" in quiz ? quiz.deadline : "",
-                published: quiz && "published" in quiz ? quiz.published : true
-            };
+        mapPropsToValues: ({quizID, quiz}) => {
+            if (quizID) {
+                if (!isLoaded(quiz) || isEmpty(quiz)) {
+                    return {...INITIAL_VALUES};
+                } else {
+                    return {
+                        name: quiz.name,
+                        deadline: "deadline" in quiz ? quiz.deadline : "",
+                        published: "published" in quiz ? quiz.published : true
+                    }
+                }
+            } else {
+                return {...INITIAL_VALUES};
+            }
         },
 
         validate: values => {
@@ -95,21 +134,26 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {quiz, firebase: {pushWithMeta, updateWithMeta}, enqueueSnackbar}} = actions;
+            const {props: {quizID, quiz, firebase: {pushWithMeta, updateWithMeta}, enqueueSnackbar, pushToHistory}} = actions;
             let promise = null;
 
-            if (quiz && quiz.id) {
-                promise = updateWithMeta(`quizzes/${quiz.id}`, values);
+            if (quizID && quiz) {
+                promise = updateWithMeta(`quizzes/${quizID}`, values);
             } else {
                 promise = pushWithMeta("quizzes", values);
             }
 
-            promise.then(() => {
+            promise.then(ref => {
                 actions.setSubmitting(false);
-                enqueueSnackbar("Saved!");
+
+                if (quizID) {
+                    enqueueSnackbar("Saved!");
+                } else {
+                    pushToHistory(`/admin/quizzes/${ref.key}`);
+                }
             });
         }
     }),
 
     withStyles(styles)
-)(EditQuizInfoForm);
+)(QuizInfoForm);
