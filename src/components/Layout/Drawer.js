@@ -33,7 +33,6 @@ import { faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 //user interface styles
-import { Unsplashed } from 'react-unsplash-container'
 import {
     drawerWidth,
     transition,
