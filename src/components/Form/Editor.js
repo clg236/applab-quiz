@@ -36,7 +36,7 @@ class Editor extends React.PureComponent {
 
 
     render = () => {
-        const {classes, form, field, withMargin, ...others} = this.props;
+        const {classes, form, field, withMargin, disabled, ...others} = this.props;
 
         const css = withMargin ? classes.withMargin : classes.default;
 
@@ -45,7 +45,8 @@ class Editor extends React.PureComponent {
                         formats={QuillConfig.formats}
                         onChange={this.handleDescriptionChanged}
                         name={field.name}
-                        value={field.value}
+                        value={field.value || ''}
+                        readOnly={!!disabled}
                         {...others}
             />
         );

@@ -7,10 +7,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {withStyles} from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import HelpIcon from '@material-ui/icons/Help';
-import HomeIcon from '@material-ui/icons/Home';
-import WcIcon from '@material-ui/icons/Wc';
 import classNames from 'classnames';
 import React from 'react';
 import * as ROUTES from '../../constants/routes';
@@ -19,6 +15,7 @@ import {push} from 'connected-react-router';
 import {Link} from 'react-router-dom';
 import ACTIONS from '../../actions';
 import {connect} from 'react-redux';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const DRAWER_WIDTH = 240;
 
@@ -49,6 +46,11 @@ const styles = theme => ({
         [theme.breakpoints.up('sm')]: {
             width: theme.spacing.unit * 9,
         },
+    },
+
+    drawerIcon: {
+        marginLeft: 8,
+        marginRight: 8
     }
 });
 
@@ -94,14 +96,14 @@ function DrawerComponent(props) {
             <List>
                 <div>
                     <ListItem button component={props => <Link {...props} to={ROUTES.HOME}/>}>
-                        <ListItemIcon>
-                            <HomeIcon/>
+                        <ListItemIcon className={classes.drawerIcon}>
+                            <FontAwesomeIcon icon="home" size="lg" fixedWidth/>
                         </ListItemIcon>
                         <ListItemText primary="Home"/>
                     </ListItem>
                     <ListItem button onClick={handleQuizMenuClicked}>
-                        <ListItemIcon>
-                            <HelpIcon/>
+                        <ListItemIcon className={classes.drawerIcon}>
+                            <FontAwesomeIcon icon="question" size="lg" fixedWidth/>
                         </ListItemIcon>
                         <ListItemText primary="My Quizzes"/>
                     </ListItem>
@@ -112,27 +114,27 @@ function DrawerComponent(props) {
                 <Divider/>
                 <List>
                     <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_USERS}/>}>
-                        <ListItemIcon>
-                            <WcIcon/>
+                        <ListItemIcon className={classes.drawerIcon}>
+                            <FontAwesomeIcon icon="user-astronaut" size="lg" fixedWidth/>
                         </ListItemIcon>
                         <ListItemText primary="Users"/>
                     </ListItem>
                 </List>
                 <List>
                     <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_QUIZZES}/>}>
-                        <ListItemIcon>
-                            <HelpIcon/>
+                        <ListItemIcon className={classes.drawerIcon}>
+                            <FontAwesomeIcon icon="question" size="lg" fixedWidth/>
                         </ListItemIcon>
                         <ListItemText primary="Quizzes"/>
                     </ListItem>
                 </List>
                 {/*<List>*/}
-                    {/*<ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_QUESTIONS}/>}>*/}
-                        {/*<ListItemIcon>*/}
-                            {/*<HelpIcon/>*/}
-                        {/*</ListItemIcon>*/}
-                        {/*<ListItemText primary="Questions"/>*/}
-                    {/*</ListItem>*/}
+                {/*<ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_QUESTIONS}/>}>*/}
+                {/*<ListItemIcon>*/}
+                {/*<HelpIcon/>*/}
+                {/*</ListItemIcon>*/}
+                {/*<ListItemText primary="Questions"/>*/}
+                {/*</ListItem>*/}
                 {/*</List>*/}
             </>
             {/* } */}
@@ -141,8 +143,8 @@ function DrawerComponent(props) {
             <List>
                 <div>
                     <ListItem button onClick={handleSignOutClicked}>
-                        <ListItemIcon>
-                            <ExitToAppIcon/>
+                        <ListItemIcon className={classes.drawerIcon}>
+                            <FontAwesomeIcon icon="sign-out-alt" size="lg" fixedWidth/>
                         </ListItemIcon>
                         <ListItemText primary="Sign out"/>
                     </ListItem>

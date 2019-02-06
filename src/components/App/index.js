@@ -8,6 +8,11 @@ import store, {firebase, history} from '../../store';
 import {reactReduxFirebaseConfig} from '../../config';
 import {SnackbarProvider} from 'notistack';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faUserAstronaut, faQuestion, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faUserAstronaut, faQuestion, faHome, faSignOutAlt);
+
 
 function App() {
     const rrfProps = {

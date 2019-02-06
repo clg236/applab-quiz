@@ -13,7 +13,7 @@ function isCorrect(question, value) {
     return true;
 }
 
-function ShortTextEditControl({questionIndex, question}) {
+function EditControl({questionIndex, question}) {
     return (
         <Grid item xs={12}>
             <EditTitleControl name={`questions.${questionIndex}.title`}/>
@@ -21,7 +21,7 @@ function ShortTextEditControl({questionIndex, question}) {
     );
 }
 
-function ShortTextViewControl(props) {
+function ViewControl(props) {
     const {index, quiz, question, submission, deadlinePassed} = props;
 
     return (
@@ -48,8 +48,8 @@ function ShortTextViewControl(props) {
 export default {
     name: "Short Text",
     code: "short-text",
-    EditControl: ShortTextEditControl,
-    ViewControl: ShortTextViewControl,
+    EditControl: EditControl,
+    ViewControl: ViewControl,
     isCorrect: isCorrect,
     defaultValue: ""
 };

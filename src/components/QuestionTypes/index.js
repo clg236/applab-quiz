@@ -1,16 +1,17 @@
 import ShortText from './ShortText';
 import LongText from './LongText';
-import Single from './Single';
+import SingleOption from './Single';
 import Multiple from './Multiple';
 import Code from './Code';
 
 const QuestionTypes = {
     [ShortText.code]: ShortText,
+    [LongText.code]: LongText,
+    [SingleOption.code]: SingleOption,
     // LongText,
     // Single,
     // Multiple,
     // Code
 };
 
-export {ShortText, LongText, Single, Multiple, Code};
 export default QuestionTypes;
