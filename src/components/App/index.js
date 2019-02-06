@@ -7,13 +7,27 @@ import {ConnectedRouter} from 'connected-react-router'
 import store, {firebase, history} from '../../store';
 import {reactReduxFirebaseConfig} from '../../config';
 import {SnackbarProvider} from 'notistack';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {faUserAstronaut, faQuestion, faHome, faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
+import purple from '@material-ui/core/colors/purple';
+import green from '@material-ui/core/colors/green';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUserAstronaut, faQuestion, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
+
+// fontawesome
 library.add(faUserAstronaut, faQuestion, faHome, faSignOutAlt);
 
+// material ui
+// @see https://material-ui.com/customization/themes/
+const theme = createMuiTheme({
+    palette: {
+        primary: purple,
+        secondary: green,
+    }
+});
 
+// main App component
 function App() {
     const rrfProps = {
         firebase,
@@ -26,7 +40,9 @@ function App() {
             <ReactReduxFirebaseProvider {...rrfProps}>
                 <ConnectedRouter history={history}>
                     <SnackbarProvider>
-                        <Layout/>
+                        <MuiThemeProvider theme={theme}>
+                            <Layout/>
+                        </MuiThemeProvider>
                     </SnackbarProvider>
                 </ConnectedRouter>
             </ReactReduxFirebaseProvider>

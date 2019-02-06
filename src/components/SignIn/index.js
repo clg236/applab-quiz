@@ -117,7 +117,6 @@ function SignIn(props) {
         <div>
             <div className={classes.main}>
                 <CssBaseline />
-                <Grid xs={12}>
                 <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}><LockIcon /></Avatar>
                     <Typography component="h1" variant="h5">Sign in</Typography>
@@ -139,7 +138,6 @@ function SignIn(props) {
                         </FormGroup>
                     </form>
                 </Paper>
-                </Grid>
             </div>
         </div>
     );
