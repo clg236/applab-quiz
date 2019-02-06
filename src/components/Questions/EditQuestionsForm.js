@@ -8,7 +8,14 @@ import EditQuestionControl from './EditQuestionControl';
 import uuid from "uuid";
 import {connect} from "react-redux";
 
-const EmptyQuestion = {title: ''};
+const EmptyQuestion = {
+    id: '',
+    title: '',
+    type: '',
+    options: [],
+    answer: '',
+    answers: []
+};
 
 const styles = theme => ({});
 
@@ -19,7 +26,7 @@ let QuestionsFieldArray = props => {
     let {expanded} = useState([]);
 
     function handleAddQuestion() {
-        push({id: uuid.v4(), ...EmptyQuestion});
+        push({...EmptyQuestion, id: uuid.v4()});
     }
 
     return (
@@ -34,8 +41,6 @@ let QuestionsFieldArray = props => {
                     Add a question
                 </Button>
             </div>
-
-            {JSON.stringify(props.form.values, null, 2)}
         </>
     )
 };
@@ -86,7 +91,9 @@ export default compose(
     withFormik({
         enableReinitialize: true,
 
-        mapPropsToValues: ({quiz}) => {
+        mapPropsToValues: props => {
+            const {quiz} = props
+
             // TODO check if the question type exists
             let questions = [];
 
@@ -104,6 +111,15 @@ export default compose(
 
             if ("submissions" in quiz && Object.keys(quiz.submissions).length > 0) {
                 return ;
+            }
+
+            // filter out null values
+            if (values.questions && values.questions.length > 0) {
+                values.questions.forEach(question => {
+                    if (question.answers && question.answers.length > 0) {
+                        question.answers.forEach((answer, index, arr) => arr[index] = !!answer);
+                    }
+                });
             }
 
             updateWithMeta(`quizzes/${quizID}`, values).then(() => enqueueSnackbar("Saved!"));

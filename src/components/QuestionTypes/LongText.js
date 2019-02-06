@@ -22,6 +22,10 @@ function isCorrect(question, value) {
     return true;
 }
 
+function sanitizeValue(value) {
+    return value.trim();
+}
+
 function EditControl({questionIndex, question}) {
     return (
         <>
@@ -74,5 +78,6 @@ export default {
     EditControl: EditControl,
     ViewControl: ViewControl,
     isCorrect: isCorrect,
+    sanitizeValue: sanitizeValue,
     defaultValue: ""
 };

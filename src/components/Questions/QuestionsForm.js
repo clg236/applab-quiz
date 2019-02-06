@@ -209,11 +209,14 @@ export default compose(
                 const type = question.type;
 
                 if (type in QuestionTypes) {
+                    values['answers'][question.id] = QuestionTypes[type].sanitizeValue(values['answers'][question.id]);
+
                     if (QuestionTypes[type].isCorrect(question, values['answers'][question.id])) {
                         score++;
                     }
                 }
             });
+
 
             pushWithMeta("quizSubmissions", {
                 answers: values['answers'],

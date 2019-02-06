@@ -13,6 +13,10 @@ function isCorrect(question, value) {
     return true;
 }
 
+function sanitizeValue(value) {
+    return value.trim();
+}
+
 function EditControl({questionIndex, question}) {
     return (
         <Grid item xs={12}>
@@ -51,5 +55,6 @@ export default {
     EditControl: EditControl,
     ViewControl: ViewControl,
     isCorrect: isCorrect,
+    sanitizeValue: sanitizeValue,
     defaultValue: ""
 };
