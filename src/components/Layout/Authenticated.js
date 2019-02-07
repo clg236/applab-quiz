@@ -7,16 +7,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBarComponent from './AppBar';
 import * as ROUTES from '../../constants/routes';
 import HomePage from '../Home';
-import {ListPage as QuizzesListPage} from '../Quizzes';
 import {Route, Switch} from 'react-router-dom';
-import {
-    QuestionsListPage,
-    QuestionsCreatePage,
-    UsersListPage as AdminUsersListPage,
-    UsersDetailPage as AdminUsersDetailPage
-} from '../Admin';
 
 import {AdminCreateQuizPage, AdminEditQuizPage, AdminListQuizzesPage, ListQuizzesPage} from "../../containers/Quizzes";
+import {AdminListUsersPage, UserDetailPage} from "../../containers/Users";
+
 import {SubmissionDetailPage} from "../../containers/Submissions";
 
 
@@ -49,15 +44,14 @@ function AuthenticatedLayout({classes, location}) {
                     <Route exact path={ROUTES.HOME} component={HomePage}/>
                     <Route exact path={ROUTES.QUIZZES} component={ListQuizzesPage}/>
 
-                    <Route path={ROUTES.QUIZ_SUBMISSION_DETAIL} component={SubmissionDetailPage}/>
+                    <Route path={ROUTES.VIEW_SUBMISSION} component={SubmissionDetailPage}/>
 
                     <Route exact path={ROUTES.ADMIN_QUIZZES} component={AdminListQuizzesPage}/>
                     <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={AdminCreateQuizPage}/>
                     <Route path={ROUTES.ADMIN_Edit_QUIZ} component={AdminEditQuizPage}/>
-                    <Route exact path={ROUTES.ADMIN_QUESTIONS} component={QuestionsListPage}/>
-                    <Route exact path={ROUTES.ADMIN_CREATE_QUESTION} component={QuestionsCreatePage}/>
-                    <Route exact path={ROUTES.ADMIN_USERS} component={AdminUsersListPage}/>
-                    <Route exact path={ROUTES.ADMIN_VIEW_USER} component={AdminUsersDetailPage}/>
+
+                    <Route exact path={ROUTES.ADMIN_USERS} component={AdminListUsersPage}/>
+                    <Route path={ROUTES.VIEW_USER} component={UserDetailPage}/>
 
                     <Route render={() => (<div>404</div>)}/>
                 </Switch>

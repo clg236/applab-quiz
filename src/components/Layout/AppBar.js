@@ -6,16 +6,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import classNames from 'classnames';
-import React, {useContext, useState} from 'react';
-import {DRAWER_WIDTH} from './Drawer';
+import React, {useState} from 'react';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
-
-//fontawesome icons
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {connect} from 'react-redux';
@@ -124,4 +117,4 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
 export default connect(
     ({firebase: {auth}, drawer}) => (
         {auth, drawer}
-        ))(withStyles(styles)(AppBarComponent));
+    ))(withStyles(styles)(AppBarComponent));
