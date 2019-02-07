@@ -59,10 +59,10 @@ function QuizListItem(props) {
     return (
         <TableRow>
             <CustomTableCell align="left">
-                <MuiLink href={'javascript:;'} onClick={handleQuizClicked}>{text}</MuiLink>
+                1
             </CustomTableCell>
             <CustomTableCell align="left">
-                {quiz.name}
+                <MuiLink href={'javascript:;'} onClick={handleQuizClicked}>{quiz.name}</MuiLink>
             </CustomTableCell>
             <CustomTableCell align="left">
                 2/17/2019

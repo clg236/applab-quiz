@@ -24,10 +24,10 @@ const CommentList = (props) => {
     if (!isLoaded(submission)) {
         content = <CircularProgress/>;
     } else if (isEmpty(submission)) {
-        content = "There is no comments yet";
+        content = "There are no comments yet";
     } else {
         if (submission && (!("comments" in submission) || Object.keys(submission.comments).length === 0)) {
-            content = "There is no comments yet";
+            content = "There are no comments yet";
         } else {
             content = (
                 <List>

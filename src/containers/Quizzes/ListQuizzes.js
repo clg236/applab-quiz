@@ -60,7 +60,7 @@ const ListQuizzes = ({classes, user}) => {
         <main className={classes.content}>
             <Typography>
                 <h1>quizzes</h1>
-                <p>The table below lists all current and past quizzes assigned to you</p>
+                <p>The table below lists all current and past quizzes completed by students</p>
             </Typography>
 
             <Grid container direction={'row'} justify={'center'} alignItems={'stretch'} >
