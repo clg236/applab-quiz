@@ -17,7 +17,6 @@ import classnames from "classnames";
 const styles = theme => ({
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
         height: '100vh',
         overflow: 'auto',
     },
@@ -59,19 +58,22 @@ const ListQuizzes = ({classes, user}) => {
 
     return (
         <main className={classes.content}>
-            <Typography variant="h4" gutterBottom component="h2">
-                Quizzes
+            <Typography>
+                <h1>quizzes</h1>
+                <p>The table below lists all current and past quizzes assigned to you</p>
             </Typography>
 
-            <Grid container spacing={16}>
-                <Grid item md={selectedQuizID ? 3 : 12} xs={12}>
+            <Grid container direction={'row'} justify={'center'} alignItems={'stretch'} >
+            
+                <Grid item md={14} xs={16}>
                     <Paper className={classes.list}>
                         <QuizList user={user} onQuizSelected={handleQuizSelected}/>
                     </Paper>
                 </Grid>
-
+            </Grid>
+            <Grid container spacing={16} direction={'row'} justify={'center'} alignItems={'stretch'}>
                 {selectedQuizID && (
-                    <Grid item md={9} xs={12}>
+                    <Grid item md={11} xs={16}>
                         <Paper className={classes.paperPadding}>
                             <QuestionsForm quizID={selectedQuizID} submissionID={submissionID}/>
                         </Paper>

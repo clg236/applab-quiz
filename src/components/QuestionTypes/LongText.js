@@ -10,6 +10,9 @@ const styles = theme => ({
     viewDescription: {
         marginTop: theme.spacing.unit * 2,
         marginbottom: theme.spacing.unit * 2,
+    },
+    field: {
+        height: "100%"
     }
 });
 
@@ -33,12 +36,12 @@ function EditControl({questionIndex, question}) {
                 <EditTitleControl name={`questions.${questionIndex}.title`}/>
             </Grid>
             <Grid item xs={12}>
-                <FormControl fullWidth required>
-                    <InputLabel>Description</InputLabel>
-                    <Field
+                <FormControl fullWidth fullHeight required>
+                    <InputLabel>Question Content</InputLabel>
+                    <Field className={styles.theme}
                         name={`questions.${questionIndex}.description`}
                         render={({field, form}) => (
-                            <Editor field={field} form={form} withMargin/>
+                            <Editor field={field} form={form} withMargin />
                         )}
                     />
                 </FormControl>

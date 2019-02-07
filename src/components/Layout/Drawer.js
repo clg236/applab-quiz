@@ -17,7 +17,7 @@ import ACTIONS from '../../actions';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const DRAWER_WIDTH = 240;
+const DRAWER_WIDTH = 200;
 
 const styles = theme => ({
     toolbarIcon: {
@@ -51,9 +51,12 @@ const styles = theme => ({
     drawerIcon: {
         marginLeft: 8,
         marginRight: 8
-    }
+    },
+    icon: {
+        fontSize: '32px !important',
+        marginBottom: theme.spacing.unit
+      }
 });
-
 
 function DrawerComponent(props) {
     const {classes, firebase, auth, profile, dispatch, drawer} = props;
@@ -97,15 +100,21 @@ function DrawerComponent(props) {
                 <div>
                     <ListItem button component={props => <Link {...props} to={ROUTES.HOME}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="home" size="lg" fixedWidth/>
+                            <FontAwesomeIcon icon="home" size="sm" fixedWidth/>
                         </ListItemIcon>
-                        <ListItemText primary="Home"/>
+                        <ListItemText primary="home"/>
                     </ListItem>
                     <ListItem button onClick={handleQuizMenuClicked}>
                         <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="question" size="lg" fixedWidth/>
+                            <FontAwesomeIcon icon="vial" size="sm" fixedWidth/>
                         </ListItemIcon>
-                        <ListItemText primary="My Quizzes"/>
+                        <ListItemText primary="quizzes" />
+                    </ListItem>
+                    <ListItem button onClick={handleQuizMenuClicked}>
+                        <ListItemIcon className={classes.drawerIcon}>
+                            <FontAwesomeIcon icon="scroll" size="sm" fixedWidth/>
+                        </ListItemIcon>
+                        <ListItemText primary="assignments" />
                     </ListItem>
                 </div>
             </List>
@@ -115,17 +124,18 @@ function DrawerComponent(props) {
                 <List>
                     <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_USERS}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="user-astronaut" size="lg" fixedWidth/>
+                                <FontAwesomeIcon icon="user-astronaut" fixedWidth />
                         </ListItemIcon>
-                        <ListItemText primary="Users"/>
+                        <ListItemText primary="people"/>
+                        
                     </ListItem>
                 </List>
                 <List>
                     <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_QUIZZES}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="question" size="lg" fixedWidth/>
+                            <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
                         </ListItemIcon>
-                        <ListItemText primary="Quizzes"/>
+                        <ListItemText primary="create and manage" />
                     </ListItem>
                 </List>
                 {/*<List>*/}
@@ -144,9 +154,9 @@ function DrawerComponent(props) {
                 <div>
                     <ListItem button onClick={handleSignOutClicked}>
                         <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="sign-out-alt" size="lg" fixedWidth/>
+                            <FontAwesomeIcon icon="sign-out-alt" size="sm" fixedWidth/>
                         </ListItemIcon>
-                        <ListItemText primary="Sign out"/>
+                        <ListItemText primary="sign out" />
                     </ListItem>
                 </div>
             </List>

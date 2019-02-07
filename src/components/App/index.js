@@ -9,22 +9,37 @@ import {reactReduxFirebaseConfig} from '../../config';
 import {SnackbarProvider} from 'notistack';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {library} from '@fortawesome/fontawesome-svg-core';
-import {faUserAstronaut, faQuestion, faHome, faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
-import purple from '@material-ui/core/colors/purple';
-import green from '@material-ui/core/colors/green';
+import {faUserAstronaut, faQuestion, faHome, faSignOutAlt, faVial, faPlusSquare, faScroll, faChartLine} from '@fortawesome/free-solid-svg-icons';
 
-
+const font = "'Lato', sans-serif"; 
 
 // fontawesome
-library.add(faUserAstronaut, faQuestion, faHome, faSignOutAlt);
+library.add(faUserAstronaut, faQuestion, faHome, faSignOutAlt, faVial, faPlusSquare, faScroll, faChartLine);
 
 // material ui
 // @see https://material-ui.com/customization/themes/
 const theme = createMuiTheme({
     palette: {
-        primary: purple,
-        secondary: green,
-    }
+        primary: {
+            light: '#ff8e8c',
+            main: '#455a64',
+            dark: '#1c313a',
+            contrastText: '#fff',
+          },
+          secondary: {
+            light: '#4da9b7',
+            main: '#017a87',
+            dark: '#004e5a',
+            contrastText: '#000',
+          },
+    },
+    typography: {
+        "fontFamily": "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+        "fontSize": 12,
+        "fontWeightLight": 300,
+        "fontWeightRegular": 400,
+        "fontWeightMedium": 500
+       }
 });
 
 // main App component

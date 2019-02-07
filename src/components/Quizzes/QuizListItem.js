@@ -2,7 +2,35 @@ import React from 'react';
 import {default as MuiLink} from "@material-ui/core/Link";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import Typography from "@material-ui/core/Typography";
+import {Typography, withStyles} from "@material-ui/core";
+import QuizList from './QuizList';
+
+
+const CustomTableCell = withStyles(theme => ({
+    head: {
+      backgroundColor: theme.palette.primary,
+      color: theme.palette.secondary,
+    },
+    body: {
+      fontSize: 11,
+    },
+  }))(TableCell);
+
+  const styles = theme => ({
+    root: {
+      width: '100%',
+      marginTop: theme.spacing.unit * 3,
+      overflowX: 'auto',
+    },
+    table: {
+      minWidth: 800,
+    },
+    row: {
+      '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.background.default,
+      },
+    },
+  });
 
 function QuizListItem(props) {
 
@@ -29,13 +57,25 @@ function QuizListItem(props) {
         onQuizSelected && onQuizSelected(quizID, submission ? submission.lastSubmissionID : "");
     }
 
+    
+
     return (
         <TableRow>
-            <TableCell>
-                <Typography variant="body1">
+            <CustomTableCell align="left">
                     <MuiLink href={'javascript:;'} onClick={handleQuizClicked}>{text}</MuiLink>
-                </Typography>
-            </TableCell>
+            </CustomTableCell>
+            <CustomTableCell align="left">
+                    {QuizList.name}
+            </CustomTableCell >
+            <CustomTableCell align="left">
+                    2/17/2019
+            </CustomTableCell >
+            <CustomTableCell align="left">
+                    10/10
+            </CustomTableCell >
+            <CustomTableCell align="left">
+                    [link to comments]
+            </CustomTableCell >
         </TableRow>
     );
 

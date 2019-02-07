@@ -11,6 +11,7 @@ import React, {useContext, useState} from 'react';
 import {DRAWER_WIDTH} from './Drawer';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
+import Logo from '../../img/logo.png'
 
 //fontawesome icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -60,7 +61,7 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
 
     return (
         <AppBar
-            position="absolute"
+            position="fixed"
             className={classes.appBar}
         >
             <Toolbar disableGutters>
@@ -70,7 +71,8 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
                     onClick={handleToggleDrawerClicked}
                     className={classes.btnToggle}
                 >
-                    <MenuIcon/>
+                    
+                    <MenuIcon />
                 </IconButton>
                 <Typography
                     component="h1"
@@ -79,10 +81,10 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
                     noWrap
                     className={classes.title}
                 >
-                    AppLab - Quiz
+                    App Lab 2.0
                 </Typography>
                 <IconButton color="inherit">
-                    <Badge badgeContent={4} color="secondary">
+                    <Badge badgeContent={0} color="secondary">
                         <NotificationsIcon/>
                     </Badge>
                 </IconButton>

@@ -127,6 +127,8 @@ function calculateCorrectAnswers(quiz, answers) {
 }
 
 export default compose(
+    withFirebase,
+
     withSnackbar,
 
     connect(

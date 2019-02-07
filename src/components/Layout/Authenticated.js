@@ -19,6 +19,7 @@ import {
 import {AdminCreateQuizPage, AdminEditQuizPage, AdminListQuizzesPage, ListQuizzesPage} from "../../containers/Quizzes";
 import {SubmissionDetailPage} from "../../containers/Submissions";
 
+import logo from "../../img/logo.png"
 
 const styles = theme => ({
     root: {
@@ -40,7 +41,10 @@ function AuthenticatedLayout({classes, location}) {
         <div className={classes.root}>
             <CssBaseline/>
             <AppBarComponent/>
-            <DrawerComponent/>
+            <DrawerComponent 
+                logoText={'App Lab 2.0'}
+                logo={logo}
+            />
 
             <main className={classes.content}>
                 <div className={classes.appBarSpacer}/>

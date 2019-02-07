@@ -17,13 +17,20 @@ const styles = {
 const QuillConfig = {
     modules: {
         toolbar: [
-            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'header': [1, 2, false] }],
+            ['bold', 'italic', 'underline','strike', 'blockquote'],
+            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
             ['link', 'image'],
-            ['clean']
+            ['clean'], ['code-block']
+          ],
+        },
+      
+        formats: [
+          'header',
+          'bold', 'italic', 'underline', 'strike', 'blockquote',
+          'list', 'bullet', 'indent',
+          'link', 'image'
         ],
-    },
-
-    formats: ['bold', 'italic', 'underline', 'strike', 'blockquote', 'link', 'image']
 };
 
 
