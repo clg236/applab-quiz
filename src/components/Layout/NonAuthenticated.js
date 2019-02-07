@@ -3,11 +3,12 @@ import React from 'react';
 import SignInPage from '../SignIn';
 //a fun background from unplash.com
 import { Unsplashed } from 'react-unsplash-container';
+import { withTheme } from '@material-ui/core/styles';
 
-function NonAuthenticatedLayout() {
+function NonAuthenticatedLayout(props) {
     return (
         <div>
-             <Unsplashed keywords={['nature', 'tech', 'water']} >
+             <Unsplashed keywords={['nature', 'tech', 'water']}  style={{paddingTop: props.theme.spacing.unit * 8, height: "100vh"}}>
                 <SignInPage />
              </Unsplashed>
         </div>
@@ -15,4 +16,4 @@ function NonAuthenticatedLayout() {
     )
 }
 
-export default NonAuthenticatedLayout;
+export default withTheme()(NonAuthenticatedLayout);

@@ -16,9 +16,9 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import FormGroup from '@material-ui/core/FormGroup';
+import Logo from '../../img/logo.png'
 
 import { withFirebase } from 'react-redux-firebase';
-import { Grid } from '@material-ui/core';
 
 const styles = theme => ({
 
@@ -44,7 +44,7 @@ const styles = theme => ({
         },
     },
     paper: {
-        marginTop: theme.spacing.unit * 8,
+        marginTop: 10,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -59,6 +59,7 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
     },
     submit: {
+        paddintTop: 10,
         marginTop: theme.spacing.unit * 3,
     },
 });
@@ -118,6 +119,9 @@ function SignIn(props) {
             <div className={classes.main}>
                 <CssBaseline />
                 <Paper className={classes.paper}>
+                    <img src={Logo} />
+                </Paper>
+                <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}><LockIcon /></Avatar>
                     <Typography component="h1" variant="h5">Sign in</Typography>
                     <form className={classes.form} onSubmit={handleFormSubmit}>
@@ -132,11 +136,17 @@ function SignIn(props) {
                         </FormControl>
 
                         <FormGroup>
-                            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Sign in</Button>
+                            <Button type="submit" fullWidth variant="contained" color="white" className={classes.submit}>Sign In As Guest</Button>
                             <Divider variant="middle" />
-                            <Button onClick={handleSignInWithGoogleClicked} type="submit" fullWidth variant="contained" color="secondary" >Sign in with Google</Button>
+                            <Divider variant="middle" />
+                            <Divider variant="middle" />
+                            <Divider variant="middle" />
+                            <Button onClick={handleSignInWithGoogleClicked} type="submit" fullWidth variant="contained" color="primary" >Sign In As Student</Button>
                         </FormGroup>
                     </form>
+                </Paper>
+                <Paper className={classes.paper}>
+                    <Typography >By your use of these resources, you agree to abide by the <a href="http://www.nyu.edu/about/policies-guidelines-compliance/policies-and-guidelines/responsible-use-of-nyu-computers-and-data-policy-on.html">Policy on Responsible Use of NYU Computers and Data.</a></Typography>
                 </Paper>
             </div>
         </div>

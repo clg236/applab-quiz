@@ -44,7 +44,7 @@ const styles = theme => ({
         }),
         width: theme.spacing.unit * 7,
         [theme.breakpoints.up('sm')]: {
-            width: theme.spacing.unit * 9,
+            width: theme.spacing.unit * 8,
         },
     },
 
@@ -91,19 +91,19 @@ function DrawerComponent(props) {
                 <div>
                     <ListItem button component={props => <Link {...props} to={ROUTES.HOME}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="home" size="sm" fixedWidth/>
+                            <FontAwesomeIcon icon="home" size="sm" color="hotpink" fixedWidth/>
                         </ListItemIcon>
                         <ListItemText primary="home"/>
                     </ListItem>
                     <ListItem button component={props => <Link {...props} to={ROUTES.LIST_QUIZZES}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="vial" size="sm" fixedWidth/>
+                            <FontAwesomeIcon icon="vial" size="sm" color="hotpink" fixedWidth/>
                         </ListItemIcon>
                         <ListItemText primary="quizzes" />
                     </ListItem>
                     <ListItem button component={props => <Link {...props} to={ROUTES.LIST_ASSIGNMENTS}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="scroll" size="sm" fixedWidth/>
+                            <FontAwesomeIcon icon="scroll" size="sm" color="hotpink" fixedWidth/>
                         </ListItemIcon>
                         <ListItemText primary="assignments" />
                     </ListItem>
@@ -115,7 +115,7 @@ function DrawerComponent(props) {
                 <List>
                     <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_USERS}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
-                                <FontAwesomeIcon icon="user-astronaut" fixedWidth />
+                                <FontAwesomeIcon icon="user-astronaut" color="hotpink" fixedWidth />
                         </ListItemIcon>
                         <ListItemText primary="people"/>
                         
@@ -124,17 +124,17 @@ function DrawerComponent(props) {
                 <List>
                     <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_QUIZZES}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
+                            <FontAwesomeIcon icon="plus-square" size="sm" color="hotpink" fixedWidth/>
                         </ListItemIcon>
-                        <ListItemText primary="create and manage" />
+                        <ListItemText primary="quizzes"  secondary="create and manage"/>
                     </ListItem>
                 </List>
                 <List>
                     <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_ASSIGNMENTS}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
+                            <FontAwesomeIcon icon="plus-square" size="sm" color="hotpink" fixedWidth/>
                         </ListItemIcon>
-                        <ListItemText primary="create and manage" />
+                        <ListItemText primary="assignments" secondary="create and manage" />
                     </ListItem>
                 </List>
             </>
