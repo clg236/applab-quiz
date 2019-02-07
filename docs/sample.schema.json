@@ -109,6 +109,7 @@
   "userQuizzes": {
     "user-1": {
       "quiz-1": {
+        "name": "Quiz 1",
         "lastSubmissionID": "submission-1",
         "lastSubmissionScore": 5,
         "submissions": {

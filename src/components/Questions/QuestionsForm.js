@@ -65,67 +65,6 @@ function QuestionsForm(props) {
     );
 }
 
-
-function calculateCorrectAnswers(quiz, answers) {
-    let correct_answers = 0;
-    let correct = '';
-
-    return quiz.questions.length;
-
-    quiz.questions.forEach((question) => {
-        let provided = question.title in answers ? answers[question.title].trim() : null;
-
-        if (provided == null) {
-            return;
-        }
-
-        switch (question.type) {
-            case 'text':
-                // get the configured correct answers
-                correct = question.answer || '';
-
-                if (!correct || correct === provided) {
-                    correct_answers++;
-                }
-                break;
-
-            case 'single':
-                // get the configured correct answers
-                correct = question.options.filter(option => !!option.answer);
-
-                // only the first one
-                if (correct.length === 0 || correct[0].option == provided) {
-                    correct_answers++;
-                }
-
-                break;
-
-            case 'multiple':
-
-                provided = provided.reduce((out, bool, index) => bool ? out.concat(index) : out, []);
-
-                // get the configured correct answers
-                correct = question.options.reduce((out, option, index) => !!option.answer ? out.concat(index) : out, []);
-
-                // all the answers should match
-                if (correct.length == provided.length
-                    && correct.every(i => provided.includes(i))
-                    && provided.every(i => correct.includes(i))) {
-
-                    correct_answers++;
-                }
-                break;
-
-            case 'code':
-                correct_answers++;
-                break;
-        }
-
-    });
-
-    return correct_answers;
-}
-
 export default compose(
     withFirebase,
 
@@ -231,6 +170,7 @@ export default compose(
             }).then(ref => {
                 Promise.all([
                     updateWithMeta(`userQuizzes/${uid}/${quizID}`, {
+                        name: quiz.name,
                         lastSubmissionScore: score,
                         lastSubmissionID: ref.key
                     }),

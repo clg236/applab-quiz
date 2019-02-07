@@ -138,14 +138,6 @@ function DrawerComponent(props) {
                         <ListItemText primary="create and manage" />
                     </ListItem>
                 </List>
-                {/*<List>*/}
-                {/*<ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_QUESTIONS}/>}>*/}
-                {/*<ListItemIcon>*/}
-                {/*<HelpIcon/>*/}
-                {/*</ListItemIcon>*/}
-                {/*<ListItemText primary="Questions"/>*/}
-                {/*</ListItem>*/}
-                {/*</List>*/}
             </>
             {/* } */}
 

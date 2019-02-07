@@ -16,6 +16,8 @@ const reactReduxFirebaseConfig = {
     
     profileFactory: user => ({
         email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
         role: ROLES.ROLE_USER
     })
 
