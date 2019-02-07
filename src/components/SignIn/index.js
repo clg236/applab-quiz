@@ -136,7 +136,7 @@ function SignIn(props) {
                         </FormControl>
 
                         <FormGroup>
-                            <Button type="submit" fullWidth variant="contained" color="white" className={classes.submit}>Sign In As Guest</Button>
+                            <Button type="submit" fullWidth variant="contained" color="secondary" className={classes.submit}>Sign In As Guest</Button>
                             <Divider variant="middle" />
                             <Divider variant="middle" />
                             <Divider variant="middle" />
