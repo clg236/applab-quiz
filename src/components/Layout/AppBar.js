@@ -9,15 +9,12 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import React, {useState} from 'react';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
-<<<<<<< HEAD
 import Logo from '../../img/logo.png'
 
 //fontawesome icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
-=======
->>>>>>> e435601af43273338dc606f403b50360daf0b2e3
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {connect} from 'react-redux';
