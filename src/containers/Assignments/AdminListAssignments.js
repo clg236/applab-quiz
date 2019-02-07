@@ -44,7 +44,7 @@ const styles = theme => ({
     },
 });
 
-const AdminListQuizzes = ({classes}) => {
+const AdminListAssignments = ({classes}) => {
     let [selectedQuizID, setSelectedQuizID] = useState('');
 
 
@@ -58,19 +58,20 @@ const AdminListQuizzes = ({classes}) => {
 
     return (
         <main className={classes.content}>
-            <Typography variant="h4" component="h2">Create and Manage Quizzes</Typography>
+            <h1>Create and Manage Quizzes</h1>
             <p>Instructions, etc...</p>
             <Grid container spacing={16}>
                 <Grid item>
                     <Card className={classes.card}>
                         <CardContent>
                             <Typography className={classes.title}>
-                                Create a quiz instructions...
+                                Create an assignment instructions...
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" component={Link} to={ROUTES.ADMIN_CREATE_QUIZ}><FontAwesomeIcon
-                                icon="plus-square" size="lg" fixedWidth/>Create a Quiz</Button>
+                            <Button size="small" component={Link} to={ROUTES.ADMIN_CREATE_ASSIGNMENT}>
+                                <FontAwesomeIcon icon="plus-square" size="lg" fixedWidth/> Create an assignment
+                            </Button>
                         </CardActions>
                     </Card>
                 </Grid>
@@ -82,25 +83,26 @@ const AdminListQuizzes = ({classes}) => {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" component={Link} to={ROUTES.ADMIN_CREATE_QUIZ}><FontAwesomeIcon
-                                icon="chart-line" size="lg" fixedWidth/>View Analytics</Button>
+                            <Button size="small" component={Link} to={ROUTES.ADMIN_CREATE_ASSIGNMENT}>
+                                <FontAwesomeIcon icon="chart-line" size="lg" fixedWidth/> View Analytics
+                            </Button>
                         </CardActions>
                     </Card>
                 </Grid>
             </Grid>
 
-            <h2>Current Quizzes</h2>
-            <p>The table below lists current quizzes [to do: show number of submissions in column, average score]</p>
+            <h2>Current Assignments</h2>
+            <p>The table below lists current assignments [to do: show number of submissions in column, average score]</p>
             <Grid container spacing={16}>
                 <Grid item md={selectedQuizID ? 3 : 12} xs={12}>
                     <Paper className={classes.list}>
-                        <QuizList onQuizSelected={handleQuizSelected} hideStats={selectedQuizID ? true : false}/>
+                        <QuizList isAssignment onQuizSelected={handleQuizSelected} hideStats={selectedQuizID ? true : false}/>
                     </Paper>
                 </Grid>
 
                 {selectedQuizID != '' && (
                     <Grid item md={9} xs={12}>
-                        <QuizDetail quizID={selectedQuizID}/>
+                        <QuizDetail quizID={selectedQuizID} isAssignment/>
                     </Grid>
                 )}
             </Grid>
@@ -111,4 +113,4 @@ const AdminListQuizzes = ({classes}) => {
 
 export default compose(
     withStyles(styles)
-)(AdminListQuizzes);
+)(AdminListAssignments);

@@ -71,15 +71,6 @@ function DrawerComponent(props) {
         firebase.logout();
     }
 
-    // navigations
-    const handleHomeMenuClicked = () => {
-        dispatch(push(ROUTES.HOME));
-    }
-
-    const handleQuizMenuClicked = () => {
-        dispatch(push(ROUTES.QUIZZES));
-    }
-
     const isDrawerOpen = drawer.open;
 
     return (
@@ -104,13 +95,13 @@ function DrawerComponent(props) {
                         </ListItemIcon>
                         <ListItemText primary="home"/>
                     </ListItem>
-                    <ListItem button onClick={handleQuizMenuClicked}>
+                    <ListItem button component={props => <Link {...props} to={ROUTES.LIST_QUIZZES}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
                             <FontAwesomeIcon icon="vial" size="sm" fixedWidth/>
                         </ListItemIcon>
                         <ListItemText primary="quizzes" />
                     </ListItem>
-                    <ListItem button onClick={handleQuizMenuClicked}>
+                    <ListItem button component={props => <Link {...props} to={ROUTES.LIST_ASSIGNMENTS}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
                             <FontAwesomeIcon icon="scroll" size="sm" fixedWidth/>
                         </ListItemIcon>
@@ -131,7 +122,15 @@ function DrawerComponent(props) {
                     </ListItem>
                 </List>
                 <List>
-                    <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_QUIZZES}/>}>
+                    <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_QUIZZES}/>}>
+                        <ListItemIcon className={classes.drawerIcon}>
+                            <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
+                        </ListItemIcon>
+                        <ListItemText primary="create and manage" />
+                    </ListItem>
+                </List>
+                <List>
+                    <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_ASSIGNMENTS}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
                             <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
                         </ListItemIcon>

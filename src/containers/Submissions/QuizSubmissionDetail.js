@@ -39,7 +39,7 @@ const styles = theme => ({
 });
 
 
-const SubmissionDetail = ({classes, quizID, quiz, submissionID, submission}) => {
+const SubmissionDetail = ({classes, quizID, quiz, submissionID, submission, isAssignment}) => {
 
     return (
         <main className={classes.content}>
@@ -51,16 +51,16 @@ const SubmissionDetail = ({classes, quizID, quiz, submissionID, submission}) => 
                         </Typography>
 
                         <Paper className={classnames(classes.paper, classes.form)}>
-                            <QuestionsForm quizID={quizID} submissionID={submissionID}/>
+                            <QuestionsForm quizID={quizID} submissionID={submissionID} isAssignment={isAssignment}/>
                         </Paper>
 
                         <Paper className={classnames(classes.paper, classes.comments)}>
                             <Typography variant="h5" gutterBottom component="h3">Comments</Typography>
-                            <CommentList submissionID={submissionID}/>
+                            <CommentList submissionID={submissionID} isAssignment={isAssignment}/>
 
                             <div className={classes.commentForm}>
                                 <Typography variant="h6" gutterBottom component="h4">Leave a comment</Typography>
-                                <CommentForm submissionID={submissionID}/>
+                                <CommentForm submissionID={submissionID} isAssignment={isAssignment}/>
                             </div>
                         </Paper>
                     </>
@@ -74,26 +74,31 @@ const SubmissionDetail = ({classes, quizID, quiz, submissionID, submission}) => 
 export default compose(
     connect(
         (state, props) => {
-            const {match: {params: {quizID, submissionID}}} = props;
+            const {match: {params: {quizID, submissionID}}, isAssignment} = props;
+
+            const quizPrefix = isAssignment ? "assignments" : "quizzes";
+            const submissionPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
 
             return ({
                 quizID,
                 submissionID,
-                quiz: getVal(state.firebase.data, `quizzes/${quizID}`),
-                submission: getVal(state.firebase.data, `quizSubmissions/${submissionID}`)
+                quiz: getVal(state.firebase.data, `${quizPrefix}/${quizID}`),
+                submission: getVal(state.firebase.data, `${submissionPrefix}/${submissionID}`)
             });
         }
     ),
 
     firebaseConnect(props => {
-        const {match: {params: {quizID, submissionID}}} = props;
+        const {match: {params: {quizID, submissionID}}, isAssignment} = props;
+        const quizPrefix = isAssignment ? "assignments" : "quizzes";
+        const submissionPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
 
         return [
             {
-                path: `quizzes/${quizID}`
+                path: `${quizPrefix}/${quizID}`
             },
             {
-                path: `quizSubmissions/${submissionID}`
+                path: `${submissionPrefix}/${submissionID}`
             },
         ];
     }),

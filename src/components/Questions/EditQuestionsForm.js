@@ -77,16 +77,24 @@ export default compose(
     withSnackbar,
 
     connect(
-        (state, {quizID}) => ({
-            quiz: getVal(state.firebase.data, `quizzes/${quizID}`)
-        })
+        (state, {quizID, isAssignment}) => {
+            const prefix = isAssignment ? "assignments" : "quizzes";
+
+            return {
+                quiz: getVal(state.firebase.data, `${prefix}/${quizID}`)
+            }
+        }
     ),
 
-    firebaseConnect(({quizID}) => ([
-        {
-            path: `quizzes/${quizID}`
-        }
-    ])),
+    firebaseConnect(({quizID, isAssignment}) => {
+        const prefix = isAssignment ? "assignments" : "quizzes";
+
+        return [
+            {
+                path: `${prefix}/${quizID}`
+            }
+        ];
+    }),
 
     withFormik({
         enableReinitialize: true,
@@ -107,11 +115,13 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {quizID, quiz, firebase: {updateWithMeta}, enqueueSnackbar}} = actions;
+            const {props: {quizID, quiz, isAssignment, firebase: {updateWithMeta}, enqueueSnackbar}} = actions;
 
             if ("submissions" in quiz && Object.keys(quiz.submissions).length > 0) {
                 return ;
             }
+
+            const prefix = isAssignment ? "assignments" : "quizzes";
 
             // filter out null values
             if (values.questions && values.questions.length > 0) {
@@ -122,7 +132,7 @@ export default compose(
                 });
             }
 
-            updateWithMeta(`quizzes/${quizID}`, values).then(() => enqueueSnackbar("Saved!"));
+            updateWithMeta(`${prefix}/${quizID}`, values).then(() => enqueueSnackbar("Saved!"));
         }
     }),
 

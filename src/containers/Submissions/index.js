@@ -1,1 +1,2 @@
-export { default as SubmissionDetailPage } from './SubmissionDetail';
+export { default as QuizSubmissionDetailPage } from './QuizSubmissionDetail';
+export { default as AssignmentSubmissionDetailPage } from './AssignmentSubmissionDetail';

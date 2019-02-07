@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {compose} from 'redux';
 import Paper from "@material-ui/core/Paper";
-import {CircularProgress, withStyles} from "@material-ui/core";
+import {CircularProgress, Typography, withStyles} from "@material-ui/core";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import EditQuizInfoForm from "./QuizInfoForm";
@@ -24,12 +24,12 @@ const styles = theme => ({
 
 
 const QuizDetail = props => {
-    const {classes, quizID, quiz} = props;
+    const {classes, quizID, quiz, isAssignment} = props;
 
     if (!isLoaded(quiz)) {
         return <CircularProgress/>;
     } else if (isEmpty(quiz)) {
-        return "There is no such quiz.";
+        return <Typography variant="body1">Item not found.</Typography>;
     }
 
     const [selectedTab, setSelectedTab] = useState(0);
@@ -50,9 +50,9 @@ const QuizDetail = props => {
             </Tabs>
 
             <div className={classes.tabContainer}>
-                {selectedTab === 0 && (<EditQuizInfoForm quizID={quizID}/>)}
-                {selectedTab === 1 && (<EditQuestionsForm quizID={quizID}/>)}
-                {selectedTab === 2 && (<SubmissionList quiz={quiz}/>)}
+                {selectedTab === 0 && (<EditQuizInfoForm quizID={quizID} isAssignment={isAssignment}/>)}
+                {selectedTab === 1 && (<EditQuestionsForm quizID={quizID} isAssignment={isAssignment}/>)}
+                {selectedTab === 2 && (<SubmissionList quiz={quiz} isAssignment={isAssignment}/>)}
             </div>
         </Paper>
     );
@@ -60,16 +60,24 @@ const QuizDetail = props => {
 
 export default compose(
     connect(
-        (state, {quizID}) => ({
-            quiz: getVal(state.firebase.data, `quizzes/${quizID}`)
-        })
+        (state, {quizID, isAssignment}) => {
+            const prefix = isAssignment ? "assignments" : "quizzes";
+
+            return {
+                quiz: getVal(state.firebase.data, `${prefix}/${quizID}`)
+            };
+        }
     ),
 
-    firebaseConnect(({quizID}) => ([
-        {
-            path: `quizzes/${quizID}`
-        }
-    ])),
+    firebaseConnect(({quizID, isAssignment}) => {
+        const prefix = isAssignment ? "assignments" : "quizzes";
+
+        return [
+            {
+                path: `${prefix}/${quizID}`
+            }
+        ];
+    }),
 
     withStyles(styles)
 )(QuizDetail);

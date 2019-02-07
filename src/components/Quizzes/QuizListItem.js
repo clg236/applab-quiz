@@ -3,38 +3,37 @@ import {default as MuiLink} from "@material-ui/core/Link";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import {Typography, withStyles} from "@material-ui/core";
-import QuizList from './QuizList';
 
 
 const CustomTableCell = withStyles(theme => ({
     head: {
-      backgroundColor: theme.palette.primary,
-      color: theme.palette.secondary,
+        backgroundColor: theme.palette.primary,
+        color: theme.palette.secondary,
     },
     body: {
-      fontSize: 11,
+        fontSize: 11,
     },
-  }))(TableCell);
+}))(TableCell);
 
-  const styles = theme => ({
+const styles = theme => ({
     root: {
-      width: '100%',
-      marginTop: theme.spacing.unit * 3,
-      overflowX: 'auto',
+        width: '100%',
+        marginTop: theme.spacing.unit * 3,
+        overflowX: 'auto',
     },
     table: {
-      minWidth: 800,
+        minWidth: 800,
     },
     row: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.background.default,
-      },
+        '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.background.default,
+        },
     },
-  });
+});
 
 function QuizListItem(props) {
 
-    const {user, quizID, quiz, submissions, onQuizSelected, hideStats} = props;
+    const {user, quizID, quiz, submissions, onQuizSelected, hideStats, isAssignment} = props;
 
     let text = quiz.name;
     let submission = null;
@@ -57,25 +56,23 @@ function QuizListItem(props) {
         onQuizSelected && onQuizSelected(quizID, submission ? submission.lastSubmissionID : "");
     }
 
-    
-
     return (
         <TableRow>
             <CustomTableCell align="left">
-                    <MuiLink href={'javascript:;'} onClick={handleQuizClicked}>{text}</MuiLink>
+                <MuiLink href={'javascript:;'} onClick={handleQuizClicked}>{text}</MuiLink>
             </CustomTableCell>
             <CustomTableCell align="left">
-                    {QuizList.name}
-            </CustomTableCell >
+                {quiz.name}
+            </CustomTableCell>
             <CustomTableCell align="left">
-                    2/17/2019
-            </CustomTableCell >
+                2/17/2019
+            </CustomTableCell>
             <CustomTableCell align="left">
-                    10/10
-            </CustomTableCell >
+                10/10
+            </CustomTableCell>
             <CustomTableCell align="left">
-                    [link to comments]
-            </CustomTableCell >
+                [link to comments]
+            </CustomTableCell>
         </TableRow>
     );
 

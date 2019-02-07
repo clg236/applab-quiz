@@ -83,20 +83,26 @@ export default compose(
     withSnackbar,
 
     connect(
-        (state, {quizID}) => ({
-            quiz: quizID ? getVal(state.firebase.data, `quizzes/${quizID}`) : null
-        }),
+        (state, {quizID, isAssignment}) => {
+            const prefix = isAssignment ? "assignments" : "quizzes";
+
+            return {
+                quiz: quizID ? getVal(state.firebase.data, `${prefix}/${quizID}`) : null
+            };
+        },
         {
             pushToHistory: push
         }
     ),
 
-    firebaseConnect(({quizID}) => {
+    firebaseConnect(({quizID, isAssignment}) => {
         const queries = [];
+
+        const prefix = isAssignment ? "assignments" : "quizzes";
 
         if (quizID) {
             queries.push({
-                path: `quizzes/${quizID}`
+                path: `${prefix}/${quizID}`
             })
         }
 
@@ -134,13 +140,15 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {quizID, quiz, firebase: {pushWithMeta, updateWithMeta}, enqueueSnackbar, pushToHistory}} = actions;
+            const {props: {quizID, quiz, isAssignment, firebase: {pushWithMeta, updateWithMeta}, enqueueSnackbar, pushToHistory}} = actions;
             let promise = null;
 
+            const prefix = isAssignment ? "assignments" : "quizzes";
+
             if (quizID && quiz) {
-                promise = updateWithMeta(`quizzes/${quizID}`, values);
+                promise = updateWithMeta(`${prefix}/${quizID}`, values);
             } else {
-                promise = pushWithMeta("quizzes", values);
+                promise = pushWithMeta(prefix, values);
             }
 
             promise.then(ref => {
@@ -149,7 +157,7 @@ export default compose(
                 if (quizID) {
                     enqueueSnackbar("Saved!");
                 } else {
-                    pushToHistory(`/admin/quizzes/${ref.key}`);
+                    pushToHistory(`/admin/${prefix}/${ref.key}`);
                 }
             });
         }

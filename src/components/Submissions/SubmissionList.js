@@ -16,20 +16,30 @@ import TableCell from "@material-ui/core/TableCell";
 const styles = theme => ({});
 
 
-const SubmissionList = (props) => {
-    const {classes, enqueueSnackbar, firebase: {remove}, submissions} = props;
+const SubmissionList = props => {
+    const {classes, isAssignment, enqueueSnackbar, firebase: {remove}, submissions} = props;
 
     function onDeleteSubmission(submission) {
         const uid = submission.user.uid;
         const quizID = submission.quiz.id;
 
-        Promise.all([
-            remove(`quizSubmissions/${submission.id}`),
-            remove(`userQuizzes/${uid}/${quizID}`),
-            remove(`quizzes/${quizID}/submissions/${submission.id}`)
-        ]).then(() => {
-            enqueueSnackbar("Deleted!");
-        });
+        if (isAssignment) {
+            Promise.all([
+                remove(`assignmentSubmissions/${submission.id}`),
+                remove(`userAssignments/${uid}/${quizID}`),
+                remove(`assignments/${quizID}/submissions/${submission.id}`)
+            ]).then(() => {
+                enqueueSnackbar("Deleted!");
+            });
+        } else {
+            Promise.all([
+                remove(`quizSubmissions/${submission.id}`),
+                remove(`userQuizzes/${uid}/${quizID}`),
+                remove(`quizzes/${quizID}/submissions/${submission.id}`)
+            ]).then(() => {
+                enqueueSnackbar("Deleted!");
+            });
+        }
     }
 
     let content = "";
@@ -52,7 +62,11 @@ const SubmissionList = (props) => {
 
                 <TableBody>
                     {Object.keys(submissions).map(key => (
-                        <SubmissionListItem key={key} submission={submissions[key]} onDeleteSubmission={onDeleteSubmission} />
+                        <SubmissionListItem
+                            key={key}
+                            isAssignment={isAssignment}
+                            submission={submissions[key]}
+                            onDeleteSubmission={onDeleteSubmission} />
                     ))}
                 </TableBody>
             </Table>
@@ -70,12 +84,13 @@ export default compose(
 
     connect(
         (state, props) => {
-            const {quiz} = props;
+            const {quiz, isAssignment} = props;
             const submissions = {};
+            const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
 
             if ("submissions" in quiz) {
                 Object.keys(quiz.submissions).map(key => {
-                    let submission = getVal(state.firebase.data, `quizSubmissions/${key}`);
+                    let submission = getVal(state.firebase.data, `${prefix}/${key}`);
 
                     if (submission) {
                         submissions[key] = {id: key, ...submission};
@@ -90,12 +105,13 @@ export default compose(
     ),
 
     firebaseConnect((props) => {
-        const {quiz} = props;
+        const {quiz, isAssignment} = props;
         const queries = [];
+        const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
 
         if ("submissions" in quiz) {
             Object.keys(quiz.submissions).map(key => {
-                queries.push({path: `quizSubmissions/${key}`});
+                queries.push({path: `${prefix}/${key}`});
             });
         }
 

@@ -66,9 +66,11 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {user: {uid, displayName, photoURL}, submissionID, firebase: {pushWithMeta}, enqueueSnackbar}} = actions;
+            const {props: {user: {uid, displayName, photoURL}, submissionID, isAssignment, firebase: {pushWithMeta}, enqueueSnackbar}} = actions;
 
-            pushWithMeta(`quizSubmissions/${submissionID}/comments`, {
+            const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
+
+            pushWithMeta(`assignmentSubmissions/${submissionID}/comments`, {
                 comment: values.comment,
                 user: {uid, displayName, photoURL}
             }).then(() => {

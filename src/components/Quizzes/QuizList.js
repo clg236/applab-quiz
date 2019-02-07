@@ -17,7 +17,7 @@ const styles = theme => ({
         padding: theme.spacing.unit * 3,
         height: '100vh',
         overflow: 'auto',
-       
+
     },
 
     list: {
@@ -26,28 +26,28 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit * 3,
     },
     table: {
-      minWidth: 700,
+        minWidth: 700,
     },
     row: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.background.default,
-      },
+        '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.background.default,
+        },
     },
 });
 
 const CustomTableCell = withStyles(theme => ({
     head: {
-      backgroundColor: '#ff4081',
-      color: 'white',
+        backgroundColor: '#ff4081',
+        color: 'white',
     },
     body: {
-      fontSize: 18,
-      fontWeightLight: 300,
+        fontSize: 18,
+        fontWeightLight: 300,
     },
-  }))(TableCell);
+}))(TableCell);
 
 const QuizList = function (props) {
-    const {classes, user, quizzes, submissions} = props;
+    const {classes, user, quizzes, submissions, isAssignment} = props;
 
     let content = "";
 
@@ -70,20 +70,20 @@ const QuizList = function (props) {
             content = <Typography variant="body1">There are no quizzes.</Typography>;
         } else {
             content = (
-                
+
                 <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                <CustomTableCell>#</CustomTableCell>
-                                <CustomTableCell align="left">Topic</CustomTableCell>
-                                <CustomTableCell align="left">Due</CustomTableCell>
-                                <CustomTableCell align="left">Score</CustomTableCell>
-                                <CustomTableCell align="left">Comments</CustomTableCell>
-                            </TableRow>
-                        </TableHead>
+                    <TableHead>
+                        <TableRow>
+                            <CustomTableCell>#</CustomTableCell>
+                            <CustomTableCell align="left">Topic</CustomTableCell>
+                            <CustomTableCell align="left">Due</CustomTableCell>
+                            <CustomTableCell align="left">Score</CustomTableCell>
+                            <CustomTableCell align="left">Comments</CustomTableCell>
+                        </TableRow>
+                    </TableHead>
                     <TableBody>
-                            {Object.keys(publishedQuizzes).map(key => (
-                            <QuizListItem key={key} quizID={key} quiz={publishedQuizzes[key]} {...props}/>
+                        {Object.keys(publishedQuizzes).map(key => (
+                            <QuizListItem isAssignment={isAssignment} key={key} quizID={key} quiz={publishedQuizzes[key]} {...props}/>
                         ))}
                     </TableBody>
                 </Table>
@@ -96,28 +96,33 @@ const QuizList = function (props) {
 
 export default compose(
     connect(
-        (state, {user}) => {
+        (state, {user, isAssignment}) => {
+            const quizPrefix = isAssignment ? "assignments" : "quizzes";
+            const submissionPrefix = isAssignment ? "userAssignments" : "userQuizzes";
+
             const data = {
-                quizzes: getVal(state.firebase.data, "quizzes")
+                quizzes: getVal(state.firebase.data, quizPrefix)
             };
 
             if (user) {
-                data['submissions'] = getVal(state.firebase.data, `userQuizzes/${user.uid}`)
+                data['submissions'] = getVal(state.firebase.data, `${submissionPrefix}/${user.uid}`)
             }
 
             return data;
         }
     ),
 
-    firebaseConnect(({user}) => {
+    firebaseConnect(({user, isAssignment}) => {
         let queries = [{
-            path: 'quizzes',
+            path: isAssignment ? "assignments" : 'quizzes',
             queryParams: ['orderByKey']
         }];
 
+        const submissionPrefix = isAssignment ? "userAssignments" : "userQuizzes";
+
         if (user) {
             queries.push({
-                path: `userQuizzes/${user.uid}`
+                path: `${submissionPrefix}/${user.uid}`
             })
         }
 

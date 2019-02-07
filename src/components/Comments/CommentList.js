@@ -17,7 +17,7 @@ const styles = theme => ({
 
 
 const CommentList = (props) => {
-    const {classes, submission} = props;
+    const {classes, submission, isAssignment} = props;
 
     let content = "";
 
@@ -32,7 +32,7 @@ const CommentList = (props) => {
             content = (
                 <List>
                     {Object.keys(submission.comments).map((key) => (
-                        <CommentListItem key={key} comment={submission.comments[key]}/>
+                        <CommentListItem isAssignment={isAssignment} key={key} comment={submission.comments[key]}/>
                     ))}
                 </List>
             );
@@ -48,20 +48,22 @@ export default compose(
 
     connect(
         (state, props) => {
-            const {submissionID} = props;
+            const {submissionID, isAssignment} = props;
+            const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
 
             return {
-                submission: getVal(state.firebase.data, `quizSubmissions/${submissionID}`),
+                submission: getVal(state.firebase.data, `${prefix}/${submissionID}`),
             };
         }
     ),
 
-    firebaseConnect((props) => {
-        const {submissionID} = props;
+    firebaseConnect(props => {
+        const {submissionID, isAssignment} = props;
+        const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
 
         return [
             {
-                path: `quizSubmissions/${submissionID}`
+                path: `${prefix}/${submissionID}`
             }
         ];
     }),

@@ -10,9 +10,10 @@ import HomePage from '../Home';
 import {Route, Switch} from 'react-router-dom';
 
 import {AdminCreateQuizPage, AdminEditQuizPage, AdminListQuizzesPage, ListQuizzesPage} from "../../containers/Quizzes";
+import {AdminCreateAssignmentPage, AdminEditAssignmentPage, AdminListAssignmentsPage, ListAssignmentsPage} from "../../containers/Assignments";
 import {AdminListUsersPage, UserDetailPage} from "../../containers/Users";
 
-import {SubmissionDetailPage} from "../../containers/Submissions";
+import {QuizSubmissionDetailPage, AssignmentSubmissionDetailPage} from "../../containers/Submissions";
 
 import logo from "../../img/logo.png"
 
@@ -46,13 +47,19 @@ function AuthenticatedLayout({classes, location}) {
                 <Switch location={location}>
                     <Route exact path={ROUTES.LANDING} component={HomePage}/>
                     <Route exact path={ROUTES.HOME} component={HomePage}/>
-                    <Route exact path={ROUTES.QUIZZES} component={ListQuizzesPage}/>
+                    <Route exact path={ROUTES.LIST_QUIZZES} component={ListQuizzesPage}/>
+                    <Route exact path={ROUTES.LIST_ASSIGNMENTS} component={ListAssignmentsPage}/>
 
-                    <Route path={ROUTES.VIEW_SUBMISSION} component={SubmissionDetailPage}/>
+                    <Route path={ROUTES.VIEW_QUIZ_SUBMISSION} component={QuizSubmissionDetailPage}/>
+                    <Route path={ROUTES.VIEW_ASSIGNMENT_SUBMISSION} component={AssignmentSubmissionDetailPage}/>
 
-                    <Route exact path={ROUTES.ADMIN_QUIZZES} component={AdminListQuizzesPage}/>
+                    <Route exact path={ROUTES.ADMIN_LIST_QUIZZES} component={AdminListQuizzesPage}/>
                     <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={AdminCreateQuizPage}/>
                     <Route path={ROUTES.ADMIN_Edit_QUIZ} component={AdminEditQuizPage}/>
+
+                    <Route exact path={ROUTES.ADMIN_LIST_ASSIGNMENTS} component={AdminListAssignmentsPage}/>
+                    <Route exact path={ROUTES.ADMIN_CREATE_ASSIGNMENT} component={AdminCreateAssignmentPage}/>
+                    <Route path={ROUTES.ADMIN_Edit_ASSIGNMENT} component={AdminEditAssignmentPage}/>
 
                     <Route exact path={ROUTES.ADMIN_USERS} component={AdminListUsersPage}/>
                     <Route path={ROUTES.VIEW_USER} component={UserDetailPage}/>
