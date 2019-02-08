@@ -3,14 +3,19 @@ import {withStyles} from "@material-ui/core";
 import {default as MuiLink} from "@material-ui/core/Link";
 import TableRow from "@material-ui/core/TableRow";
 import {TableCell} from "../Form";
+import {compose} from "redux";
+import {push} from "connected-react-router";
+import {connect} from "react-redux";
 
 const styles = theme => ({});
 
 const QuizListTableViewItem = props => {
-    const {classes, quizID, quiz, submissions, onQuizSelected} = props;
+    const {classes, quizID, quiz, quizURL, pushToHistory} = props;
 
     function handleClicked() {
-        onQuizSelected && onQuizSelected(quizID);
+        if (quizURL) {
+            pushToHistory(quizURL.replace(/:id/, quizID));
+        }
     }
 
     return (
@@ -34,4 +39,9 @@ const QuizListTableViewItem = props => {
     )
 }
 
-export default withStyles(styles)(QuizListTableViewItem);
+export default compose(
+    connect(null, {
+       pushToHistory: push
+    }),
+    withStyles(styles)
+)(QuizListTableViewItem);

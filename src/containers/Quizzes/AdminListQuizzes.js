@@ -69,7 +69,7 @@ const AdminListQuizzes = ({classes}) => {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" component={Link} to={ROUTES.ADMIN_CREATE_QUIZ}><FontAwesomeIcon
+                            <Button size="small" component={Link} to={ROUTES.CREATE_QUIZ}><FontAwesomeIcon
                                 icon="plus-square" size="lg" fixedWidth/>Create a Quiz</Button>
                         </CardActions>
                     </Card>
@@ -82,7 +82,7 @@ const AdminListQuizzes = ({classes}) => {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" component={Link} to={ROUTES.ADMIN_CREATE_QUIZ}><FontAwesomeIcon
+                            <Button size="small" component={Link} to={ROUTES.CREATE_QUIZ}><FontAwesomeIcon
                                 icon="chart-line" size="lg" fixedWidth/>View Analytics</Button>
                         </CardActions>
                     </Card>
@@ -94,7 +94,7 @@ const AdminListQuizzes = ({classes}) => {
             <Grid container spacing={16}>
                 <Grid item md={12} xs={12}>
                     <Paper className={classes.list}>
-                        <QuizList showUnpublished onQuizSelected={handleQuizSelected}/>
+                        <QuizList type="quiz" showUnpublished quizURL="/quizzes/:id/edit"/>
                     </Paper>
                 </Grid>
             </Grid>

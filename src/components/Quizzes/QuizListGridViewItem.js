@@ -6,6 +6,9 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Moment from "react-moment";
+import {compose} from "redux";
+import {connect} from "react-redux";
+import {push} from "connected-react-router";
 
 const styles = theme => ({
     quizListGridViewItem: {
@@ -15,10 +18,12 @@ const styles = theme => ({
 });
 
 const QuizListGridViewItem = props => {
-    const {classes, quizID, quiz, hasSubmission, onQuizSelected} = props;
+    const {classes, quizID, quiz, hasSubmission, quizURL, pushToHistory} = props;
 
     function handleClicked() {
-        onQuizSelected && onQuizSelected(quizID);
+        if (quizURL) {
+            pushToHistory(quizURL.replace(/:id/, quizID));
+        }
     }
 
     return (
@@ -43,4 +48,11 @@ const QuizListGridViewItem = props => {
     )
 }
 
-export default withStyles(styles)(QuizListGridViewItem);
+
+
+export default compose(
+    connect(null, {
+        pushToHistory: push
+    }),
+    withStyles(styles)
+)(QuizListGridViewItem);

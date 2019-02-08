@@ -16,7 +16,8 @@ const styles = theme => ({});
 const INITIAL_VALUES = {
     name: "",
     deadline: "",
-    published: true
+    published: true,
+    type: "quiz"
 };
 
 const QuizInfoForm = (props) => {
@@ -83,11 +84,9 @@ export default compose(
     withSnackbar,
 
     connect(
-        (state, {quizID, isAssignment}) => {
-            const prefix = isAssignment ? "assignments" : "quizzes";
-
+        (state, {quizID}) => {
             return {
-                quiz: quizID ? getVal(state.firebase.data, `${prefix}/${quizID}`) : null
+                quiz: quizID ? getVal(state.firebase.data, `quizzes/${quizID}`) : null
             };
         },
         {
@@ -95,14 +94,12 @@ export default compose(
         }
     ),
 
-    firebaseConnect(({quizID, isAssignment}) => {
+    firebaseConnect(({quizID}) => {
         const queries = [];
-
-        const prefix = isAssignment ? "assignments" : "quizzes";
 
         if (quizID) {
             queries.push({
-                path: `${prefix}/${quizID}`
+                path: `quizzes/${quizID}`
             })
         }
 
@@ -113,19 +110,24 @@ export default compose(
     withFormik({
         enableReinitialize: true,
 
-        mapPropsToValues: ({quizID, quiz}) => {
+        mapPropsToValues: props => {
+            const {quizID, quiz} = props;
+
+            const type = props.type ? props.type : 'quiz';
+
             if (quizID) {
                 if (!isLoaded(quiz) || isEmpty(quiz)) {
-                    return {...INITIAL_VALUES};
+                    return {...INITIAL_VALUES, type};
                 } else {
                     return {
                         name: quiz.name,
                         deadline: "deadline" in quiz ? quiz.deadline : "",
-                        published: "published" in quiz ? quiz.published : true
+                        published: "published" in quiz ? quiz.published : true,
+                        type
                     }
                 }
             } else {
-                return {...INITIAL_VALUES};
+                return {...INITIAL_VALUES, type};
             }
         },
 
@@ -140,15 +142,14 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {quizID, quiz, isAssignment, firebase: {pushWithMeta, updateWithMeta}, enqueueSnackbar, pushToHistory}} = actions;
+            const {props: {quizID, quiz, firebase: {pushWithMeta, updateWithMeta}, enqueueSnackbar, pushToHistory}} = actions;
             let promise = null;
 
-            const prefix = isAssignment ? "assignments" : "quizzes";
 
             if (quizID && quiz) {
-                promise = updateWithMeta(`${prefix}/${quizID}`, values);
+                promise = updateWithMeta(`quizzes/${quizID}`, values);
             } else {
-                promise = pushWithMeta(prefix, values);
+                promise = pushWithMeta("quizzes", values);
             }
 
             promise.then(ref => {
@@ -157,7 +158,16 @@ export default compose(
                 if (quizID) {
                     enqueueSnackbar("Saved!");
                 } else {
-                    pushToHistory(`/admin/${prefix}/${ref.key}`);
+                    let redirectURL = actions.props.redirectURL;
+                    if (!redirectURL) {
+                        if (values.type == 'quiz') {
+                            redirectURL = `quizzes/:id`;
+                        } else {
+                            redirectURL = `assignments/:id`;
+                        }
+                    }
+
+                    pushToHistory(redirectURL.replace(/:id/, ref.key));
                 }
             });
         }

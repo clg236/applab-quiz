@@ -41,27 +41,22 @@ const styles = theme => ({
 
 
 const ViewQuiz = props => {
-    const {classes, user, quizID, quiz, submissionID, submission, isAssignment} = props;
+    const {classes, user, quizID, quiz, submission, type} = props;
 
     let content = '';
+    let submissionID = props.submissions;
 
     if (!isLoaded(quiz) || (submissionID && !isLoaded(submission)) || (!submissionID && !isLoaded(user))) {
         content = <CircularProgress/>;
     } else if (isEmpty(quiz)) {
         content = <Typography variant="body1">There is nothing here.</Typography>;
     } else {
-        const submissionPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
-
-        let _submissionID = submissionID;
 
         if (!submissionID) {
-            // find my submission
-            const submissions = getIn(user, submissionPrefix);
-
-            if (submissions) {
-                Object.keys(submissions).forEach(key => {
-                    if (submissions[key].quiz && submissions[key].quiz.id == quizID) {
-                        _submissionID = key;
+            if (user.submissions) {
+                Object.keys(user.submissions).forEach(key => {
+                    if (user.submissions[key].subject && user.submissions[key].subject.id == quizID) {
+                        submissionID = key;
                     }
                 });
             }
@@ -74,17 +69,17 @@ const ViewQuiz = props => {
                 </Typography>
 
                 <Paper className={classnames(classes.paper, classes.form)}>
-                    <QuestionsForm quizID={quizID} submissionID={_submissionID} isAssignment={isAssignment}/>
+                    <QuestionsForm quizID={quizID} submissionID={submissionID} type="quiz" />
                 </Paper>
 
-                {_submissionID && (
+                {submissionID && (
                     <Paper className={classnames(classes.paper, classes.comments)}>
                         <Typography variant="h5" gutterBottom component="h3">Comments</Typography>
-                        <CommentList submissionID={_submissionID} isAssignment={isAssignment}/>
+                        <CommentList submissionID={submissionID} type={type}/>
 
                         <div className={classes.commentForm}>
                             <Typography variant="h6" gutterBottom component="h4">Leave a comment</Typography>
-                            <CommentForm submissionID={_submissionID} isAssignment={isAssignment}/>
+                            <CommentForm submissionID={submissionID} type={type}/>
                         </div>
                     </Paper>
                 )}
@@ -100,23 +95,20 @@ export default compose(
     connect(
         (state, props) => {
             const {firebase: {auth}} = state;
-            const {match: {params: {id, submissionID}}, isAssignment} = props;
-
-            const quizPrefix = isAssignment ? "assignments" : "quizzes";
-            const submissionPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
+            const {match: {params: {id, submissionID}}} = props;
 
             const data = {
                 uid: auth.uid,
                 quizID: id,
                 submissionID,
-                quiz: getVal(state.firebase.data, `${quizPrefix}/${id}`),
+                quiz: getVal(state.firebase.data, `quizzes/${id}`),
             };
 
             if (submissionID) {
-                data['submission'] = getVal(state.firebase.data, `${submissionPrefix}/${submissionID}`);
+                data['submission'] = getVal(state.firebase.data, `submissions/${submissionID}`);
             } else {
                 data['user'] = populate(state.firebase, `users/${auth.uid}`, [
-                    `${submissionPrefix}:${submissionPrefix}`
+                    "submissions:submissions"
                 ]);
             }
 
@@ -125,23 +117,20 @@ export default compose(
     ),
 
     firebaseConnect(props => {
-        const {uid, quizID, submissionID, isAssignment} = props;
-        const quizPrefix = isAssignment ? "assignments" : "quizzes";
-        const submissionPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
-
+        const {uid, quizID, submissionID} = props;
         const queries = [{
-            path: `${quizPrefix}/${quizID}`
+            path: `quizzes/${quizID}`
         }];
 
         if (submissionID) {
             queries.push({
-                path: `${submissionPrefix}/${submissionID}`
+                path: `submissions/${submissionID}`
             });
         } else {
             queries.push({
                 path: `users/${uid}`
             }, {
-                path: `${submissionPrefix}`
+                path: `submissions`
             });
         }
 

@@ -71,31 +71,26 @@ export default compose(
     withSnackbar,
 
     connect(
-        (state, {quizID, submissionID, isAssignment}) => {
-            const quizPrefix = isAssignment ? "assignments" : "quizzes";
-            const submissionPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
-
+        (state, {quizID, submissionID}) => {
             return {
                 uid: state.firebase.auth.uid,
                 user: state.firebase.auth,
-                quiz: getVal(state.firebase.data, `${quizPrefix}/${quizID}`),
-                submission: submissionID ? getVal(state.firebase.data, `${submissionPrefix}/${submissionID}`) : null
+                quiz: getVal(state.firebase.data, `quizzes/${quizID}`),
+                submission: submissionID ? getVal(state.firebase.data, `submissions/${submissionID}`) : null
             };
         }, {
             pushToHistory: push
         }
     ),
 
-    firebaseConnect(({quizID, submissionID, isAssignment}) => {
-        const quizPrefix = isAssignment ? "assignments" : "quizzes";
-        const submissionPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
+    firebaseConnect(({quizID, submissionID}) => {
         const queries = [{
-            path: `${quizPrefix}/${quizID}`
+            path: `quizzes/${quizID}`
         }];
 
         if (submissionID) {
             queries.push({
-                path: `${submissionPrefix}/${submissionID}`
+                path: `submissions/${submissionID}`
             })
         }
 
@@ -139,11 +134,11 @@ export default compose(
                     quizID,
                     quiz,
                     firebase: {
-                        set, updateWithMeta, pushWithMeta
+                        set, pushWithMeta
                     },
                     enqueueSnackbar,
                     pushToHistory,
-                    isAssignment
+                    type,
                 }
             } = actions;
 
@@ -164,32 +159,24 @@ export default compose(
                 }
             });
 
-
-            const quizPrefix = isAssignment ? "assignments" : "quizzes";
-            const submissionPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
-            const userPrefix = isAssignment ? "userAssignments" : "userQuizzes";
-
-            pushWithMeta(submissionPrefix, {
+            pushWithMeta("submissions", {
                 answers: values['answers'],
                 score: score,
                 user: {uid, displayName, photoURL},
-                quiz: {
+                subject: {
                     id: quizID,
-                    name: quiz.name
+                    name: quiz.name,
+                    type
                 }
             }).then(ref => {
                 Promise.all([
-                    updateWithMeta(`${userPrefix}/${uid}/${quizID}`, {
-                        name: quiz.name,
-                        lastSubmissionScore: score,
-                        lastSubmissionID: ref.key
-                    }),
-                    set(`${userPrefix}/${uid}/${quizID}/submissions/${ref.key}`, true),
-                    set(`${quizPrefix}/${quizID}/submissions/${ref.key}`, true)
+                    set(`users/${uid}/quizzes/${quizID}`, true),
+                    set(`users/${uid}/submissions/${ref.key}`, true),
+                    set(`quizzes/${quizID}/submissions/${ref.key}`, true)
                 ]).then(() => {
                     setSubmitting(false);
                     enqueueSnackbar("Submitted!");
-                    pushToHistory(`/${quizPrefix}/${quizID}/submissions/${ref.key}`);
+                    pushToHistory("/");
                 });
             });
         }

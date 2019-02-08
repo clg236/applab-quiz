@@ -13,11 +13,11 @@ const styles = theme => ({
     }
 });
 
-const AdminCreateAssignment = ({classes}) => {
+const CreateAssignment = ({classes}) => {
     return (
         <main className={classes.root}>
             <Typography variant="h4" gutterBottom component="h2">Create an assignment</Typography>
-            <QuizInfoForm isAssignment/>
+            <QuizInfoForm type="assignment" redirectURL="/admin/assignments/:id"/>
         </main>
     );
 };
@@ -25,4 +25,4 @@ const AdminCreateAssignment = ({classes}) => {
 
 export default compose(
     withStyles(styles)
-)(AdminCreateAssignment);
+)(CreateAssignment);

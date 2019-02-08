@@ -34,28 +34,27 @@ const styles = theme => ({
 });
 
 const QuizList = props => {
-    const {classes, user, quizzes, view, isAssignment, onQuizSelected, pushToHistory} = props;
+    const {classes, user, quizzes, view, type} = props;
 
-    function handleQuizSelected(quizID) {
-        if (onQuizSelected) {
-            onQuizSelected(quizID);
-        } else {
-            pushToHistory(`/quizzes/${quizID}`);
+    let quizURL = props.quizURL;
+    if (!quizURL) {
+        if (type == 'quiz') {
+            quizURL = "/quizzes/:id";
+        } else if (type == 'assignment') {
+            quizURL = "/assignments/:id";
         }
     }
 
     let content = "";
 
-    if (!isLoaded(quizzes) || !isLoaded(user)) {
+    if (!isLoaded(quizzes) || (user && !isLoaded(user))) {
         content = <CircularProgress size={20}/>
     } else if (isEmpty(quizzes)) {
         content = <Typography variant="body1">There is nothing here.</Typography>;
     } else {
         const View = view && view == 'grid' ? QuizListGridView : QuizListTableView;
 
-        content = <View quizzes={quizzes} user={user} isAssignment={isAssignment}
-                        submissions={isAssignment ? user.assignmentSubmissions : user.quizSubmissions}
-                        onQuizSelected={handleQuizSelected}/>;
+        content = <View quizzes={quizzes} user={user} quizURL={quizURL}/>;
     }
 
     return content;
@@ -63,56 +62,58 @@ const QuizList = props => {
 
 export default compose(
     connect(
-        (state, {user, showUnpublished, isAssignment}) => {
-            const quizPrefix = isAssignment ? "assignments" : "quizzes";
+        (state, props) => {
+            const {user, showUnpublished, type} = props;
             const data = {};
 
-            let quizzes = getVal(state.firebase.data, quizPrefix);
+            let quizzes = getVal(state.firebase.data, "quizzes");
 
-            // filter out unpublished quizzes
             if (isLoaded(quizzes) && !isEmpty(quizzes)) {
+                let keys = Object.keys(quizzes);
+
+                // filter out unpublished quizzes
                 if (typeof showUnpublished == 'undefined' || !showUnpublished) {
-                    quizzes = Object.keys(quizzes)
-                        .filter(key => quizzes[key].published)
-                        .reduce((obj, key) => {
-                            return {
-                                ...obj,
-                                [key]: quizzes[key]
-                            }
-                        }, {});
+                    keys = keys.filter(key => quizzes[key].published);
                 }
+
+                // filter by type
+                if (type) {
+                    keys = keys.filter(key => quizzes[key].type == type);
+                }
+
+                // fill
+                quizzes = keys.reduce((obj, key) => {
+                    return {
+                        ...obj,
+                        [key]: quizzes[key]
+                    }
+                }, {});
             }
 
             data['quizzes'] = quizzes;
 
             // get all the quiz submissions
             if (user && isLoaded(user) && !isEmpty(user)) {
-                const submissionsPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
-
                 data['user'] = populate(state.firebase, `users/${user.uid}`, [
-                    `${submissionsPrefix}:${submissionsPrefix}`
+                    'submissions:submissions'
                 ]);
             }
 
             return data;
-        }, {
-            pushToHistory: push
         }
     ),
 
-    firebaseConnect(({user, isAssignment}) => {
+    firebaseConnect(({user}) => {
         let queries = [{
-            path: isAssignment ? "assignments" : 'quizzes',
+            path: 'quizzes',
             queryParams: ['orderByKey']
         }];
-
-        const submissionsPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
 
         if (user && isLoaded(user) && !isEmpty(user)) {
             queries.push({
                 path: `users/${user.uid}`
             }, {
-                path: `${submissionsPrefix}`
+                path: `submissions`
             });
         }
 

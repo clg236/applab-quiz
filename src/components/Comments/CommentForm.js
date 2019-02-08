@@ -3,7 +3,7 @@ import {compose} from 'redux';
 import {CircularProgress, Grid, Typography, withStyles} from "@material-ui/core";
 import {Field, withFormik} from "formik";
 import Button from "@material-ui/core/Button";
-import {firebaseConnect, getVal, Profile as isEmpty, Profile as isLoaded, withFirebase} from "react-redux-firebase";
+import {firebaseConnect, getVal, isLoaded, isEmpty, withFirebase} from "react-redux-firebase";
 import {withSnackbar} from 'notistack';
 import {Editor} from "../Form";
 import {connect} from "react-redux";
@@ -48,20 +48,15 @@ export default compose(
     withFirebase,
 
     connect(
-        ({firebase}, {submissionID, isAssignment}) => ({
+        ({firebase}, {submissionID}) => ({
             auth: firebase.auth,
-            submission: getVal(
-                firebase.data,
-                isAssignment ? `assignmentSubmissions/${submissionID}` : `quizSubmissions/${submissionID}`
-            )
+            submission: getVal(firebase.data, `submissions/${submissionID}`)
         })
     ),
 
-    firebaseConnect(({submissionID, isAssignment}) => ([
-        {
-            path: isAssignment ? `assignmentSubmissions/${submissionID}` : `quizSubmissions/${submissionID}`
-        }
-    ])),
+    firebaseConnect(({submissionID}) => ([{
+        path: `submissions/${submissionID}`
+    }])),
 
     withFormik({
 
@@ -87,24 +82,23 @@ export default compose(
                     auth: {uid, displayName, photoURL},
                     submissionID,
                     submission,
-                    isAssignment,
                     firebase: {pushWithMeta, set},
                     enqueueSnackbar
                 }
             } = actions;
 
-            const commentsPrefix = isAssignment ? "assignmentComments" : "quizComments";
 
-            pushWithMeta(commentsPrefix, {
+            pushWithMeta("comments", {
                 comment: values.comment,
                 user: {uid, displayName, photoURL},
                 submissionID,
-                quiz: submission.quiz
-            }).then(() => {
+                subject: submission.subject
+            }).then(ref => {
                 actions.setSubmitting(false);
                 enqueueSnackbar("Submitted!");
 
-                set(`users/${uid}/${commentsPrefix}`)
+                set(`users/${uid}/comments/${ref.key}`, true);
+                set(`submissions/${submissionID}/comments/${ref.key}`, true);
             });
         }
     }),

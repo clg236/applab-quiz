@@ -10,7 +10,7 @@ const styles = theme => ({
 });
 
 const QuizListGridView = props => {
-    const {classes, quizzes, submissions, onQuizSelected} = props;
+    const {classes, quizzes, submissions, quizURL} = props;
 
     function hasSubmission(quizID) {
         if (!submissions) {
@@ -30,7 +30,7 @@ const QuizListGridView = props => {
                     quizID={key}
                     quiz={quizzes[key]}
                     hasSubmission={hasSubmission(key)}
-                    onQuizSelected={onQuizSelected}
+                    quizURL={quizURL}
                 />
             ))}
         </Grid>

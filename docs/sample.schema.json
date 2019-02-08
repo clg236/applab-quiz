@@ -11,9 +11,6 @@
       "quizzes": {
         "quiz-1": true
       },
-      "assignments": {
-        "assignment-1": true
-      },
       "submissions": {
         "submission-1": true
       }
@@ -56,7 +53,8 @@
       "published": true,
       "users": {
         "user-1": true
-      }
+      },
+      "type": "quiz"
     }
   },
   "submissions": {

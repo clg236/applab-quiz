@@ -13,11 +13,11 @@ const styles = theme => ({
     }
 });
 
-const AdminCreateQuiz = ({classes}) => {
+const CreateQuiz = ({classes}) => {
     return (
         <main className={classes.root}>
             <Typography variant="h4" gutterBottom component="h2">Create a quiz</Typography>
-            <QuizInfoForm/>
+            <QuizInfoForm type="quiz" redirectURL="/admin/quizzes/:id"/>
         </main>
     );
 };
@@ -25,4 +25,4 @@ const AdminCreateQuiz = ({classes}) => {
 
 export default compose(
     withStyles(styles)
-)(AdminCreateQuiz);
+)(CreateQuiz);

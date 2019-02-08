@@ -11,7 +11,7 @@ import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 import {withStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import {QuizDetail, QuizList} from "../../components/Quizzes";
+import {EditQuiz, QuizList} from "../../components/Quizzes";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
@@ -69,7 +69,7 @@ const AdminListAssignments = ({classes}) => {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" component={Link} to={ROUTES.ADMIN_CREATE_ASSIGNMENT}>
+                            <Button size="small" component={Link} to={ROUTES.CREATE_ASSIGNMENT}>
                                 <FontAwesomeIcon icon="plus-square" size="lg" fixedWidth/> Create an assignment
                             </Button>
                         </CardActions>
@@ -83,7 +83,7 @@ const AdminListAssignments = ({classes}) => {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" component={Link} to={ROUTES.ADMIN_CREATE_ASSIGNMENT}>
+                            <Button size="small" component={Link} to={ROUTES.CREATE_ASSIGNMENT}>
                                 <FontAwesomeIcon icon="chart-line" size="lg" fixedWidth/> View Analytics
                             </Button>
                         </CardActions>
@@ -94,17 +94,12 @@ const AdminListAssignments = ({classes}) => {
             <h2>Current Assignments</h2>
             <p>The table below lists current assignments [to do: show number of submissions in column, average score]</p>
             <Grid container spacing={16}>
-                <Grid item md={selectedQuizID ? 3 : 12} xs={12}>
+                <Grid item md={12} xs={12}>
                     <Paper className={classes.list}>
-                        <QuizList isAssignment onQuizSelected={handleQuizSelected} hideStats={selectedQuizID ? true : false}/>
+                        <QuizList type="assignment" showUnpublished quizURL="/assignments/:id/edit"/>
                     </Paper>
                 </Grid>
 
-                {selectedQuizID != '' && (
-                    <Grid item md={9} xs={12}>
-                        <QuizDetail quizID={selectedQuizID} isAssignment/>
-                    </Grid>
-                )}
             </Grid>
         </main>
     );

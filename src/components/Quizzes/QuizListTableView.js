@@ -13,7 +13,7 @@ const styles = theme => ({
 });
 
 const QuizListGridView = props => {
-    const {classes, quizzes, submissions, onQuizSelected} = props;
+    const {classes, quizzes, quizURL} = props;
 
     return (
         <Table>
@@ -32,8 +32,7 @@ const QuizListGridView = props => {
                         key={key}
                         quizID={key}
                         quiz={quizzes[key]}
-                        submissions={submissions}
-                        onQuizSelected={onQuizSelected}
+                        quizURL={quizURL}
                     />
                 ))}
             </TableBody>

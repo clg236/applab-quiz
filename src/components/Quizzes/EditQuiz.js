@@ -23,16 +23,21 @@ const styles = theme => ({
 });
 
 
-const QuizDetail = props => {
-    const {classes, quizID, quiz, isAssignment} = props;
+const EditQuiz = props => {
+    const {classes, quizID, quiz, type, redirectURL} = props;
+
+    const [selectedTab, setSelectedTab] = useState(0);
+
+    function handleTabChange(event, value) {
+         setSelectedTab(value);
+    }
 
     if (!isLoaded(quiz)) {
         return <CircularProgress/>;
     } else if (isEmpty(quiz)) {
-        return <Typography variant="body1">Item not found.</Typography>;
+        return <Typography variant="body1">Item could not be found.</Typography>;
     }
 
-    const [selectedTab, setSelectedTab] = useState(0);
     const numQuestions = quiz && quiz.questions ? quiz.questions.length : 0;
     const numSubmissions = quiz && quiz.submissions ? Object.keys(quiz.submissions).length : 0;
 
@@ -42,7 +47,7 @@ const QuizDetail = props => {
                 value={selectedTab}
                 indicatorColor="primary"
                 textColor="primary"
-                onChange={(event, value) => setSelectedTab(value)}
+                onChange={handleTabChange}
             >
                 <Tab label="Basic"/>
                 <Tab label={`Questions (${numQuestions})`}/>
@@ -50,9 +55,9 @@ const QuizDetail = props => {
             </Tabs>
 
             <div className={classes.tabContainer}>
-                {selectedTab === 0 && (<EditQuizInfoForm quizID={quizID} isAssignment={isAssignment}/>)}
-                {selectedTab === 1 && (<EditQuestionsForm quizID={quizID} isAssignment={isAssignment}/>)}
-                {selectedTab === 2 && (<SubmissionList quiz={quiz} isAssignment={isAssignment}/>)}
+                {selectedTab === 0 && (<EditQuizInfoForm quizID={quizID} type={type} redirectURL={redirectURL}/>)}
+                {selectedTab === 1 && (<EditQuestionsForm quizID={quizID} type={type} redirectURL={redirectURL}/>)}
+                {selectedTab === 2 && (<SubmissionList quizID={quizID}/>)}
             </div>
         </Paper>
     );
@@ -60,24 +65,20 @@ const QuizDetail = props => {
 
 export default compose(
     connect(
-        (state, {quizID, isAssignment}) => {
-            const prefix = isAssignment ? "assignments" : "quizzes";
-
+        (state, {quizID}) => {
             return {
-                quiz: getVal(state.firebase.data, `${prefix}/${quizID}`)
+                quiz: getVal(state.firebase.data, `quizzes/${quizID}`)
             };
         }
     ),
 
-    firebaseConnect(({quizID, isAssignment}) => {
-        const prefix = isAssignment ? "assignments" : "quizzes";
-
+    firebaseConnect(({quizID}) => {
         return [
             {
-                path: `${prefix}/${quizID}`
+                path: `quizzes/${quizID}`
             }
         ];
     }),
 
     withStyles(styles)
-)(QuizDetail);
+)(EditQuiz);

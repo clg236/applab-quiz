@@ -1,53 +1,47 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {firebaseConnect, getVal, isEmpty, isLoaded, withFirebase} from 'react-redux-firebase';
+import {firebaseConnect, getVal, isEmpty, isLoaded, populate, withFirebase} from 'react-redux-firebase';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {withStyles} from "@material-ui/core";
+import {Typography, withStyles} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import {withSnackbar} from "notistack";
 import SubmissionListItem from "./SubmissionListItem";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
+import TableCell from "../Form/TableCell";
 
 
 const styles = theme => ({});
 
 
 const SubmissionList = props => {
-    const {classes, isAssignment, enqueueSnackbar, firebase: {remove}, submissions} = props;
+    const {classes, enqueueSnackbar, firebase: {remove}, quiz, type} = props;
+
+    console.log(props);
 
     function onDeleteSubmission(submission) {
         const uid = submission.user.uid;
         const quizID = submission.quiz.id;
 
-        if (isAssignment) {
-            Promise.all([
-                remove(`assignmentSubmissions/${submission.id}`),
-                remove(`userAssignments/${uid}/${quizID}`),
-                remove(`assignments/${quizID}/submissions/${submission.id}`)
-            ]).then(() => {
-                enqueueSnackbar("Deleted!");
-            });
-        } else {
-            Promise.all([
-                remove(`quizSubmissions/${submission.id}`),
-                remove(`userQuizzes/${uid}/${quizID}`),
-                remove(`quizzes/${quizID}/submissions/${submission.id}`)
-            ]).then(() => {
-                enqueueSnackbar("Deleted!");
-            });
-        }
+        Promise.all([
+            remove(`submissions/${submission.id}`),
+            remove(`users/${uid}/quizzes/${quizID}`),
+            remove(`users/${uid}/submissions/${quizID}`),
+            remove(`quizzes/${quizID}/submissions/${submission.id}`)
+        ]).then(() => {
+            enqueueSnackbar("Deleted!");
+        });
+
     }
 
     let content = "";
 
-    if (!isLoaded(submissions)) {
+    if (!isLoaded(quiz)) {
         content = <CircularProgress/>;
-    } else if (isEmpty(submissions)) {
-        content = "There is no submissions yet.";
+    } else if (isEmpty(quiz) || isEmpty(quiz.submissions)) {
+        content = <Typography variant="body1">There is no submissions yet.</Typography>;
     } else {
         content = (
             <Table className={classes.table}>
@@ -61,12 +55,12 @@ const SubmissionList = props => {
                 </TableHead>
 
                 <TableBody>
-                    {Object.keys(submissions).map(key => (
+                    {Object.keys(quiz.submissions).map(key => (
                         <SubmissionListItem
                             key={key}
-                            isAssignment={isAssignment}
-                            submission={submissions[key]}
-                            onDeleteSubmission={onDeleteSubmission} />
+                            type={type}
+                            submission={quiz.submissions[key]}
+                            onDeleteSubmission={onDeleteSubmission}/>
                     ))}
                 </TableBody>
             </Table>
@@ -84,40 +78,29 @@ export default compose(
 
     connect(
         (state, props) => {
-            const {quiz, isAssignment} = props;
-            const submissions = {};
-            const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
-
-            if ("submissions" in quiz) {
-                Object.keys(quiz.submissions).map(key => {
-                    let submission = getVal(state.firebase.data, `${prefix}/${key}`);
-
-                    if (submission) {
-                        submissions[key] = {id: key, ...submission};
-                    }
-                });
-            }
+            const {quizID} = props;
 
             return {
-                submissions: submissions,
+                quiz: populate(state.firebase, `quizzes/${quizID}`, [
+                    "submissions:submissions"
+
+                ]),
             };
         }
     ),
 
-    firebaseConnect((props) => {
-        const {quiz, isAssignment} = props;
-        const queries = [];
-        const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
+    firebaseConnect(props => {
+        const {quizID} = props;
 
-        if ("submissions" in quiz) {
-            Object.keys(quiz.submissions).map(key => {
-                queries.push({path: `${prefix}/${key}`});
-            });
-        }
-
-        return queries;
+        return [
+            {
+                path: `quizzes/${quizID}`
+            },
+            {
+                path: "submissions"
+            }
+        ];
     }),
-
 
     withStyles(styles)
 )(SubmissionList);

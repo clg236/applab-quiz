@@ -9,8 +9,8 @@ import * as ROUTES from '../../constants/routes';
 import HomePage from '../../containers/Home';
 import {Route, Switch} from 'react-router-dom';
 
-import {AdminCreateQuizPage, AdminEditQuizPage, AdminListQuizzesPage, ListQuizzesPage, ViewQuizPage} from "../../containers/Quizzes";
-import {AdminCreateAssignmentPage, AdminEditAssignmentPage, AdminListAssignmentsPage, ListAssignmentsPage} from "../../containers/Assignments";
+import {CreateQuizPage, EditQuizPage, AdminListQuizzesPage, ListQuizzesPage, ViewQuizPage} from "../../containers/Quizzes";
+import {CreateAssignmentPage, EditAssignmentPage, AdminListAssignmentsPage, ListAssignmentsPage, ViewAssignmentPage} from "../../containers/Assignments";
 import {AdminListUsersPage, UserDetailPage} from "../../containers/Users";
 
 import {QuizSubmissionDetailPage, AssignmentSubmissionDetailPage} from "../../containers/Submissions";
@@ -50,19 +50,23 @@ function AuthenticatedLayout({classes, location}) {
                     <Route exact path={ROUTES.LIST_QUIZZES} component={ListQuizzesPage}/>
                     <Route exact path={ROUTES.LIST_ASSIGNMENTS} component={ListAssignmentsPage}/>
 
+                    <Route exact path={ROUTES.CREATE_QUIZ} component={CreateQuizPage}/>
+                    <Route path={ROUTES.Edit_QUIZ} component={EditQuizPage}/>
                     <Route path={ROUTES.VIEW_QUIZ} component={ViewQuizPage}/>
-                    <Route path={ROUTES.VIEW_ASSIGNMENT} component={ViewQuizPage}/>
+
+
+                    <Route exact path={ROUTES.CREATE_ASSIGNMENT} component={CreateAssignmentPage}/>
+                    <Route path={ROUTES.Edit_ASSIGNMENT} component={EditAssignmentPage}/>
+                    <Route path={ROUTES.VIEW_ASSIGNMENT} component={ViewAssignmentPage}/>
 
                     <Route path={ROUTES.VIEW_QUIZ_SUBMISSION} component={QuizSubmissionDetailPage}/>
                     <Route path={ROUTES.VIEW_ASSIGNMENT_SUBMISSION} component={AssignmentSubmissionDetailPage}/>
 
+
                     <Route exact path={ROUTES.ADMIN_LIST_QUIZZES} component={AdminListQuizzesPage}/>
-                    <Route exact path={ROUTES.ADMIN_CREATE_QUIZ} component={AdminCreateQuizPage}/>
-                    <Route path={ROUTES.ADMIN_Edit_QUIZ} component={AdminEditQuizPage}/>
+                    <Route path={ROUTES.Edit_QUIZ} component={EditQuizPage}/>
 
                     <Route exact path={ROUTES.ADMIN_LIST_ASSIGNMENTS} component={AdminListAssignmentsPage}/>
-                    <Route exact path={ROUTES.ADMIN_CREATE_ASSIGNMENT} component={AdminCreateAssignmentPage}/>
-                    <Route path={ROUTES.ADMIN_Edit_ASSIGNMENT} component={AdminEditAssignmentPage}/>
 
                     <Route exact path={ROUTES.ADMIN_USERS} component={AdminListUsersPage}/>
                     <Route path={ROUTES.VIEW_USER} component={UserDetailPage}/>

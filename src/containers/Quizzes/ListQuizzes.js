@@ -5,6 +5,7 @@ import {firebaseConnect, getVal, withFirebase} from 'react-redux-firebase';
 import {withStyles} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {QuizList} from "../../components/Quizzes";
+import Paper from "./AdminListQuizzes";
 
 
 const styles = theme => ({
@@ -42,7 +43,7 @@ const ListQuizzes = ({classes, user}) => {
 
             <Grid container direction={'row'} justify={'center'} alignItems={'stretch'}>
                 <Grid item>
-                    <QuizList user={user}/>
+                    <QuizList type="quiz" user={user} quizURL="/quizzes/:id"/>
                 </Grid>
             </Grid>
         </main>

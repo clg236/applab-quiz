@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {firebaseConnect, getVal, isEmpty, isLoaded, populate} from 'react-redux-firebase';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {withStyles} from "@material-ui/core";
+import {Typography, withStyles} from "@material-ui/core";
 import {withSnackbar} from "notistack";
 import List from "@material-ui/core/List";
 import CommentListItem from './CommentListItem';
@@ -17,24 +17,22 @@ const styles = theme => ({
 
 
 const CommentList = (props) => {
-    const {classes, submission, isAssignment} = props;
-
-    console.log(submission);
+    const {classes, submission} = props;
 
     let content = "";
 
     if (!isLoaded(submission)) {
         content = <CircularProgress/>;
     } else if (isEmpty(submission)) {
-        content = "There are no comments yet";
+        content = <Typography variant="body1">There are no comments yet</Typography>;
     } else {
         if (submission && (!("comments" in submission) || Object.keys(submission.comments).length === 0)) {
-            content = "There are no comments yet";
+            content = <Typography variant="body1">There are no comments yet</Typography>;
         } else {
             content = (
                 <List>
                     {Object.keys(submission.comments).map((key) => (
-                        <CommentListItem isAssignment={isAssignment} key={key} comment={submission.comments[key]}/>
+                        <CommentListItem key={key} comment={submission.comments[key]}/>
                     ))}
                 </List>
             );
@@ -50,38 +48,25 @@ export default compose(
 
     connect(
         (state, props) => {
-            const {submissionID, isAssignment} = props;
-            const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
-            const commentsPrefix = isAssignment ? "assignmentComments" : "quizComments";
+            const {submissionID} = props;
 
-            console.log("connect", props);
             return {
-                submission: populate(state.firebase.data, `${prefix}/${submissionID}`, [
-                    `comments:${commentsPrefix}`
+                submission: populate(state.firebase, `submissions/${submissionID}`, [
+                    "comments:comments"
                 ]),
             };
         }
     ),
 
     firebaseConnect(props => {
-        const {submissionID, isAssignment} = props;
-        const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
-        const commentsPrefix = isAssignment ? "assignmentComments" : "quizComments";
-        console.log("firebaseConnect", props, [
-            {
-                path: `${prefix}/${submissionID}`
-            },
-            {
-                path: commentsPrefix
-            }
-        ]);
+        const {submissionID} = props;
 
         return [
             {
-                path: `${prefix}/${submissionID}`
+                path: `submissions/${submissionID}`
             },
             {
-                path: commentsPrefix
+                path: "comments"
             }
         ];
     }),

@@ -77,21 +77,17 @@ export default compose(
     withSnackbar,
 
     connect(
-        (state, {quizID, isAssignment}) => {
-            const prefix = isAssignment ? "assignments" : "quizzes";
-
+        (state, {quizID}) => {
             return {
-                quiz: getVal(state.firebase.data, `${prefix}/${quizID}`)
+                quiz: getVal(state.firebase.data, `quizzes/${quizID}`)
             }
         }
     ),
 
-    firebaseConnect(({quizID, isAssignment}) => {
-        const prefix = isAssignment ? "assignments" : "quizzes";
-
+    firebaseConnect(({quizID}) => {
         return [
             {
-                path: `${prefix}/${quizID}`
+                path: `quizzes/${quizID}`
             }
         ];
     }),
@@ -115,13 +111,11 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {quizID, quiz, isAssignment, firebase: {updateWithMeta}, enqueueSnackbar}} = actions;
+            const {props: {quizID, quiz, firebase: {updateWithMeta}, enqueueSnackbar}} = actions;
 
             if ("submissions" in quiz && Object.keys(quiz.submissions).length > 0) {
                 return ;
             }
-
-            const prefix = isAssignment ? "assignments" : "quizzes";
 
             // filter out null values
             if (values.questions && values.questions.length > 0) {
@@ -132,7 +126,7 @@ export default compose(
                 });
             }
 
-            updateWithMeta(`${prefix}/${quizID}`, values).then(() => enqueueSnackbar("Saved!"));
+            updateWithMeta(`quizzes/${quizID}`, values).then(() => enqueueSnackbar("Saved!"));
         }
     }),
 

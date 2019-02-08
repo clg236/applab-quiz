@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {compose} from "redux";
 import {withStyles} from "@material-ui/core";
-import {QuizDetail} from "../../components/Quizzes"
+import {EditQuiz} from "../../components/Quizzes"
 
 const styles = theme => ({
     root: {
@@ -13,14 +13,14 @@ const styles = theme => ({
     }
 });
 
-const AdminCreateQuiz = props => {
+const EditAssignment = props => {
     const {classes, match: {params: {id}}} = props;
 
     return (
         <main className={classes.root}>
-            <Typography variant="h4" gutterBottom component="h2">Assignment Detail</Typography>
+            <Typography variant="h4" gutterBottom component="h2">Edit Assignment</Typography>
 
-            <QuizDetail quizID={id} isAssignment />
+            <EditQuiz quizID={id} type="assignment" />
         </main>
     );
 };
@@ -28,4 +28,4 @@ const AdminCreateQuiz = props => {
 
 export default compose(
     withStyles(styles)
-)(AdminCreateQuiz);
+)(EditAssignment);
