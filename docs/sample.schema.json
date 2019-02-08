@@ -2,7 +2,21 @@
   "users": {
     "user-1": {
       "displayName": "Xu Li",
-      "photoURL": "..."
+      "photoURL": "...",
+      "email": "...",
+      "role": "user",
+      "comments": {
+        "comment-1": true
+      },
+      "quizzes": {
+        "quiz-1": true
+      },
+      "assignments": {
+        "assignment-1": true
+      },
+      "submissions": {
+        "submission-1": true
+      }
     }
   },
   "quizzes": {
@@ -12,110 +26,79 @@
         {
           "title": "What's your name?",
           "type": "short-text",
-          "answers": [
-            "Xu",
-            "Li"
-          ]
+          "answers": [],
+          "id": "question-1",
+          "options": [],
+          "answer": ""
         },
         {
           "title": "Today is Sunday!",
-          "type": "single",
+          "type": "single-option",
           "options": [
             {
-              "option": "Yes"
+              "option": "Yes",
+              "id": "option-1"
             },
             {
-              "option": "No"
+              "option": "No",
+              "id": "option-2"
             }
           ],
-          "answers": [
-            "Yes"
-          ]
+          "answers": [],
+          "id": "question-2",
+          "answer": "option-1"
         }
       ],
       "deadline": "2019-01-01",
+      "submissions": {
+        "submission-1": true
+      },
       "published": true,
-      "submissions": {
-        "submission-1": true
+      "users": {
+        "user-1": true
       }
     }
   },
-  "assignments": {
-    "assignment-1": {
-      "name": "Industry research",
-      "deadline": "2019-01-01",
-      "questions": [
-        {
-          "title": "What's your name?",
-          "type": "short-text",
-          "answers": [
-            "Xu",
-            "Li"
-          ]
-        },
-        {
-          "title": "Today is Sunday!",
-          "type": "single",
-          "options": [
-            {
-              "option": "Yes"
-            },
-            {
-              "option": "No"
-            }
-          ],
-          "answers": [
-            "Yes"
-          ]
-        }
-      ],
-      "submissions": {
-        "submission-1": true
-      }
-    }
-  },
-  "quizSubmissions": {
+  "submissions": {
     "submission-1": {
       "createdAt": "...",
       "createdBy": "user-1",
       "score": 5,
-      "answers": [
-        "Xu",
-        "Yes"
-      ],
-      "quiz": {
-        "id": "quiz-1"
+      "answers": {
+        "question-1": "Xu",
+        "question-2": "Yes"
       },
-      "comments": {
-        "comment-1": {
-          "user": {
-            "uid": "user-1",
-            "displayName": "Xu Li",
-            "photoURL": "..."
-          },
-          "comment": "Awesome!",
-          "createdAt": "...",
-          "createdBy": "user-1"
-        }
+      "subject": {
+        "id": "quiz-1",
+        "name": "Quiz name",
+        "type": "quiz"
       },
       "user": {
         "uid": "user-1",
         "displayName": "Xu Li",
         "photoURL": "..."
+      },
+      "comments": {
+        "comment-1": true
       }
     }
   },
-
-  "userQuizzes": {
-    "user-1": {
-      "quiz-1": {
-        "name": "Quiz 1",
-        "lastSubmissionID": "submission-1",
-        "lastSubmissionScore": 5,
-        "submissions": {
-          "submission-1": true
-        }
-      }
+  "comments": {
+    "comment-1": {
+      "user": {
+        "uid": "user-1",
+        "displayName": "Xu Li",
+        "photoURL": "..."
+      },
+      "comment": "Awesome!",
+      "createdAt": "...",
+      "createdBy": "user-1",
+      "subject": {
+        "id": "quiz-1",
+        "name": "Quiz name",
+        "type": "quiz"
+      },
+      "submissionID": "submission-1"
     }
   }
 }

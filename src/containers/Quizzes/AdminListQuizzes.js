@@ -92,17 +92,11 @@ const AdminListQuizzes = ({classes}) => {
             <h2>Current Quizzes</h2>
             <p>The table below lists current quizzes [to do: show number of submissions in column, average score]</p>
             <Grid container spacing={16}>
-                <Grid item md={selectedQuizID ? 3 : 12} xs={12}>
+                <Grid item md={12} xs={12}>
                     <Paper className={classes.list}>
-                        <QuizList onQuizSelected={handleQuizSelected} hideStats={selectedQuizID ? true : false}/>
+                        <QuizList showUnpublished onQuizSelected={handleQuizSelected}/>
                     </Paper>
                 </Grid>
-
-                {selectedQuizID != '' && (
-                    <Grid item md={9} xs={12}>
-                        <QuizDetail quizID={selectedQuizID}/>
-                    </Grid>
-                )}
             </Grid>
         </main>
     );

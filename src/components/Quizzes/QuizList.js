@@ -1,15 +1,12 @@
 import React from "react";
 import {compose} from "redux";
 import {connect} from "react-redux";
-import {firebaseConnect, getVal, isEmpty, isLoaded} from "react-redux-firebase";
+import {firebaseConnect, getVal, isEmpty, isLoaded, populate} from "react-redux-firebase";
 import {Typography, withStyles} from "@material-ui/core";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
 import CircularProgress from "@material-ui/core/CircularProgress";
-import QuizListItem from './QuizListItem';
+import QuizListGridView from "./QuizListGridView";
+import QuizListTableView from "./QuizListTableView";
+import {push} from "connected-react-router";
 
 const styles = theme => ({
     content: {
@@ -25,6 +22,7 @@ const styles = theme => ({
         overflowX: 'auto',
         marginBottom: theme.spacing.unit * 3,
     },
+
     table: {
         minWidth: 700,
     },
@@ -35,60 +33,29 @@ const styles = theme => ({
     },
 });
 
-const CustomTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: '#ff4081',
-        color: 'white',
-    },
-    body: {
-        fontSize: 18,
-        fontWeightLight: 300,
-    },
-}))(TableCell);
+const QuizList = props => {
+    const {classes, user, quizzes, view, isAssignment, onQuizSelected, pushToHistory} = props;
 
-const QuizList = function (props) {
-    const {classes, user, quizzes, submissions, isAssignment} = props;
+    function handleQuizSelected(quizID) {
+        if (onQuizSelected) {
+            onQuizSelected(quizID);
+        } else {
+            pushToHistory(`/quizzes/${quizID}`);
+        }
+    }
 
     let content = "";
 
-    if (!isLoaded(quizzes) || (user && !isLoaded(submissions))) {
-        content = <CircularProgress size={20}/>;
+    if (!isLoaded(quizzes) || !isLoaded(user)) {
+        content = <CircularProgress size={20}/>
+    } else if (isEmpty(quizzes)) {
+        content = <Typography variant="body1">There is nothing here.</Typography>;
     } else {
+        const View = view && view == 'grid' ? QuizListGridView : QuizListTableView;
 
-        const publishedQuizzes = {};
-
-        if (!isEmpty(quizzes)) {
-            Object.keys(quizzes).map(key => {
-                const quiz = quizzes[key];
-                if (!user || !("published" in quiz) || quiz.published) {
-                    publishedQuizzes[key] = quiz;
-                }
-            });
-        }
-
-        if (isEmpty(publishedQuizzes)) {
-            content = <Typography variant="body1">There are no quizzes.</Typography>;
-        } else {
-            content = (
-
-                <Table className={classes.table}>
-                    <TableHead>
-                        <TableRow>
-                            <CustomTableCell>#</CustomTableCell>
-                            <CustomTableCell align="left">Topic</CustomTableCell>
-                            <CustomTableCell align="left">Due</CustomTableCell>
-                            <CustomTableCell align="left">Score</CustomTableCell>
-                            <CustomTableCell align="left">Comments</CustomTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {Object.keys(publishedQuizzes).map(key => (
-                            <QuizListItem isAssignment={isAssignment} key={key} quizID={key} quiz={publishedQuizzes[key]} {...props}/>
-                        ))}
-                    </TableBody>
-                </Table>
-            );
-        }
+        content = <View quizzes={quizzes} user={user} isAssignment={isAssignment}
+                        submissions={isAssignment ? user.assignmentSubmissions : user.quizSubmissions}
+                        onQuizSelected={handleQuizSelected}/>;
     }
 
     return content;
@@ -96,19 +63,40 @@ const QuizList = function (props) {
 
 export default compose(
     connect(
-        (state, {user, isAssignment}) => {
+        (state, {user, showUnpublished, isAssignment}) => {
             const quizPrefix = isAssignment ? "assignments" : "quizzes";
-            const submissionPrefix = isAssignment ? "userAssignments" : "userQuizzes";
+            const data = {};
 
-            const data = {
-                quizzes: getVal(state.firebase.data, quizPrefix)
-            };
+            let quizzes = getVal(state.firebase.data, quizPrefix);
 
-            if (user) {
-                data['submissions'] = getVal(state.firebase.data, `${submissionPrefix}/${user.uid}`)
+            // filter out unpublished quizzes
+            if (isLoaded(quizzes) && !isEmpty(quizzes)) {
+                if (typeof showUnpublished == 'undefined' || !showUnpublished) {
+                    quizzes = Object.keys(quizzes)
+                        .filter(key => quizzes[key].published)
+                        .reduce((obj, key) => {
+                            return {
+                                ...obj,
+                                [key]: quizzes[key]
+                            }
+                        }, {});
+                }
+            }
+
+            data['quizzes'] = quizzes;
+
+            // get all the quiz submissions
+            if (user && isLoaded(user) && !isEmpty(user)) {
+                const submissionsPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
+
+                data['user'] = populate(state.firebase, `users/${user.uid}`, [
+                    `${submissionsPrefix}:${submissionsPrefix}`
+                ]);
             }
 
             return data;
+        }, {
+            pushToHistory: push
         }
     ),
 
@@ -118,12 +106,14 @@ export default compose(
             queryParams: ['orderByKey']
         }];
 
-        const submissionPrefix = isAssignment ? "userAssignments" : "userQuizzes";
+        const submissionsPrefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
 
-        if (user) {
+        if (user && isLoaded(user) && !isEmpty(user)) {
             queries.push({
-                path: `${submissionPrefix}/${user.uid}`
-            })
+                path: `users/${user.uid}`
+            }, {
+                path: `${submissionsPrefix}`
+            });
         }
 
         return queries;

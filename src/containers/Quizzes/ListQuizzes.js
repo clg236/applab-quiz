@@ -1,17 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {firebaseConnect, getVal, isLoaded} from 'react-redux-firebase';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import {firebaseConnect, getVal, withFirebase} from 'react-redux-firebase';
 import {withStyles} from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import {QuestionsForm} from "../../components/Questions";
 import {QuizList} from "../../components/Quizzes";
-import {CommentForm, CommentList} from "../../components/Comments";
-import classnames from "classnames";
-
 
 
 const styles = theme => ({
@@ -42,56 +35,15 @@ const styles = theme => ({
 
 
 const ListQuizzes = ({classes, user}) => {
-
-    let [selectedQuizID, setSelectedQuizID] = useState('');
-    let [submissionID, setSubmissionID] = useState('');
-
-    function handleQuizSelected(quizID, submissionID) {
-        if (selectedQuizID && quizID == selectedQuizID) {
-            setSelectedQuizID('');
-            setSubmissionID('');
-        } else {
-            setSelectedQuizID(quizID);
-            setSubmissionID(submissionID);
-        }
-    }
-
     return (
         <main className={classes.content}>
-            <Typography>
-                <h1>quizzes</h1>
-                <p>The table below lists all current and past quizzes completed by students</p>
-            </Typography>
+            <h1>quizzes</h1>
+            <p>The table below lists all current and past quizzes assigned to you</p>
 
-            <Grid container direction={'row'} justify={'center'} alignItems={'stretch'} >
-            
-                <Grid item md={14} xs={16}>
-                    <Paper className={classes.list}>
-                        <QuizList user={user} onQuizSelected={handleQuizSelected}/>
-                    </Paper>
+            <Grid container direction={'row'} justify={'center'} alignItems={'stretch'}>
+                <Grid item>
+                    <QuizList user={user}/>
                 </Grid>
-            </Grid>
-            <Grid container spacing={16} direction={'row'} justify={'center'} alignItems={'stretch'}>
-                {selectedQuizID && (
-                    <Grid item md={11} xs={16}>
-                        <Paper className={classes.paperPadding}>
-                            <QuestionsForm quizID={selectedQuizID} submissionID={submissionID}/>
-                        </Paper>
-
-                        {submissionID && (
-                            <Paper className={classnames(classes.comments, classes.paperPadding)}>
-                                <Typography variant="h5" gutterBottom component="h3">Comments</Typography>
-                                <CommentList submissionID={submissionID}/>
-
-                                <div className={classes.commentForm}>
-                                    <Typography variant="h6" gutterBottom component="h4">Leave a comment</Typography>
-                                    <CommentForm submissionID={submissionID}/>
-                                </div>
-                            </Paper>
-                        )}
-                    </Grid>
-                )}
-
             </Grid>
         </main>
     );
@@ -99,13 +51,22 @@ const ListQuizzes = ({classes, user}) => {
 
 
 export default compose(
+    withFirebase,
+
     connect(
-        (state) => {
-            return ({
-                user: state.firebase.auth
-            });
-        }
+        ({firebase}) => ({
+            uid: firebase.auth.uid,
+            user: getVal(firebase.data, `users/${firebase.auth.uid}`)
+        })
     ),
+
+    firebaseConnect(props => {
+        const {uid} = props;
+
+        return [{
+            path: `users/${uid}`
+        }]
+    }),
 
     withStyles(styles)
 )(ListQuizzes);

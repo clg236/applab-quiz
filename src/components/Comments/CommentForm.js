@@ -1,9 +1,9 @@
 import React from 'react';
 import {compose} from 'redux';
-import {Grid, Typography, withStyles} from "@material-ui/core";
+import {CircularProgress, Grid, Typography, withStyles} from "@material-ui/core";
 import {Field, withFormik} from "formik";
 import Button from "@material-ui/core/Button";
-import {getVal, withFirebase} from "react-redux-firebase";
+import {firebaseConnect, getVal, Profile as isEmpty, Profile as isLoaded, withFirebase} from "react-redux-firebase";
 import {withSnackbar} from 'notistack';
 import {Editor} from "../Form";
 import {connect} from "react-redux";
@@ -11,8 +11,14 @@ import {connect} from "react-redux";
 const styles = theme => ({});
 
 
-const CommentForm = (props) => {
-    const {classes, handleSubmit, values, errors, isSubmitting, isValid} = props;
+const CommentForm = props => {
+    const {classes, submission, handleSubmit, isSubmitting, isValid} = props;
+
+    if (!isLoaded(submission)) {
+        return <CircularProgress/>;
+    } else if (isEmpty(submission)) {
+        return <Typography variant="body1">There is no submission.</Typography>;
+    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -37,15 +43,25 @@ const CommentForm = (props) => {
 };
 
 export default compose(
-    withFirebase,
-
     withSnackbar,
 
+    withFirebase,
+
     connect(
-        (state) => ({
-            user: state.firebase.auth
+        ({firebase}, {submissionID, isAssignment}) => ({
+            auth: firebase.auth,
+            submission: getVal(
+                firebase.data,
+                isAssignment ? `assignmentSubmissions/${submissionID}` : `quizSubmissions/${submissionID}`
+            )
         })
     ),
+
+    firebaseConnect(({submissionID, isAssignment}) => ([
+        {
+            path: isAssignment ? `assignmentSubmissions/${submissionID}` : `quizSubmissions/${submissionID}`
+        }
+    ])),
 
     withFormik({
 
@@ -66,16 +82,29 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {user: {uid, displayName, photoURL}, submissionID, isAssignment, firebase: {pushWithMeta}, enqueueSnackbar}} = actions;
+            const {
+                props: {
+                    auth: {uid, displayName, photoURL},
+                    submissionID,
+                    submission,
+                    isAssignment,
+                    firebase: {pushWithMeta, set},
+                    enqueueSnackbar
+                }
+            } = actions;
 
-            const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
+            const commentsPrefix = isAssignment ? "assignmentComments" : "quizComments";
 
-            pushWithMeta(`assignmentSubmissions/${submissionID}/comments`, {
+            pushWithMeta(commentsPrefix, {
                 comment: values.comment,
-                user: {uid, displayName, photoURL}
+                user: {uid, displayName, photoURL},
+                submissionID,
+                quiz: submission.quiz
             }).then(() => {
                 actions.setSubmitting(false);
                 enqueueSnackbar("Submitted!");
+
+                set(`users/${uid}/${commentsPrefix}`)
             });
         }
     }),

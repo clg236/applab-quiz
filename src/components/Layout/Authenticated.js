@@ -6,10 +6,10 @@ import DrawerComponent from './Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBarComponent from './AppBar';
 import * as ROUTES from '../../constants/routes';
-import HomePage from '../Home';
+import HomePage from '../../containers/Home';
 import {Route, Switch} from 'react-router-dom';
 
-import {AdminCreateQuizPage, AdminEditQuizPage, AdminListQuizzesPage, ListQuizzesPage} from "../../containers/Quizzes";
+import {AdminCreateQuizPage, AdminEditQuizPage, AdminListQuizzesPage, ListQuizzesPage, ViewQuizPage} from "../../containers/Quizzes";
 import {AdminCreateAssignmentPage, AdminEditAssignmentPage, AdminListAssignmentsPage, ListAssignmentsPage} from "../../containers/Assignments";
 import {AdminListUsersPage, UserDetailPage} from "../../containers/Users";
 
@@ -49,6 +49,9 @@ function AuthenticatedLayout({classes, location}) {
                     <Route exact path={ROUTES.HOME} component={HomePage}/>
                     <Route exact path={ROUTES.LIST_QUIZZES} component={ListQuizzesPage}/>
                     <Route exact path={ROUTES.LIST_ASSIGNMENTS} component={ListAssignmentsPage}/>
+
+                    <Route path={ROUTES.VIEW_QUIZ} component={ViewQuizPage}/>
+                    <Route path={ROUTES.VIEW_ASSIGNMENT} component={ViewQuizPage}/>
 
                     <Route path={ROUTES.VIEW_QUIZ_SUBMISSION} component={QuizSubmissionDetailPage}/>
                     <Route path={ROUTES.VIEW_ASSIGNMENT_SUBMISSION} component={AssignmentSubmissionDetailPage}/>

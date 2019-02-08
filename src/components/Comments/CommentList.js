@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {firebaseConnect, getVal, isEmpty, isLoaded} from 'react-redux-firebase';
+import {firebaseConnect, getVal, isEmpty, isLoaded, populate} from 'react-redux-firebase';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from "@material-ui/core";
 import {withSnackbar} from "notistack";
@@ -18,6 +18,8 @@ const styles = theme => ({
 
 const CommentList = (props) => {
     const {classes, submission, isAssignment} = props;
+
+    console.log(submission);
 
     let content = "";
 
@@ -50,9 +52,13 @@ export default compose(
         (state, props) => {
             const {submissionID, isAssignment} = props;
             const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
+            const commentsPrefix = isAssignment ? "assignmentComments" : "quizComments";
 
+            console.log("connect", props);
             return {
-                submission: getVal(state.firebase.data, `${prefix}/${submissionID}`),
+                submission: populate(state.firebase.data, `${prefix}/${submissionID}`, [
+                    `comments:${commentsPrefix}`
+                ]),
             };
         }
     ),
@@ -60,10 +66,22 @@ export default compose(
     firebaseConnect(props => {
         const {submissionID, isAssignment} = props;
         const prefix = isAssignment ? "assignmentSubmissions" : "quizSubmissions";
+        const commentsPrefix = isAssignment ? "assignmentComments" : "quizComments";
+        console.log("firebaseConnect", props, [
+            {
+                path: `${prefix}/${submissionID}`
+            },
+            {
+                path: commentsPrefix
+            }
+        ]);
 
         return [
             {
                 path: `${prefix}/${submissionID}`
+            },
+            {
+                path: commentsPrefix
             }
         ];
     }),

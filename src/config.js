@@ -15,12 +15,25 @@ const reactReduxFirebaseConfig = {
     enableLogging: false,
     
     profileFactory: user => ({
+        uid: user.uid,
         email: user.email,
         displayName: user.displayName,
         photoURL: user.photoURL,
         role: ROLES.ROLE_USER
     })
-
 };
+
+const apiPrefixes = {
+    quiz: {
+        quizzes: "quizzes",
+        userSubmissions: "userQuizzes",
+        quizSubmissions: "quizSubmissions",
+    },
+
+    assignment: {
+
+    }
+
+}
 
 export { firebaseConfig, reactReduxFirebaseConfig };
