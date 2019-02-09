@@ -104,10 +104,8 @@ export default compose(
 
         return [
             {
-                path: `quizzes/${quizID}`
-            },
-            {
-                path: "submissions"
+                path: `quizzes/${quizID}`,
+                populates: ["submissions:submissions"]
             }
         ];
     }),

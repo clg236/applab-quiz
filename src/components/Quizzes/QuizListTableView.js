@@ -13,7 +13,22 @@ const styles = theme => ({
 });
 
 const QuizListGridView = props => {
-    const {classes, quizzes, quizURL} = props;
+    const {classes, user, quizzes, quizURL, } = props;
+
+    function getSubmission(quizID) {
+        if (!user || !user.submissions || Object.keys(user.submissions).length === 0) {
+            return null;
+        }
+
+        const submission = Object.values(user.submissions)
+            .filter(submission => submission.subject && submission.subject.id == quizID);
+
+        if (submission.length === 0) {
+            return null;
+        }
+
+        return submission[0];
+    }
 
     return (
         <Table>
@@ -27,11 +42,13 @@ const QuizListGridView = props => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {quizzes && Object.keys(quizzes).map(key => (
+                {quizzes && Object.keys(quizzes).map((key, index) => (
                     <QuizListTableViewItem
                         key={key}
+                        index={index}
                         quizID={key}
                         quiz={quizzes[key]}
+                        submission={getSubmission(key)}
                         quizURL={quizURL}
                     />
                 ))}

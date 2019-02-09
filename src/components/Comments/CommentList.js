@@ -65,10 +65,8 @@ export default compose(
 
         return [
             {
-                path: `submissions/${submissionID}`
-            },
-            {
-                path: "comments"
+                path: `submissions/${submissionID}`,
+                populates: ["comments:comments"]
             }
         ];
     }),
