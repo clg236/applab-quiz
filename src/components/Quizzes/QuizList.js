@@ -50,7 +50,7 @@ const QuizList = props => {
     if (!isLoaded(quizzes) || (user && !isLoaded(user))) {
         content = <CircularProgress size={20}/>
     } else if (isEmpty(quizzes)) {
-        content = <Typography variant="body1">There is nothing here.</Typography>;
+        content = <Typography variant="body1">There are no current quizzes.</Typography>;
     } else {
         const View = view && view == 'grid' ? QuizListGridView : QuizListTableView;
 

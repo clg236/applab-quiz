@@ -5,7 +5,7 @@ import {withStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import {QuizList} from "../../components/Quizzes";
-
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     content: {
@@ -38,7 +38,7 @@ const ListAssignments = ({classes, user}) => {
 
     return (
         <main className={classes.content}>
-            <h1>assignments</h1>
+            <Typography variant="h5" component="h6">Your Assignments</Typography>
             <p>The table below lists all current and past assignments assigned to you</p>
 
             <Grid container direction={'row'} justify={'center'} alignItems={'stretch'}>

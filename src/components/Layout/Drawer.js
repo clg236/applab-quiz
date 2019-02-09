@@ -18,7 +18,7 @@ import ACTIONS from '../../actions';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const DRAWER_WIDTH = 200;
+const DRAWER_WIDTH = 260;
 
 const styles = theme => ({
     toolbarIcon: {
@@ -127,7 +127,7 @@ function DrawerComponent(props) {
                             <ListItemIcon className={classes.drawerIcon}>
                                 <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
                             </ListItemIcon>
-                            <ListItemText primary="create and manage"/>
+                            <ListItemText primary="quizzes" secondary="create and manage quizzes"/>
                         </ListItem>
                     </List>
                     <List>
@@ -135,7 +135,7 @@ function DrawerComponent(props) {
                             <ListItemIcon className={classes.drawerIcon}>
                                 <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
                             </ListItemIcon>
-                            <ListItemText primary="create and manage"/>
+                            <ListItemText primary="assignments" secondary="create and manage assignments"/>
                         </ListItem>
                     </List>
                 </>

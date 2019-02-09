@@ -31,6 +31,7 @@ const styles = theme => ({
     },
     card: {
         minWidth: 275,
+        marginBottom: 10
     },
     bullet: {
         display: 'inline-block',
@@ -59,7 +60,7 @@ const AdminListQuizzes = ({classes}) => {
 
     return (
         <main className={classes.content}>
-            <Typography variant="h4" component="h2">Create and Manage Quizzes</Typography>
+            <Typography variant="h5" component="h6">Create and Manage Quizzes</Typography>
             <p>Instructions, etc...</p>
             <Grid container spacing={16}>
                 <Grid item>
@@ -89,9 +90,7 @@ const AdminListQuizzes = ({classes}) => {
                     </Card>
                 </Grid>
             </Grid>
-
-            <h2>Current Quizzes</h2>
-            <p>The table below lists current quizzes [to do: show number of submissions in column, average score]</p>
+            <Typography variant="h5" component="h6">Current Quizzes</Typography>
             <Grid container spacing={16}>
                 <Grid item md={12} xs={12}>
                     <Paper className={classes.list}>
