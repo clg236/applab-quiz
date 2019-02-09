@@ -13,7 +13,10 @@ import {push} from "connected-react-router";
 const styles = theme => ({
     quizListGridViewItem: {
         width: 200,
-        height: 240
+        height: 140
+    },
+    title: {
+        textAlign: 'center',
     }
 });
 
@@ -30,18 +33,18 @@ const QuizListGridViewItem = props => {
         <Grid item>
             <Card className={classes.quizListGridViewItem}>
                 <CardContent>
-                    <Typography variant="h5" component="h3">
+                    <Typography className={classes.title} variant="h5" component="h4" gutterBottom>
                         {quiz.name}
                     </Typography>
 
-                    <Typography variant="body1">
-                        {quiz.deadline ? <Moment>{quiz.deadline}</Moment> : "No due date"}
+                    <Typography className={classes.title} variant="body1" >
+                        <strong>Due:</strong> {quiz.deadline ? <Moment>{quiz.deadline}</Moment> : "No due date"}
                     </Typography>
 
-                    <Typography variant="caption">{hasSubmission ? "completed" : "begin"}</Typography>
+                    <Typography className={classes.title} variant="caption">{hasSubmission ? "completed" : "not started"}</Typography>
                 </CardContent>
-                <CardActions>
-                    <Button size="small" onClick={handleClicked}>Learn more</Button>
+                <CardActions style={{justifyContent: 'center'}}>
+                    <Button size="small" onClick={handleClicked}>GO FORTH AND PROSPER!</Button>
                 </CardActions>
             </Card>
         </Grid>
