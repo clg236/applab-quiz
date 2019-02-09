@@ -72,7 +72,7 @@ const AdminListAssignments = ({classes}) => {
                         </CardContent>
                         <CardActions>
                             <Button size="small" component={Link} to={ROUTES.CREATE_ASSIGNMENT}>
-                                <FontAwesomeIcon icon="plus-square" size="lg" fixedWidth/> Create an assignment
+                                <FontAwesomeIcon icon="plus-square" size="lg" fixedWidth/>Create an assignment
                             </Button>
                         </CardActions>
                     </Card>
@@ -92,7 +92,7 @@ const AdminListAssignments = ({classes}) => {
                     </Card>
                 </Grid>
             </Grid>
-            <Typography variant="h5" component="h6">Current Assignmentss</Typography>
+            <Typography variant="h5" component="h6" gutterBottom>All Assignments</Typography>
             <Grid container spacing={16}>
                 <Grid item md={12} xs={12}>
                     <Paper className={classes.list}>

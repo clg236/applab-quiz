@@ -14,7 +14,7 @@ const Home = props => {
 
     return (
         <main>
-            <Typography component="h2" variant="h4">Current Quizzes</Typography>
+            <Typography component="h2" variant="h4" gutterBottom>Current Quizzes</Typography>
 
             <QuizList user={user} type="quiz" view="grid"/>
         </main>

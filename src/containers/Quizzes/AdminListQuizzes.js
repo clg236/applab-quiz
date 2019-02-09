@@ -17,6 +17,13 @@ import {UserIsAdmin} from "../../components/Auth";
 
 
 const styles = theme => ({
+    
+    attention: {
+        ...theme.typography.button,
+        backgroundColor: theme.palette.common.black,
+        padding: theme.spacing.unit,
+      },
+
     content: {
         flexGrow: 1,
         padding: theme.spacing.unit * 3,
@@ -60,14 +67,14 @@ const AdminListQuizzes = ({classes}) => {
 
     return (
         <main className={classes.content}>
-            <Typography variant="h5" component="h6">Create and Manage Quizzes</Typography>
-            <p>Instructions, etc...</p>
+            <Typography variant="h5" component="h6" gutterBottom>Create and Manage Quizzes</Typography>
             <Grid container spacing={16}>
                 <Grid item>
                     <Card className={classes.card}>
                         <CardContent>
-                            <Typography className={classes.title}>
-                                Create a quiz instructions...
+                            <Typography variant="h6">Create a quiz</Typography>
+                            <Typography variant="body1" gutterBottom>
+                            Click on the Create A Quiz button below to create a quiz.
                             </Typography>
                         </CardContent>
                         <CardActions>
@@ -79,9 +86,10 @@ const AdminListQuizzes = ({classes}) => {
                 <Grid item>
                     <Card className={classes.card}>
                         <CardContent>
-                            <Typography className={classes.title}>
-                                View statistics and cool graphs...
-                            </Typography>
+                        <Typography variant="h6">View Quiz Statistics</Typography>
+                        <Typography variant="body1" gutterBottom>
+                        Coming soon...
+                        </Typography>
                         </CardContent>
                         <CardActions>
                             <Button size="small" component={Link} to={ROUTES.CREATE_QUIZ}><FontAwesomeIcon
@@ -90,7 +98,7 @@ const AdminListQuizzes = ({classes}) => {
                     </Card>
                 </Grid>
             </Grid>
-            <Typography variant="h5" component="h6">Current Quizzes</Typography>
+            <Typography variant="h5" component="h6" gutterBottom>All Quizzes</Typography>
             <Grid container spacing={16}>
                 <Grid item md={12} xs={12}>
                     <Paper className={classes.list}>

@@ -49,7 +49,7 @@ const ViewQuiz = props => {
     if (!isLoaded(quiz) || (submissionID && !isLoaded(submission)) || (!submissionID && !isLoaded(user))) {
         content = <CircularProgress/>;
     } else if (isEmpty(quiz)) {
-        content = <Typography variant="body1">There are no current quizzes.</Typography>;
+        content = <Typography variant="body1" gutterBottom>There are no current quizzes.</Typography>;
     } else {
 
         if (!submissionID) {

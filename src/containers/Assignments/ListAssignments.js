@@ -39,7 +39,9 @@ const ListAssignments = ({classes, user}) => {
     return (
         <main className={classes.content}>
             <Typography variant="h5" component="h6">Your Assignments</Typography>
-            <p>The table below lists all current and past assignments assigned to you</p>
+            <Typography variant="body1" gutterBottom>
+            The table below lists all of your current assignments
+            </Typography>
 
             <Grid container direction={'row'} justify={'center'} alignItems={'stretch'}>
                 <Grid item md={12}>
