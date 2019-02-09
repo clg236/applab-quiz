@@ -10,6 +10,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import classNames from 'classnames';
 import React from 'react';
 import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 import {withFirebase} from 'react-redux-firebase';
 import {push} from 'connected-react-router';
 import {Link} from 'react-router-dom';
@@ -55,7 +56,7 @@ const styles = theme => ({
     icon: {
         fontSize: '32px !important',
         marginBottom: theme.spacing.unit
-      }
+    }
 });
 
 function DrawerComponent(props) {
@@ -99,46 +100,46 @@ function DrawerComponent(props) {
                         <ListItemIcon className={classes.drawerIcon}>
                             <FontAwesomeIcon icon="vial" size="sm" fixedWidth/>
                         </ListItemIcon>
-                        <ListItemText primary="quizzes" />
+                        <ListItemText primary="quizzes"/>
                     </ListItem>
                     <ListItem button component={props => <Link {...props} to={ROUTES.LIST_ASSIGNMENTS}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
                             <FontAwesomeIcon icon="scroll" size="sm" fixedWidth/>
                         </ListItemIcon>
-                        <ListItemText primary="assignments" />
+                        <ListItemText primary="assignments"/>
                     </ListItem>
                 </div>
             </List>
-            {/* {profile.role == ROLES.ROLE_ADMIN &&  */}
-            <>
-                <Divider/>
-                <List>
-                    <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_USERS}/>}>
-                        <ListItemIcon className={classes.drawerIcon}>
-                                <FontAwesomeIcon icon="user-astronaut" fixedWidth />
-                        </ListItemIcon>
-                        <ListItemText primary="people"/>
-                        
-                    </ListItem>
-                </List>
-                <List>
-                    <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_QUIZZES}/>}>
-                        <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
-                        </ListItemIcon>
-                        <ListItemText primary="create and manage" />
-                    </ListItem>
-                </List>
-                <List>
-                    <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_ASSIGNMENTS}/>}>
-                        <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
-                        </ListItemIcon>
-                        <ListItemText primary="create and manage" />
-                    </ListItem>
-                </List>
-            </>
-            {/* } */}
+
+            {profile.role == ROLES.ROLE_ADMIN && (
+                <>
+                    <Divider/>
+                    <List>
+                        <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_USERS}/>}>
+                            <ListItemIcon className={classes.drawerIcon}>
+                                <FontAwesomeIcon icon="user-astronaut" fixedWidth/>
+                            </ListItemIcon>
+                            <ListItemText primary="people"/>
+                        </ListItem>
+                    </List>
+                    <List>
+                        <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_QUIZZES}/>}>
+                            <ListItemIcon className={classes.drawerIcon}>
+                                <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
+                            </ListItemIcon>
+                            <ListItemText primary="create and manage"/>
+                        </ListItem>
+                    </List>
+                    <List>
+                        <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_ASSIGNMENTS}/>}>
+                            <ListItemIcon className={classes.drawerIcon}>
+                                <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
+                            </ListItemIcon>
+                            <ListItemText primary="create and manage"/>
+                        </ListItem>
+                    </List>
+                </>
+            )}
 
             <Divider/>
             <List>
@@ -147,7 +148,7 @@ function DrawerComponent(props) {
                         <ListItemIcon className={classes.drawerIcon}>
                             <FontAwesomeIcon icon="sign-out-alt" size="sm" fixedWidth/>
                         </ListItemIcon>
-                        <ListItemText primary="sign out" />
+                        <ListItemText primary="sign out"/>
                     </ListItem>
                 </div>
             </List>

@@ -5,6 +5,7 @@ import {withStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import {UserList} from "../../components/Users";
+import {UserIsAdmin} from "../../components/Auth";
 
 
 const styles = theme => ({
@@ -43,5 +44,7 @@ const AdminListUsers = ({classes}) => {
 
 
 export default compose(
+    UserIsAdmin,
+
     withStyles(styles)
 )(AdminListUsers);

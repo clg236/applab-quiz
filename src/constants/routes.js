@@ -24,4 +24,4 @@ export const VIEW_USER = '/users/:id';
 export const ADMIN_LIST_QUIZZES = '/admin/quizzes';
 export const ADMIN_LIST_ASSIGNMENTS = '/admin/assignments';
 
-export const ADMIN_USERS = '/admin/users';
+export const ADMIN_LIST_USERS = '/admin/users';

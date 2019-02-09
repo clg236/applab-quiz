@@ -13,6 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import {EditQuiz, QuizList} from "../../components/Quizzes";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {UserIsAdmin} from "../../components/Auth";
 
 
 const styles = theme => ({
@@ -107,5 +108,7 @@ const AdminListAssignments = ({classes}) => {
 
 
 export default compose(
+    UserIsAdmin,
+
     withStyles(styles)
 )(AdminListAssignments);

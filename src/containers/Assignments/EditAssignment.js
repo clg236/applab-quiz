@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import {compose} from "redux";
 import {withStyles} from "@material-ui/core";
 import {EditQuiz} from "../../components/Quizzes"
+import {UserIsAdmin} from "../../components/Auth";
 
 const styles = theme => ({
     root: {
@@ -27,5 +28,7 @@ const EditAssignment = props => {
 
 
 export default compose(
+    UserIsAdmin,
+
     withStyles(styles)
 )(EditAssignment);

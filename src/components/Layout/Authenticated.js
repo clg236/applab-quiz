@@ -13,8 +13,6 @@ import {CreateQuizPage, EditQuizPage, AdminListQuizzesPage, ListQuizzesPage, Vie
 import {CreateAssignmentPage, EditAssignmentPage, AdminListAssignmentsPage, ListAssignmentsPage, ViewAssignmentPage} from "../../containers/Assignments";
 import {AdminListUsersPage, UserDetailPage} from "../../containers/Users";
 
-import {QuizSubmissionDetailPage, AssignmentSubmissionDetailPage} from "../../containers/Submissions";
-
 import logo from "../../img/logo.png"
 
 const styles = theme => ({
@@ -59,16 +57,15 @@ function AuthenticatedLayout({classes, location}) {
                     <Route path={ROUTES.Edit_ASSIGNMENT} component={EditAssignmentPage}/>
                     <Route path={ROUTES.VIEW_ASSIGNMENT} component={ViewAssignmentPage}/>
 
-                    <Route path={ROUTES.VIEW_QUIZ_SUBMISSION} component={QuizSubmissionDetailPage}/>
-                    <Route path={ROUTES.VIEW_ASSIGNMENT_SUBMISSION} component={AssignmentSubmissionDetailPage}/>
-
+                    <Route path={ROUTES.VIEW_QUIZ_SUBMISSION} component={ViewQuizPage}/>
+                    <Route path={ROUTES.VIEW_ASSIGNMENT_SUBMISSION} component={ViewAssignmentPage}/>
 
                     <Route exact path={ROUTES.ADMIN_LIST_QUIZZES} component={AdminListQuizzesPage}/>
                     <Route path={ROUTES.Edit_QUIZ} component={EditQuizPage}/>
 
                     <Route exact path={ROUTES.ADMIN_LIST_ASSIGNMENTS} component={AdminListAssignmentsPage}/>
 
-                    <Route exact path={ROUTES.ADMIN_USERS} component={AdminListUsersPage}/>
+                    <Route exact path={ROUTES.ADMIN_LIST_USERS} component={AdminListUsersPage}/>
                     <Route path={ROUTES.VIEW_USER} component={UserDetailPage}/>
 
                     <Route render={() => (<div>404</div>)}/>
