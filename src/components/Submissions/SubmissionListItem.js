@@ -9,17 +9,15 @@ import TableCell from "../Form/TableCell";
 
 const SubmissionListItem = props => {
 
-    const {submission, type, onDeleteSubmission} = props;
+    const {submissionID, submission, type, onDeleteSubmission} = props;
 
     function handleDeleteClicked() {
-        onDeleteSubmission && onDeleteSubmission(submission);
+        onDeleteSubmission && onDeleteSubmission(submissionID);
     }
 
-    console.log(props);
-
     const link = type == 'quiz'
-        ? `/quizzes/${submission.subject.id}/submissions/${submission.id}`
-        : `/assignments/${submission.subject.id}/submissions/${submission.id}`;
+        ? `/quizzes/${submission.subject.id}/submissions/${submissionID}`
+        : `/assignments/${submission.subject.id}/submissions/${submissionID}`;
 
     return (
         <TableRow>

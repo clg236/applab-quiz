@@ -19,21 +19,27 @@ const styles = theme => ({});
 const SubmissionList = props => {
     const {classes, enqueueSnackbar, firebase: {remove}, quiz, type} = props;
 
-    console.log(props);
+    function onDeleteSubmission(submissionID) {
+        if (!quiz.submissions || Object.keys(quiz.submissions).length === 0) {
+            return ;
+        }
 
-    function onDeleteSubmission(submission) {
+        const submission = quiz.submissions[submissionID];
+        if (!submission || typeof submission != 'object') {
+            return ;
+        }
+
         const uid = submission.user.uid;
-        const quizID = submission.quiz.id;
+        const quizID = submission.subject.id;
 
         Promise.all([
-            remove(`submissions/${submission.id}`),
+            remove(`submissions/${submissionID}`),
             remove(`users/${uid}/quizzes/${quizID}`),
-            remove(`users/${uid}/submissions/${quizID}`),
-            remove(`quizzes/${quizID}/submissions/${submission.id}`)
+            remove(`users/${uid}/submissions/${submissionID}`),
+            remove(`quizzes/${quizID}/submissions/${submissionID}`)
         ]).then(() => {
             enqueueSnackbar("Deleted!");
         });
-
     }
 
     let content = "";
@@ -55,13 +61,18 @@ const SubmissionList = props => {
                 </TableHead>
 
                 <TableBody>
-                    {Object.keys(quiz.submissions).map(key => (
-                        <SubmissionListItem
-                            key={key}
-                            type={type}
-                            submission={quiz.submissions[key]}
-                            onDeleteSubmission={onDeleteSubmission}/>
-                    ))}
+                    {Object.keys(quiz.submissions).map(key => {
+                        if (quiz.submissions[key] && typeof quiz.submissions[key] == 'object') {
+                            return (
+                                <SubmissionListItem
+                                    key={key}
+                                    type={type}
+                                    submissionID={key}
+                                    submission={quiz.submissions[key]}
+                                    onDeleteSubmission={onDeleteSubmission}/>
+                            );
+                        }
+                    })}
                 </TableBody>
             </Table>
         );
@@ -83,7 +94,6 @@ export default compose(
             return {
                 quiz: populate(state.firebase, `quizzes/${quizID}`, [
                     "submissions:submissions"
-
                 ]),
             };
         }

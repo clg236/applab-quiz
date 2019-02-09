@@ -31,9 +31,11 @@ const CommentList = (props) => {
         } else {
             content = (
                 <List>
-                    {Object.keys(submission.comments).map((key) => (
-                        <CommentListItem key={key} comment={submission.comments[key]}/>
-                    ))}
+                    {Object.keys(submission.comments).map((key) => {
+                        if (submission.comments[key] && typeof submission.comments[key] == 'object') {
+                            return <CommentListItem key={key} comment={submission.comments[key]}/>;
+                        }
+                    })}
                 </List>
             );
         }

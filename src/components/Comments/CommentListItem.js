@@ -14,13 +14,13 @@ const CommentListItem = (props) => {
     return (
         <ListItem alignItems="flex-start">
             <ListItemAvatar>
-                <Avatar alt={comment.user.displayName} src={comment.user.photoURL} />
+                <Avatar alt={comment.user.displayName} src={comment.user.photoURL}/>
             </ListItemAvatar>
             <ListItemText
                 disableTypography
                 primary={`${comment.user.displayName} at ${submissionDate}`}
                 secondary={(
-                    <React.Fragment >
+                    <React.Fragment>
                         <div dangerouslySetInnerHTML={{__html: comment.comment}}></div>
                     </React.Fragment>
                 )}

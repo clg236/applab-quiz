@@ -16,7 +16,7 @@ const Home = props => {
         <main>
             <Typography component="h2" variant="h4">Current Quizzes</Typography>
 
-            <QuizList user={user} view="grid"/>
+            <QuizList user={user} type="quiz" view="grid"/>
         </main>
     );
 };
