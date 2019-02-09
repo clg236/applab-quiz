@@ -6,11 +6,12 @@ import {TableCell} from "../Form";
 import {compose} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
+import Moment from "react-moment";
 
 const styles = theme => ({});
 
 const QuizListTableViewItem = props => {
-    const {classes, quizID, quiz, quizURL, pushToHistory} = props;
+    const {classes, quizID, quiz, submission, quizURL, index, pushToHistory} = props;
 
     function handleClicked() {
         if (quizURL) {
@@ -21,19 +22,19 @@ const QuizListTableViewItem = props => {
     return (
         <TableRow>
             <TableCell align="left">
-                1
+                {index + 1}
             </TableCell>
             <TableCell align="left">
                 <MuiLink href={'javascript:;'} onClick={handleClicked}>{quiz.name}</MuiLink>
             </TableCell>
             <TableCell align="left">
-                2/17/2019
+                {quiz.deadline && <Moment format="MM/DD/YYYY HH:mm">{quiz.deadline}</Moment>}
             </TableCell>
             <TableCell align="left">
-                10/10
+                {submission ? submission.score : 0}/{quiz.questions ? quiz.questions.length : 0}
             </TableCell>
             <TableCell align="left">
-                [link to comments]
+                {submission && <MuiLink href={'javascript:;'} onClick={handleClicked}>Comments</MuiLink>}
             </TableCell>
         </TableRow>
     )

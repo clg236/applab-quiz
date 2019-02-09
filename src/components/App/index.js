@@ -10,6 +10,7 @@ import {SnackbarProvider} from 'notistack';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faUserAstronaut, faQuestion, faHome, faSignOutAlt, faVial, faPlusSquare, faScroll, faChartLine} from '@fortawesome/free-solid-svg-icons';
+import Moment from 'react-moment';
 
 const font = "'Lato', sans-serif"; 
 
@@ -41,6 +42,9 @@ const theme = createMuiTheme({
         "fontWeightMedium": 500
        }
 });
+
+Moment.globalFormat = 'MM/DD/YYYY';
+
 
 // main App component
 function App() {

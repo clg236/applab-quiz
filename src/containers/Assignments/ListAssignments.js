@@ -42,7 +42,7 @@ const ListAssignments = ({classes, user}) => {
             <p>The table below lists all current and past assignments assigned to you</p>
 
             <Grid container direction={'row'} justify={'center'} alignItems={'stretch'}>
-                <Grid item md={14} xs={16}>
+                <Grid item md={12}>
                     <Paper className={classes.list}>
                         <QuizList type="assignment" user={user} quizURL="/assignments/:id"/>
                     </Paper>

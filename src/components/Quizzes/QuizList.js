@@ -6,7 +6,6 @@ import {Typography, withStyles} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import QuizListGridView from "./QuizListGridView";
 import QuizListTableView from "./QuizListTableView";
-import {push} from "connected-react-router";
 
 const styles = theme => ({
     content: {
@@ -53,7 +52,6 @@ const QuizList = props => {
         content = <Typography variant="body1">There is nothing here.</Typography>;
     } else {
         const View = view && view == 'grid' ? QuizListGridView : QuizListTableView;
-
         content = <View quizzes={quizzes} user={user} quizURL={quizURL}/>;
     }
 
@@ -93,7 +91,7 @@ export default compose(
             data['quizzes'] = quizzes;
 
             // get all the quiz submissions
-            if (user && isLoaded(user) && !isEmpty(user)) {
+            if (user) {
                 data['user'] = populate(state.firebase, `users/${user.uid}`, [
                     'submissions:submissions'
                 ]);
@@ -109,11 +107,10 @@ export default compose(
             queryParams: ['orderByKey']
         }];
 
-        if (user && isLoaded(user) && !isEmpty(user)) {
+        if (user) {
             queries.push({
-                path: `users/${user.uid}`
-            }, {
-                path: `submissions`
+                path: `users/${user.uid}`,
+                populates: ['submissions:submissions']
             });
         }
 

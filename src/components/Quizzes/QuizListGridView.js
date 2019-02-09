@@ -10,15 +10,15 @@ const styles = theme => ({
 });
 
 const QuizListGridView = props => {
-    const {classes, quizzes, submissions, quizURL} = props;
+    const {classes, user, quizzes, quizURL} = props;
 
     function hasSubmission(quizID) {
-        if (!submissions) {
+        if (!user || !user.submissions || Object.keys(user.submissions).length === 0) {
             return false;
         }
 
-        return Object.values(submissions)
-            .filter(submission => submission.quiz && submission.quiz.id == quizID)
+        return Object.values(user.submissions)
+            .filter(submission => submission.subject && submission.subject.id == quizID)
             .length > 0;
     }
 

@@ -23,17 +23,4 @@ const reactReduxFirebaseConfig = {
     })
 };
 
-const apiPrefixes = {
-    quiz: {
-        quizzes: "quizzes",
-        userSubmissions: "userQuizzes",
-        quizSubmissions: "quizSubmissions",
-    },
-
-    assignment: {
-
-    }
-
-}
-
 export { firebaseConfig, reactReduxFirebaseConfig };
