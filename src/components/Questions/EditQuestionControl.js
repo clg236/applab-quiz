@@ -24,8 +24,8 @@ const EditQuestionControl = props => {
         <ExpansionPanel expanded={expanded}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                 <Typography>
-                    {questionIndex + 1}.
-                    {question.title ? question.title : "QUESTION TITLE"}
+                    {questionIndex + 1 }.
+                    {question.title ? question.title : "QUESTION TITLE"} 
                     {question.type ? `(${question.type.toUpperCase()})` : ''}
                 </Typography>
             </ExpansionPanelSummary>

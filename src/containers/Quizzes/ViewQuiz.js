@@ -27,7 +27,8 @@ const styles = theme => ({
     },
 
     form: {
-        marginTop: theme.spacing.unit * 2
+        marginTop: theme.spacing.unit * 2,
+        padding: theme.spacing.unit * 2
     },
 
     comments: {
