@@ -65,7 +65,7 @@ function ViewControl(props) {
                              dangerouslySetInnerHTML={{__html: question.description}}/>
                      )}
 
-                    <Editor field={field} form={form} disabled={!!submission || deadlinePassed} />
+                    <Editor field={field} form={form} withMargin disabled={!!submission || deadlinePassed} />
                 </FormControl>
             )}
             validate={validate}

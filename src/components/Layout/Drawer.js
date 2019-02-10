@@ -108,7 +108,6 @@ function DrawerComponent(props) {
                         </ListItemIcon>
                         <ListItemText primary="assignments"/>
                     </ListItem>
-                </div>
             </List>
 
             {profile.role == ROLES.ROLE_ADMIN && (
