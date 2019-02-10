@@ -89,7 +89,6 @@ function DrawerComponent(props) {
             </div>
             <Divider/>
             <List>
-                <div>
                     <ListItem button component={props => <Link {...props} to={ROUTES.HOME}/>}>
                         <ListItemIcon className={classes.drawerIcon}>
                             <FontAwesomeIcon icon="home" size="sm" fixedWidth/>
