@@ -5,8 +5,8 @@ import {firebaseConnect, getVal, withFirebase} from 'react-redux-firebase';
 import {withStyles} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {QuizList} from "../../components/Quizzes";
-import Paper from "./AdminListQuizzes";
 import Typography from '@material-ui/core/Typography';
+import Paper from "@material-ui/core/Paper";
 
 
 const styles = theme => ({
@@ -41,12 +41,12 @@ const ListQuizzes = ({classes, user}) => {
         <main className={classes.content}>
             <Typography variant="h5" component="h6" gutterBottom>Your Quizzes</Typography>
             <Typography variant="body1" gutterBottom>
-            The table below lists all of your current quizzes
+                The table below lists all of your current quizzes
             </Typography>
 
             <Grid container direction={'row'} justify={'center'} alignItems={'stretch'}>
-                <Grid item >
-                    <Paper square="true">
+                <Grid item>
+                    <Paper square>
                         <QuizList type="quiz" user={user} quizURL="/quizzes/:id"/>
                     </Paper>
                 </Grid>
