@@ -45,7 +45,7 @@ const ViewQuiz = props => {
     const {classes, user, quizID, quiz, submission, type} = props;
 
     let content = '';
-    let submissionID = props.submissions;
+    let submissionID = props.submissionID;
 
     if (!isLoaded(quiz) || (submissionID && !isLoaded(submission)) || (!submissionID && !isLoaded(user))) {
         content = <CircularProgress/>;
@@ -118,9 +118,9 @@ export default compose(
     ),
 
     firebaseConnect(props => {
-        const {uid, quizID, submissionID} = props;
+        const {uid, match: {params: {id, submissionID}}} = props;
         const queries = [{
-            path: `quizzes/${quizID}`
+            path: `quizzes/${id}`
         }];
 
         if (submissionID) {

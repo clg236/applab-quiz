@@ -50,15 +50,15 @@ function AuthenticatedLayout({classes, location}) {
 
                     <Route exact path={ROUTES.CREATE_QUIZ} component={CreateQuizPage}/>
                     <Route path={ROUTES.Edit_QUIZ} component={EditQuizPage}/>
+                    <Route path={ROUTES.VIEW_QUIZ_SUBMISSION} component={ViewQuizPage}/>
                     <Route path={ROUTES.VIEW_QUIZ} component={ViewQuizPage}/>
 
 
                     <Route exact path={ROUTES.CREATE_ASSIGNMENT} component={CreateAssignmentPage}/>
                     <Route path={ROUTES.Edit_ASSIGNMENT} component={EditAssignmentPage}/>
+                    <Route path={ROUTES.VIEW_ASSIGNMENT_SUBMISSION} component={ViewAssignmentPage}/>
                     <Route path={ROUTES.VIEW_ASSIGNMENT} component={ViewAssignmentPage}/>
 
-                    <Route path={ROUTES.VIEW_QUIZ_SUBMISSION} component={ViewQuizPage}/>
-                    <Route path={ROUTES.VIEW_ASSIGNMENT_SUBMISSION} component={ViewAssignmentPage}/>
 
                     <Route exact path={ROUTES.ADMIN_LIST_QUIZZES} component={AdminListQuizzesPage}/>
                     <Route path={ROUTES.Edit_QUIZ} component={EditQuizPage}/>
