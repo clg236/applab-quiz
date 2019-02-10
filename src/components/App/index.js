@@ -22,16 +22,16 @@ library.add(faUserAstronaut, faQuestion, faHome, faSignOutAlt, faVial, faPlusSqu
 const theme = createMuiTheme({
     palette: {
         primary: {
-            light: '#ff8e8c',
-            main: '#455a64',
-            dark: '#1c313a',
+            light: '#7888BF',
+            main: '#60487F',
+            dark: '#3D013C',
             contrastText: '#fff',
           },
           secondary: {
             light: '#4da9b7',
             main: '#017a87',
-            dark: '#004e5a',
-            contrastText: '#000',
+            dark: '#004e5a ',
+            contrastText: '#fff',
           },
     },
     typography: {
