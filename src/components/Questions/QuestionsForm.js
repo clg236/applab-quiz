@@ -50,11 +50,11 @@ function QuestionsForm(props) {
                     );
                 })}
 
-                {!submission && !deadlinePassed && (
+                {!submission && !deadlinePassed (
                     <Grid item xs={12}>
                         <Button color="primary" variant="contained" type="submit"
                                 disabled={!isValid || isSubmitting} className={classes.submit}>
-                            Submit
+                            Submit!
                         </Button>
                     </Grid>
                 )}
