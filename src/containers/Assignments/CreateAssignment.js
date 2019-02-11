@@ -18,7 +18,7 @@ const CreateAssignment = ({classes}) => {
     return (
         <main className={classes.root}>
             <Typography variant="h4" gutterBottom component="h2">Create an assignment</Typography>
-            <QuizInfoForm type="assignment" redirectURL="/admin/assignments/:id"/>
+            <QuizInfoForm type="assignment" redirectURL="/quizzes/:id/edit"/>
         </main>
     );
 };

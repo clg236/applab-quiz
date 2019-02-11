@@ -18,7 +18,7 @@ const CreateQuiz = ({classes}) => {
     return (
         <main className={classes.root}>
             <Typography variant="h4" gutterBottom component="h2">Create a quiz</Typography>
-            <QuizInfoForm type="quiz" redirectURL="/admin/quizzes/:id"/>
+            <QuizInfoForm type="quiz" redirectURL="/quizzes/:id/edit"/>
         </main>
     );
 };
