@@ -19,3 +19,13 @@ export function getCurrentUser(fields) {
 
     return null;
 };
+
+export function hasRole(role) {
+    const user = getCurrentUser(['role']);
+
+    if (!user) {
+        return false;
+    }
+
+    return user.role === role;
+}

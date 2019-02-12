@@ -1,9 +1,8 @@
 import React from 'react';
-import {Editor, InputLabel, TextField} from '../Form';
+import {Editor, InputLabel} from '../Form';
 import {Field} from 'formik';
 import {FormControl, Grid, withStyles} from "@material-ui/core";
 import {EditDeadlineControl, EditTitleControl} from "../Questions";
-import FormLabel from "@material-ui/core/FormLabel";
 import MonacoEditor from "react-monaco-editor";
 import {compose} from "redux";
 
