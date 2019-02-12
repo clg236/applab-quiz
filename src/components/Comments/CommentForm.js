@@ -7,6 +7,7 @@ import {firebaseConnect, getVal, isLoaded, isEmpty, withFirebase} from "react-re
 import {withSnackbar} from 'notistack';
 import {Editor} from "../Form";
 import {connect} from "react-redux";
+import API from "../../apis";
 
 const styles = theme => ({});
 
@@ -79,26 +80,18 @@ export default compose(
         handleSubmit: (values, actions) => {
             const {
                 props: {
-                    auth: {uid, displayName, photoURL},
                     submissionID,
                     submission,
-                    firebase: {pushWithMeta, set},
                     enqueueSnackbar
                 }
             } = actions;
 
-
-            pushWithMeta("comments", {
-                comment: values.comment,
-                user: {uid, displayName, photoURL},
-                submissionID,
-                subject: submission.subject
-            }).then(ref => {
+            API.Comments.addComment(
+                {id: submissionID, ...submission},
+                values.comment
+            ).then(_ => {
                 actions.setSubmitting(false);
                 enqueueSnackbar("Submitted!");
-
-                set(`users/${uid}/comments/${ref.key}`, true);
-                set(`submissions/${submissionID}/comments/${ref.key}`, true);
             });
         }
     }),
