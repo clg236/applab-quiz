@@ -10,6 +10,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import {connect} from "react-redux";
 import {push} from "connected-react-router";
+import API from "../../apis";
 
 const styles = theme => ({});
 
@@ -79,8 +80,6 @@ const QuizInfoForm = (props) => {
 };
 
 export default compose(
-    withFirebase,
-
     withSnackbar,
 
     connect(
@@ -142,34 +141,27 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {quizID, quiz, firebase: {pushWithMeta, updateWithMeta}, enqueueSnackbar, pushToHistory}} = actions;
-            let promise = null;
+            const {props: {quizID, enqueueSnackbar, pushToHistory}} = actions;
 
+            API.Quizzes.saveQuizInfo(values, quizID)
+                .then(ref => {
+                    actions.setSubmitting(false);
 
-            if (quizID && quiz) {
-                promise = updateWithMeta(`quizzes/${quizID}`, values);
-            } else {
-                promise = pushWithMeta("quizzes", values);
-            }
-
-            promise.then(ref => {
-                actions.setSubmitting(false);
-
-                if (quizID) {
-                    enqueueSnackbar("Saved!");
-                } else {
-                    let redirectURL = actions.props.redirectURL;
-                    if (!redirectURL) {
-                        if (values.type == 'quiz') {
-                            redirectURL = `quizzes/:id`;
-                        } else {
-                            redirectURL = `assignments/:id`;
+                    if (quizID) {
+                        enqueueSnackbar("Saved!");
+                    } else {
+                        let redirectURL = actions.props.redirectURL;
+                        if (!redirectURL) {
+                            if (values.type == 'quiz') {
+                                redirectURL = `quizzes/:id`;
+                            } else {
+                                redirectURL = `assignments/:id`;
+                            }
                         }
-                    }
 
-                    pushToHistory(redirectURL.replace(/:id/, ref.key));
-                }
-            });
+                        pushToHistory(redirectURL.replace(/:id/, ref.key));
+                    }
+                });
         }
     }),
 

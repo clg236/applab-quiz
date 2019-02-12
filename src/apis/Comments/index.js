@@ -1,15 +1,10 @@
-import store, {firebase} from "../../store";
-import _ from "lodash";
-
+import {firebase} from "../../store";
+import {getCurrentUser} from "../Users";
 
 export function addComment(submission, comment, user) {
     const promise = new Promise((resolve, reject) => {
         if (!user) {
-            const {firebase: {profile}} = store.getState();
-
-            if (profile && profile.uid) {
-                user = _.pick(profile, ['uid', 'displayName', 'photoURL']);
-            }
+            user = getCurrentUser(['uid', 'displayName', 'photoURL']);
         }
 
         if (!submission || !submission.id || !submission.subject || !comment || !user || !user.uid) {
@@ -25,7 +20,7 @@ export function addComment(submission, comment, user) {
                     firebase.set(`users/${user.uid}/comments/${ref.key}`, true),
                     firebase.set(`submissions/${submission.id}/comments/${ref.key}`, true)
                 ]).then(_ => {
-                    resolve();
+                    resolve(ref);
                 });
             });
         }
