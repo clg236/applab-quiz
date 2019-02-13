@@ -8,6 +8,7 @@ import {Avatar, withStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import UserQuizList from "../../components/Users/UserQuizList";
+import {SubmissionList} from "../../components/Submissions";
 
 
 const styles = theme => ({});
@@ -29,10 +30,8 @@ const UserDetail = props => {
                             {user.displayName}
                         </Typography>
 
-                        <Paper>
-                            <Typography variant="h5" component="h3">Quizzes</Typography>
-                            <UserQuizList uid={uid}/>
-                        </Paper>
+                        <Typography variant="h5" gutterBottom component="h3">Submissions</Typography>
+                        <SubmissionList uid={user.uid}/>
                     </>
                 )
             }
