@@ -7,6 +7,8 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import UserListItem from "./UserListItem";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "../Form/TableCell";
 
 const styles = theme => ({});
 
@@ -24,6 +26,10 @@ const UserList = function (props) {
 
         content = (
             <Table className={classes.table}>
+                <TableRow>
+                    <TableCell>User</TableCell>
+                    <TableCell>Submissions</TableCell>
+                </TableRow>
                 <TableBody>
                     {Object.keys(users).map(key => (
                         <UserListItem key={key} user={users[key]} uid={key}/>

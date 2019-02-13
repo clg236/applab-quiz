@@ -9,10 +9,18 @@ const UserListItem = (props) => {
 
     const {uid, user} = props;
 
+    const numSubmissions = user.submissions ? Object.keys(user.submissions).length : 0;
+
     return (
         <TableRow>
             <TableCell component="th">
-                <MuiLink component={Link} to={`/users/${uid}`}>{user.displayName}</MuiLink>
+                <MuiLink component={Link} to={`/users/${uid}`}>
+                    {user.displayName}
+                </MuiLink>
+            </TableCell>
+
+            <TableCell>
+                {numSubmissions}
             </TableCell>
         </TableRow>
     );
