@@ -2,7 +2,7 @@ import React from "react";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {firebaseConnect, getVal, isEmpty, isLoaded} from "react-redux-firebase";
-import {Typography, withStyles} from "@material-ui/core";
+import {TableHead, Typography, withStyles} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -26,10 +26,12 @@ const UserList = function (props) {
 
         content = (
             <Table className={classes.table}>
-                <TableRow>
-                    <TableCell>User</TableCell>
-                    <TableCell>Submissions</TableCell>
-                </TableRow>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>User</TableCell>
+                        <TableCell>Submissions</TableCell>
+                    </TableRow>
+                </TableHead>
                 <TableBody>
                     {Object.keys(users).map(key => (
                         <UserListItem key={key} user={users[key]} uid={key}/>

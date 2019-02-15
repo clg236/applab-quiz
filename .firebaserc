@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "applab-quiz-system"
+    "default": "applab-quiz-system",
+    "dev": "applab-quiz-system-dev"
   }
 }
