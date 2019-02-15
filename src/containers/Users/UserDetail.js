@@ -5,9 +5,7 @@ import {firebaseConnect, getVal, isLoaded} from 'react-redux-firebase';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {Avatar, withStyles} from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import UserQuizList from "../../components/Users/UserQuizList";
 import {SubmissionList} from "../../components/Submissions";
 
 
@@ -16,11 +14,11 @@ const styles = theme => ({});
 
 const UserDetail = props => {
 
-    const {classes, uid, user, quizSubmissions} = props;
+    const {classes, uid, user} = props;
 
     return (
         <main className={classes.content}>
-            {!isLoaded(user) || !isLoaded(quizSubmissions)
+            {!isLoaded(user)
                 ? <CircularProgress/> : (
                     <>
                         <Typography variant="h4" gutterBottom component="h2">
@@ -48,7 +46,6 @@ export default compose(
             return ({
                 uid: id,
                 user: getVal(state.firebase.data, `users/${id}`),
-                quizSubmissions: getVal(state.firebase.data, `userQuizzes/${id}`)
             });
         }
     ),
@@ -59,10 +56,7 @@ export default compose(
         return [
             {
                 path: `users/${id}`
-            },
-            {
-                path: `userQuizzes/${id}`
-            },
+            }
         ];
     }),
 

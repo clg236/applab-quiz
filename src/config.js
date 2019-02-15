@@ -13,6 +13,7 @@ const reactReduxFirebaseConfig = {
     userProfile: 'users',
     useFirestoreForProfile: false,
     enableLogging: false,
+    dispatchRemoveAction: true,
     
     profileFactory: user => ({
         uid: user.uid,
