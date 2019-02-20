@@ -3,6 +3,9 @@ import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import {Link} from "react-router-dom";
+import {Typography} from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
 const UserListItem = (props) => {
@@ -15,7 +18,12 @@ const UserListItem = (props) => {
         <TableRow>
             <TableCell component="th">
                 <MuiLink component={Link} to={`/users/${uid}`}>
-                    {user.displayName}
+                    <Typography variant="body1">
+                        {user.photoURL
+                            ? <Avatar alt={user.displayName} src={user.photoURL}/>
+                            : <Avatar alt={user.displayName}><AccountCircleIcon/></Avatar>}
+                        {user.displayName}
+                    </Typography>
                 </MuiLink>
             </TableCell>
 

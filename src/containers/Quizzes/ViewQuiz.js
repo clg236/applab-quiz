@@ -1,15 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {firebaseConnect, getVal, isLoaded, isEmpty, populate} from 'react-redux-firebase';
+import {firebaseConnect, getVal, isEmpty, isLoaded, populate} from 'react-redux-firebase';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {Divider, withStyles} from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import {QuestionsForm} from "../../components/Questions";
 import {CommentForm, CommentList} from "../../components/Comments";
 import classnames from "classnames";
-import {getIn} from "formik";
 
 
 const styles = theme => ({
@@ -69,8 +68,12 @@ const ViewQuiz = props => {
                     {quiz.name}
                 </Typography>
 
+                {submissionID && (
+                    <Typography variant="subheading">by {submission.user.displayName}</Typography>
+                )}
+
                 <Paper className={classnames(classes.paper, classes.form)}>
-                    <QuestionsForm quizID={quizID} submissionID={submissionID} type="quiz" />
+                    <QuestionsForm quizID={quizID} submissionID={submissionID} type={type} />
                 </Paper>
 
                 {submissionID && (
