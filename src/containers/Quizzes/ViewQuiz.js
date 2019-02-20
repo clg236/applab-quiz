@@ -68,7 +68,7 @@ const ViewQuiz = props => {
                     {quiz.name}
                 </Typography>
 
-                {submissionID && (
+                {submissionID && submission && submission.user && (
                     <Typography variant="subheading">by {submission.user.displayName}</Typography>
                 )}
 
