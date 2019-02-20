@@ -41,10 +41,11 @@ const styles = theme => ({
 
 
 const ViewQuiz = props => {
-    const {classes, user, quizID, quiz, submission, type} = props;
+    const {classes, user, quizID, quiz, submission} = props;
 
     let content = '';
     let submissionID = props.submissionID;
+    let type = props.type ? props.type : 'quiz';
 
     if (!isLoaded(quiz) || (submissionID && !isLoaded(submission)) || (!submissionID && !isLoaded(user))) {
         content = <CircularProgress/>;
