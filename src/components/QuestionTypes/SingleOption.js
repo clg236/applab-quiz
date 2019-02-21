@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import {Field, getIn} from 'formik';
-import {Grid} from "@material-ui/core";
+import {Grid, Typography} from "@material-ui/core";
 import {EditOptionsControl, EditTitleControl} from "../Questions";
 
 
@@ -46,12 +46,19 @@ function EditControl(props) {
 function ViewControl(props) {
     const {index, quiz, question, submission, deadlinePassed} = props;
 
+    const answer = submission && submission.answers && submission.answers[question.id] ? submission.answers[question.id] : "";
+    const correct = answer && isCorrect(question, answer);
+
     return (
         <Field
             name={`answers.${question.id}`}
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
                 <FormControl required fullWidth disabled={!!submission || deadlinePassed}>
-                    <FormLabel>{`${index + 1}. ${question.title}`}</FormLabel>
+                    <FormLabel>
+                        {submission && <Typography variant="subtitle1" inline>{correct ? "Correct" : "Wrong"}</Typography>}
+                        {`${index + 1}. ${question.title}`}
+                    </FormLabel>
+
                     <RadioGroup aria-label={question.title} name={field.name}>
                         {question.options && question.options.map((option, i) => {
                             const checked = getIn(values, field.name) == option.id;

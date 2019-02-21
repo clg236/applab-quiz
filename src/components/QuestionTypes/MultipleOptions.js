@@ -7,6 +7,7 @@ import {Grid} from "@material-ui/core";
 import {EditOptionsControl, EditTitleControl} from "../Questions";
 import FormGroup from "@material-ui/core/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox";
+import Typography from "@material-ui/core/Typography";
 
 
 function validate(value) {
@@ -61,9 +62,15 @@ function EditControl(props) {
 function ViewControl(props) {
     const {index, quiz, question, submission, deadlinePassed} = props;
 
+    const answer = submission && submission.answers && submission.answers[question.id] ? submission.answers[question.id] : "";
+    const correct = answer && isCorrect(question, answer);
+
     return (
         <FormControl required fullWidth disabled={!!submission || deadlinePassed}>
-            <FormLabel>{`${index + 1}. ${question.title}`}</FormLabel>
+            <FormLabel>
+                {submission && <Typography variant="subtitle1" inline>{correct ? "Correct" : "Wrong"}</Typography>}
+                {`${index + 1}. ${question.title}`}
+            </FormLabel>
             <FormGroup>
                 {question.options && question.options.map((option, i) => (
                     <Field
