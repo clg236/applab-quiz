@@ -9,6 +9,7 @@ import {EditQuestionsForm as EditQuestionsForm} from "../Questions";
 import {SubmissionList} from "../Submissions";
 import {connect} from "react-redux";
 import {firebaseConnect, getVal, isEmpty, isLoaded} from "react-redux-firebase";
+import {EditQualitiesForm} from "../Qualities";
 
 const styles = theme => ({
     root: {
@@ -40,6 +41,7 @@ const EditQuiz = props => {
 
     const numQuestions = quiz && quiz.questions ? quiz.questions.length : 0;
     const numSubmissions = quiz && quiz.submissions ? Object.keys(quiz.submissions).length : 0;
+    const numQualities = quiz && quiz.qualities ? Object.keys(quiz.qualities).length : 0;
 
     return (
         <Paper className={classes.root}>
@@ -51,26 +53,21 @@ const EditQuiz = props => {
             >
                 <Tab label="Basic"/>
                 <Tab label={`Questions (${numQuestions})`}/>
+                <Tab label={`Qualities (${numQualities})`}/>
                 <Tab label={`Submissions (${numSubmissions})`}/>
             </Tabs>
 
             <div className={classes.tabContainer}>
                 {selectedTab === 0 && (<EditQuizInfoForm quizID={quizID} type={type} redirectURL={redirectURL}/>)}
                 {selectedTab === 1 && (<EditQuestionsForm quizID={quizID} type={type} redirectURL={redirectURL}/>)}
-                {selectedTab === 2 && (<SubmissionList quizID={quizID}/>)}
+                {selectedTab === 2 && (<EditQualitiesForm quizID={quizID} type={type} redirectURL={redirectURL}/>)}
+                {selectedTab === 3 && (<SubmissionList quizID={quizID}/>)}
             </div>
         </Paper>
     );
 };
 
 export default compose(
-    connect(
-        (state, {quizID}) => {
-            return {
-                quiz: getVal(state.firebase.data, `quizzes/${quizID}`)
-            };
-        }
-    ),
 
     firebaseConnect(({quizID}) => {
         return [
@@ -79,6 +76,14 @@ export default compose(
             }
         ];
     }),
+
+    connect(
+        (state, {quizID}) => {
+            return {
+                quiz: getVal(state.firebase.data, `quizzes/${quizID}`)
+            };
+        }
+    ),
 
     withStyles(styles)
 )(EditQuiz);

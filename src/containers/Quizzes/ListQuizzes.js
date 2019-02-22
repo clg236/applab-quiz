@@ -57,22 +57,13 @@ const ListQuizzes = ({classes, user}) => {
 
 
 export default compose(
-    withFirebase,
-
     connect(
-        ({firebase}) => ({
-            uid: firebase.auth.uid,
-            user: getVal(firebase.data, `users/${firebase.auth.uid}`)
-        })
+        (state) => {
+            return ({
+                user: state.firebase.auth
+            });
+        }
     ),
-
-    firebaseConnect(props => {
-        const {uid} = props;
-
-        return [{
-            path: `users/${uid}`
-        }]
-    }),
 
     withStyles(styles)
 )(ListQuizzes);

@@ -1,44 +1,58 @@
 import {Button, CircularProgress, Grid, withStyles} from "@material-ui/core";
-import {FieldArray, withFormik} from "formik";
-import React, {useState} from "react";
+import {Field, FieldArray, withFormik} from "formik";
+import React from "react";
 import {compose} from "redux";
 import {firebaseConnect, getVal, isEmpty, isLoaded, withFirebase} from "react-redux-firebase";
 import {withSnackbar} from "notistack";
-import EditQuestionControl from './EditQuestionControl';
 import uuid from "uuid";
 import {connect} from "react-redux";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from '@material-ui/icons/Delete';
+import {TextField} from "../Form";
 
-const EmptyQuestion = {
+
+const EmptyQuality = {
     id: '',
-    title: '',
-    type: '',
-    options: [],
-    answer: '',
-    answers: []
+    name: '',
 };
 
 const styles = theme => ({});
 
 
-let QuestionsFieldArray = props => {
-    const {form: {values: {questions}}, push, remove} = props;
+let QualityFieldsArray = props => {
+    const {form: {values: {qualities}}, push, remove} = props;
 
-    let {expanded} = useState([]);
-
-    function handleAddQuestion() {
-        push({...EmptyQuestion, id: uuid.v4()});
+    function handleAddQuality() {
+        push({...EmptyQuality, id: uuid.v4()});
     }
 
     return (
         <>
-            {questions.map((question, index) => (
-                <EditQuestionControl key={index} question={question} questionIndex={index}
-                                     expanded={expanded && expanded[index]} remove={remove}/>
-            ))}
+            <List>
+                {qualities.map((quality, index) => (
+                    <ListItem key={index}>
+                        <Field
+                            name={`qualities.${index}.name`}
+                            render={({field}) => (
+                                <TextField label={`Quality ${index + 1}`} required fullWidth
+                                           placeholder="e.g. How well do you think...?" {...field} />
+                            )}
+                        />
+                        <ListItemSecondaryAction>
+                            <IconButton aria-label="Delete" onClick={remove}>
+                                <DeleteIcon/>
+                            </IconButton>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                ))}
+            </List>
 
             <div>
-                <Button color="primary" fullWidth={false} onClick={handleAddQuestion}>
-                    Add a question
+                <Button color="primary" fullWidth={false} onClick={handleAddQuality}>
+                    Add a quality
                 </Button>
             </div>
         </>
@@ -46,7 +60,7 @@ let QuestionsFieldArray = props => {
 };
 
 
-const EditQuestionsForm = (props) => {
+const EditQualitiesForm = (props) => {
     const {handleSubmit, quiz} = props;
 
     if (!isLoaded(quiz)) {
@@ -59,7 +73,7 @@ const EditQuestionsForm = (props) => {
         <form onSubmit={handleSubmit}>
             <Grid container spacing={24}>
                 <Grid item md={12}>
-                    <FieldArray name="questions" component={QuestionsFieldArray}/>
+                    <FieldArray name="qualities" component={QualityFieldsArray}/>
                 </Grid>
 
                 <Grid item md={12}>
@@ -99,36 +113,22 @@ export default compose(
             const {quiz} = props
 
             // TODO check if the question type exists
-            let questions = [];
+            let qualities = [];
 
-            if (isLoaded(quiz) && !isEmpty(quiz) && quiz.questions) {
-                questions = quiz.questions;
+            if (isLoaded(quiz) && !isEmpty(quiz) && quiz.qualities) {
+                qualities = quiz.qualities;
             }
 
             return {
-                questions
+                qualities
             };
         },
 
         handleSubmit: (values, actions) => {
             const {props: {quizID, quiz, firebase: {updateWithMeta}, enqueueSnackbar}} = actions;
-
-            if ("submissions" in quiz && Object.keys(quiz.submissions).length > 0) {
-                return ;
-            }
-
-            // filter out null values
-            if (values.questions && values.questions.length > 0) {
-                values.questions.forEach(question => {
-                    if (question.answers && question.answers.length > 0) {
-                        question.answers.forEach((answer, index, arr) => arr[index] = !!answer);
-                    }
-                });
-            }
-
             updateWithMeta(`quizzes/${quizID}`, values).then(() => enqueueSnackbar("Saved!"));
         }
     }),
 
     withStyles(styles)
-)(EditQuestionsForm);
+)(EditQualitiesForm);

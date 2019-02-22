@@ -1,7 +1,7 @@
 import React from 'react';
-import {TextField, Editor, InputLabel} from '../Form';
+import {Editor, InputLabel} from '../Form';
 import {Field} from 'formik';
-import {FormControl, Grid, Typography, withStyles} from "@material-ui/core";
+import {FormControl, Grid, withStyles} from "@material-ui/core";
 import {EditDeadlineControl, EditTitleControl} from "../Questions";
 import {compose} from "redux";
 
@@ -36,13 +36,13 @@ function EditControl({questionIndex, question}) {
                 <EditTitleControl name={`questions.${questionIndex}.title`}/>
             </Grid>
             <Grid item xs={12}>
-                <FormControl fullWidth fullHeight required>
+                <FormControl fullWidth required>
                     <InputLabel>Question Content</InputLabel>
                     <Field className={styles.theme}
-                        name={`questions.${questionIndex}.description`}
-                        render={({field, form}) => (
-                            <Editor field={field} form={form} withMargin />
-                        )}
+                           name={`questions.${questionIndex}.description`}
+                           render={({field, form}) => (
+                               <Editor field={field} form={form} withMargin/>
+                           )}
                     />
                 </FormControl>
             </Grid>
@@ -63,9 +63,9 @@ function ViewControl(props) {
                     {question.description && (
                         <div className={classes.viewDescription}
                              dangerouslySetInnerHTML={{__html: question.description}}/>
-                     )}
+                    )}
 
-                    <Editor field={field} form={form} withMargin disabled={!!submission || deadlinePassed} />
+                    <Editor field={field} form={form} withMargin disabled={!!submission || deadlinePassed}/>
                 </FormControl>
             )}
             validate={validate}

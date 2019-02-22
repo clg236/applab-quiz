@@ -59,6 +59,22 @@ const QuizList = props => {
 };
 
 export default compose(
+    firebaseConnect(({user}) => {
+        let queries = [{
+            path: 'quizzes',
+            queryParams: ['orderByKey']
+        }];
+
+        if (user) {
+            queries.push({
+                path: `users/${user.uid}`,
+                populates: ['submissions:submissions']
+            });
+        }
+
+        return queries;
+    }),
+
     connect(
         (state, props) => {
             const {user, showUnpublished, type} = props;
@@ -101,21 +117,6 @@ export default compose(
         }
     ),
 
-    firebaseConnect(({user}) => {
-        let queries = [{
-            path: 'quizzes',
-            queryParams: ['orderByKey']
-        }];
-
-        if (user) {
-            queries.push({
-                path: `users/${user.uid}`,
-                populates: ['submissions:submissions']
-            });
-        }
-
-        return queries;
-    }),
 
 
     withStyles(styles)

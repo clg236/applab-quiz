@@ -66,6 +66,20 @@ function QuestionsForm(props) {
 }
 
 export default compose(
+    firebaseConnect(({quizID, submissionID}) => {
+        const queries = [{
+            path: `quizzes/${quizID}`
+        }];
+
+        if (submissionID) {
+            queries.push({
+                path: `submissions/${submissionID}`
+            })
+        }
+
+        return queries;
+    }),
+
     withFirebase,
 
     withSnackbar,
@@ -82,21 +96,6 @@ export default compose(
             pushToHistory: push
         }
     ),
-
-    firebaseConnect(({quizID, submissionID}) => {
-        const queries = [{
-            path: `quizzes/${quizID}`
-        }];
-
-        if (submissionID) {
-            queries.push({
-                path: `submissions/${submissionID}`
-            })
-        }
-
-        return queries;
-    }),
-
 
     withFormik({
         enableReinitialize: true,

@@ -18,10 +18,10 @@ const UserListItem = (props) => {
         <TableRow>
             <TableCell component="th">
                 <MuiLink component={Link} to={`/users/${uid}`}>
+                    {user.photoURL
+                        ? <Avatar alt={user.displayName} src={user.photoURL}/>
+                        : <Avatar alt={user.displayName}><AccountCircleIcon/></Avatar>}
                     <Typography variant="body1">
-                        {user.photoURL
-                            ? <Avatar alt={user.displayName} src={user.photoURL}/>
-                            : <Avatar alt={user.displayName}><AccountCircleIcon/></Avatar>}
                         {user.displayName}
                     </Typography>
                 </MuiLink>

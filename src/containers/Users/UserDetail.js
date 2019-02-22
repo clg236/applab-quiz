@@ -39,6 +39,16 @@ const UserDetail = props => {
 
 
 export default compose(
+    firebaseConnect(props => {
+        const {match: {params: {id}}} = props;
+
+        return [
+            {
+                path: `users/${id}`
+            }
+        ];
+    }),
+
     connect(
         (state, props) => {
             const {match: {params: {id}}} = props;
@@ -49,16 +59,6 @@ export default compose(
             });
         }
     ),
-
-    firebaseConnect(props => {
-        const {match: {params: {id}}} = props;
-
-        return [
-            {
-                path: `users/${id}`
-            }
-        ];
-    }),
 
     withStyles(styles)
 )(UserDetail);

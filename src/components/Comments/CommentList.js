@@ -48,18 +48,6 @@ const CommentList = (props) => {
 export default compose(
     withSnackbar,
 
-    connect(
-        (state, props) => {
-            const {submissionID} = props;
-
-            return {
-                submission: populate(state.firebase, `submissions/${submissionID}`, [
-                    "comments:comments"
-                ]),
-            };
-        }
-    ),
-
     firebaseConnect(props => {
         const {submissionID} = props;
 
@@ -71,6 +59,17 @@ export default compose(
         ];
     }),
 
+    connect(
+        (state, props) => {
+            const {submissionID} = props;
+
+            return {
+                submission: populate(state.firebase, `submissions/${submissionID}`, [
+                    "comments:comments"
+                ]),
+            };
+        }
+    ),
 
     withStyles(styles)
 )(CommentList);

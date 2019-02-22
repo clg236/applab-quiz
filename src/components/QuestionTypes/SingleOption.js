@@ -55,7 +55,7 @@ function ViewControl(props) {
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
                 <FormControl required fullWidth disabled={!!submission || deadlinePassed}>
                     <FormLabel>
-                        {submission && <Typography variant="subtitle1" inline>{correct ? "Correct" : "Wrong"}</Typography>}
+                        {submission && <Typography variant="subtitle1" inline>{correct ? "✔" : "✘"} </Typography>}
                         {`${index + 1}. ${question.title}`}
                     </FormLabel>
 

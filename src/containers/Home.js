@@ -23,7 +23,14 @@ const Home = props => {
 
 
 export default compose(
-    withFirebase,
+
+    firebaseConnect(props => {
+        const uid = props.firebase.auth().currentUser.uid;
+
+        return [{
+            path: `users/${uid}`
+        }]
+    }),
 
     connect(
         ({firebase}) => ({
@@ -31,14 +38,6 @@ export default compose(
             user: getVal(firebase.data, `users/${firebase.auth.uid}`)
         })
     ),
-
-    firebaseConnect(props => {
-        const {uid} = props;
-
-        return [{
-            path: `users/${uid}`
-        }]
-    }),
 
     withStyles(styles)
 )(Home);

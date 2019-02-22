@@ -82,17 +82,6 @@ const QuizInfoForm = (props) => {
 export default compose(
     withSnackbar,
 
-    connect(
-        (state, {quizID}) => {
-            return {
-                quiz: quizID ? getVal(state.firebase.data, `quizzes/${quizID}`) : null
-            };
-        },
-        {
-            pushToHistory: push
-        }
-    ),
-
     firebaseConnect(({quizID}) => {
         const queries = [];
 
@@ -104,6 +93,17 @@ export default compose(
 
         return queries;
     }),
+
+    connect(
+        (state, {quizID}) => {
+            return {
+                quiz: quizID ? getVal(state.firebase.data, `quizzes/${quizID}`) : null
+            };
+        },
+        {
+            pushToHistory: push
+        }
+    ),
 
 
     withFormik({

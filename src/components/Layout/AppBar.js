@@ -12,7 +12,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Logo from '../../img/logo.png'
 
 //fontawesome icons
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
 
 import MenuItem from '@material-ui/core/MenuItem';
@@ -69,8 +69,8 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
                     onClick={handleToggleDrawerClicked}
                     className={classes.btnToggle}
                 >
-                    
-                    <MenuIcon />
+
+                    <MenuIcon/>
                 </IconButton>
                 <Typography
                     component="h1"
@@ -124,4 +124,5 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
 export default connect(
     ({firebase: {auth}, drawer}) => (
         {auth, drawer}
-    ))(withStyles(styles)(AppBarComponent));
+    )
+)(withStyles(styles)(AppBarComponent));

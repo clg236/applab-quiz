@@ -9,6 +9,9 @@ import Paper from "@material-ui/core/Paper";
 import {QuestionsForm} from "../../components/Questions";
 import {CommentForm, CommentList} from "../../components/Comments";
 import classnames from "classnames";
+import {QualitiesForm} from "../../components/Qualities";
+import API from "../../apis";
+import * as ROLES from "../../constants/roles";
 
 
 const styles = theme => ({
@@ -88,6 +91,15 @@ const ViewQuiz = props => {
                         </div>
                     </Paper>
                 )}
+
+                {submissionID && API.Users.hasRole(ROLES.ROLE_ADMIN) && (
+                    <Paper className={classnames(classes.paper, classes.comments)}>
+                        <Typography variant="h5" gutterBottom component="h3">Qualities</Typography>
+                        <div className={classes.commentForm}>
+                            <QualitiesForm quizID={quizID} submissionID={submissionID} type={type}/>
+                        </div>
+                    </Paper>
+                )}
             </>
         )
     }
@@ -97,6 +109,30 @@ const ViewQuiz = props => {
 
 
 export default compose(
+
+    firebaseConnect(props => {
+        const {match: {params: {id, submissionID}}} = props;
+        const queries = [{
+            path: `quizzes/${id}`
+        }];
+
+        if (submissionID) {
+            queries.push({
+                path: `submissions/${submissionID}`
+            });
+        } else {
+            const uid = props.firebase.auth().currentUser.uid;
+
+            queries.push({
+                path: `users/${uid}`
+            }, {
+                path: `submissions`
+            });
+        }
+
+        return queries;
+    }),
+
     connect(
         (state, props) => {
             const {firebase: {auth}} = state;
@@ -120,27 +156,6 @@ export default compose(
             return data;
         }
     ),
-
-    firebaseConnect(props => {
-        const {uid, match: {params: {id, submissionID}}} = props;
-        const queries = [{
-            path: `quizzes/${id}`
-        }];
-
-        if (submissionID) {
-            queries.push({
-                path: `submissions/${submissionID}`
-            });
-        } else {
-            queries.push({
-                path: `users/${uid}`
-            }, {
-                path: `submissions`
-            });
-        }
-
-        return queries;
-    }),
 
     withStyles(styles)
 )(ViewQuiz);

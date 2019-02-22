@@ -46,6 +46,11 @@ const CommentForm = props => {
 export default compose(
     withSnackbar,
 
+
+    firebaseConnect(({submissionID}) => ([{
+        path: `submissions/${submissionID}`
+    }])),
+
     withFirebase,
 
     connect(
@@ -54,10 +59,6 @@ export default compose(
             submission: getVal(firebase.data, `submissions/${submissionID}`)
         })
     ),
-
-    firebaseConnect(({submissionID}) => ([{
-        path: `submissions/${submissionID}`
-    }])),
 
     withFormik({
 

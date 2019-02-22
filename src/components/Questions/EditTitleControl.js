@@ -7,7 +7,7 @@ function EditTitleControl({name}) {
         <Field
             name={name}
             render={({field}) => (
-                <TextField label="Question Title" required withMargin fullWidth {...field} />
+                <TextField label="Question Title" required fullWidth {...field} />
             )}
         />
     )

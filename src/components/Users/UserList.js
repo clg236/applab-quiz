@@ -46,12 +46,6 @@ const UserList = function (props) {
 };
 
 export default compose(
-    connect(
-        state => ({
-            users: getVal(state.firebase.data, "users")
-        })
-    ),
-
     firebaseConnect(() => ([
         {
             path: "users",
@@ -59,6 +53,11 @@ export default compose(
         }
     ])),
 
+    connect(
+        state => ({
+            users: getVal(state.firebase.data, "users")
+        })
+    ),
 
     withStyles(styles)
 )(UserList);

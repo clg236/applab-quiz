@@ -30,6 +30,17 @@ const SubmissionList = props => {
 export default compose(
     withSnackbar,
 
+    firebaseConnect(props => {
+        const {quizID, uid} = props;
+
+        return [
+            {
+                path: quizID ? `quizzes/${quizID}` : `users/${uid}`,
+                populates: ["submissions:submissions"]
+            }
+        ];
+    }),
+
     connect(
         (state, props) => {
             const {quizID, uid} = props;
@@ -41,17 +52,6 @@ export default compose(
             };
         }
     ),
-
-    firebaseConnect(props => {
-        const {quizID, uid} = props;
-
-        return [
-            {
-                path: quizID ? `quizzes/${quizID}` : `users/${uid}`,
-                populates: ["submissions:submissions"]
-            }
-        ];
-    }),
 
     withStyles(styles)
 )(SubmissionList);

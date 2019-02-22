@@ -47,12 +47,6 @@ const UserQuizList = (props) => {
 
 
 export default compose(
-    connect(
-        (state, {uid}) => ({
-            quizzes: getVal(state.firebase.data, `userQuizzes/${uid}`)
-        })
-    ),
-
 
     firebaseConnect(({uid}) => ([
         {
@@ -61,6 +55,11 @@ export default compose(
         }
     ])),
 
+    connect(
+        (state, {uid}) => ({
+            quizzes: getVal(state.firebase.data, `userQuizzes/${uid}`)
+        })
+    ),
 
     withStyles(styles)
 )(UserQuizList);
