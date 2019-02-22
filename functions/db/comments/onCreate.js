@@ -89,11 +89,26 @@ async function sendCommentEmail(recipient, comment) {
 
     const type = comment.subject && comment.subject.type ? comment.subject.type : 'quiz';
 
+    let url = "http://applab-quiz-system.firebaseapp.com/";
+    if (type == 'quiz') {
+        url += "quizzes";
+    } else {
+        url += "assignments";
+    }
+
+    url += `/${comment.subject.id}/submissions/${comment.submissionID}`;
+
     // The user subscribed to the newsletter.
     mailOptions.subject = `${comment.user.displayName} has commented on your ${type}!`;
-    mailOptions.html = `Hey ${recipient.displayName || ''}!<br /> Please log into <a href="http://applab-quiz-system.firebaseapp.com">App Lab 2.0</a> to see details.`;
+    mailOptions.html = `
+        Hey ${recipient.displayName || ''}!<br /> 
+        Please log into <a href="${url}">App Lab 2.0</a> to see details.
+    `;
 
     await mailTransport.sendMail(mailOptions);
+
+    console.log(`Comment notification sent to ${recipient.email}.`);
+
 
     return null;
 }
