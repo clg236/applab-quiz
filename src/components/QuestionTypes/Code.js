@@ -9,8 +9,7 @@ import {compose} from "redux";
 
 const styles = theme => ({
     viewDescription: {
-        marginTop: theme.spacing.unit * 2,
-        marginbottom: theme.spacing.unit * 2,
+        marginBottom: theme.spacing.unit * 2,
     }
 });
 
@@ -40,7 +39,7 @@ function EditControl({questionIndex, question}) {
                     <Field
                         name={`questions.${questionIndex}.description`}
                         render={({field, form}) => (
-                            <Editor field={field} form={form} withMargin/>
+                            <Editor field={field} form={form}/>
                         )}
                     />
                 </FormControl>

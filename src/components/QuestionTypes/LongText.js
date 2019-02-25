@@ -8,8 +8,7 @@ import {compose} from "redux";
 
 const styles = theme => ({
     viewDescription: {
-        marginTop: theme.spacing.unit * 2,
-        marginbottom: theme.spacing.unit * 2,
+        marginBottom: theme.spacing.unit * 2,
     },
     field: {
         height: "100%"

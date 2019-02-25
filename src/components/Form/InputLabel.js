@@ -3,7 +3,8 @@ import React from "react";
 
 const styles = {
     label: {
-        fontSize: 21
+        fontSize: 21,
+        position: "inherit"
     },
 };
 

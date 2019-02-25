@@ -7,11 +7,6 @@ const styles = {
     default: {
         zIndex: 99
     },
-
-    withMargin: {
-        marginTop: 25,
-        zIndex: 99
-    }
 };
 
 const QuillConfig = {
@@ -43,9 +38,9 @@ class Editor extends React.PureComponent {
 
 
     render = () => {
-        const {classes, form, field, withMargin, disabled, ...others} = this.props;
+        const {classes, form, field, disabled, ...others} = this.props;
 
-        const css = withMargin ? classes.withMargin : classes.default;
+        const css = classes.default;
 
         return (
             <ReactQuill theme="snow" className={css} modules={QuillConfig.modules}
