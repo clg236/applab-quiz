@@ -15,8 +15,10 @@ const Home = props => {
     return (
         <main>
             <Typography component="h2" variant="h4" gutterBottom>Current Quizzes</Typography>
-
             <QuizList user={user} type="quiz" view="grid"/>
+
+            <Typography component="h2" variant="h4" gutterBottom style={{marginTop: 30}}>Current Assignments</Typography>
+            <QuizList user={user} type="assignment" view="grid"/>
         </main>
     );
 };

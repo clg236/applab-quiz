@@ -123,7 +123,7 @@ function DrawerComponent(props) {
                     <List>
                         <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_QUIZZES}/>}>
                             <ListItemIcon className={classes.drawerIcon}>
-                                <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
+                                <FontAwesomeIcon icon="feather" size="sm" fixedWidth/>
                             </ListItemIcon>
                             <ListItemText primary="quizzes" secondary="create and manage quizzes"/>
                         </ListItem>

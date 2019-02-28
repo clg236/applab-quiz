@@ -14,11 +14,11 @@ const styles = theme => ({});
 
 
 const UserList = function (props) {
-    const {classes, users} = props;
+    const {classes, users, quizzes} = props;
 
     let content = "";
 
-    if (!isLoaded(users)) {
+    if (!isLoaded(users) || !isLoaded(quizzes)) {
         content = <CircularProgress/>;
     } else if (isEmpty(users)) {
         content = <Typography variant="body1">There is no users yet.</Typography>
@@ -34,7 +34,7 @@ const UserList = function (props) {
                 </TableHead>
                 <TableBody>
                     {Object.keys(users).map(key => (
-                        <UserListItem key={key} user={users[key]} uid={key}/>
+                        <UserListItem key={key} user={users[key]} uid={key} quizzes={quizzes}/>
                     ))}
                 </TableBody>
             </Table>
@@ -50,12 +50,17 @@ export default compose(
         {
             path: "users",
             queryParams: ['orderByKey']
+        },
+        {
+            path: "quizzes",
+            queryParams: ['orderByKey']
         }
     ])),
 
     connect(
         state => ({
-            users: getVal(state.firebase.data, "users")
+            users: getVal(state.firebase.data, "users"),
+            quizzes: getVal(state.firebase.data, "quizzes")
         })
     ),
 
