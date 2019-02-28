@@ -15,7 +15,8 @@ const QuizSubmissionListViewItem = props => {
 
     const uid = API.Users.getCurrentUserID();
     const isAdmin = API.Users.hasRole(ROLES.ROLE_ADMIN);
-    const showDeleteButton = (uid && submission.user.uid === uid) || isAdmin;
+    // const showDeleteButton = (uid && submission.user.uid === uid) || isAdmin;
+    const showDeleteButton = false;
 
     function handleDeleteClicked() {
         if (showDeleteButton) {

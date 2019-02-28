@@ -20,6 +20,8 @@ const mailTransport = nodemailer.createTransport({
     },
 });
 
+const instructors = ['lx5@nyu.edu', 'clg236@nyu.edu', 'lke229@nyu.edu', 'yh1437@nyu.edu'];
+
 const APP_NAME = 'App Lab 2.0';
 
 exports.sendCommentNotificationEmail = functions.database.ref(`/comments/{id}`).onCreate((snapshot) => {
@@ -50,11 +52,13 @@ exports.sendCommentNotificationEmail = functions.database.ref(`/comments/{id}`).
                     return;
                 }
 
+                /** allow emails to be sent to instructors
                 if (uid === submissionUID) {
                     console.log("Submission user is the same as comment user.");
                     resolve();
                     return;
                 }
+                 */
 
                 const submissionUser = snapshot.val();
 
@@ -81,10 +85,15 @@ async function getUser(uid) {
 }
 
 // Sends a email to the given user.
-async function sendCommentEmail(recipient, comment) {
+async function sendCommentEmail(submissionUser, comment) {
+    const recipient = submissionUser.email == comment.user.email ? instructors : submissionUser.email;
+    const cc = submissionUser.email == comment.user.email ? submissionUser.email : instructors;
+    const displayName = submissionUser.email == comment.user.email ? "Instructors" : submissionUser.displayName;
+
     const mailOptions = {
         from: `${APP_NAME} <noreply@firebase.com>`,
-        to: recipient.email,
+        to: recipient,
+        cc: cc
     };
 
     const type = comment.subject && comment.subject.type ? comment.subject.type : 'quiz';
@@ -101,7 +110,7 @@ async function sendCommentEmail(recipient, comment) {
     // The user subscribed to the newsletter.
     mailOptions.subject = `${comment.user.displayName} has commented on your ${type}!`;
     mailOptions.html = `
-        Hey ${recipient.displayName || ''}!<br /> 
+        Hey ${displayName || ''}!<br /> 
         Please log into <a href="${url}">App Lab 2.0</a> to see details.
     `;
 

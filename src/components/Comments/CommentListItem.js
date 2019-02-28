@@ -5,6 +5,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
 
 
+
+
 const CommentListItem = (props) => {
 
     const {comment} = props;
@@ -21,7 +23,7 @@ const CommentListItem = (props) => {
                 primary={`${comment.user.displayName} at ${submissionDate}`}
                 secondary={(
                     <React.Fragment>
-                        <div dangerouslySetInnerHTML={{__html: comment.comment}}></div>
+                        <div dangerouslySetInnerHTML={{__html: comment.comment}} className="comment-list-item"></div>
                     </React.Fragment>
                 )}
             />

@@ -11,6 +11,11 @@ import {withSnackbar} from "notistack";
 import moment from "moment";
 import Moment from 'react-moment';
 import {push} from "connected-react-router";
+import API from "../../apis";
+import * as ROLES from "../../constants/roles";
+import {default as MuiLink} from "@material-ui/core/Link";
+import {Link} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
 const styles = theme => ({
@@ -20,7 +25,8 @@ const styles = theme => ({
 });
 
 function QuestionsForm(props) {
-    const {quiz, submissionID, submission, handleSubmit, values, errors, isValid, isSubmitting, classes} = props;
+    const {quizID, quiz, submissionID, submission, handleSubmit, values, errors, isValid, isSubmitting, classes} = props;
+    const isAdmin = API.Users.hasRole(ROLES.ROLE_ADMIN);
 
     if (!isLoaded(quiz) || (submissionID && !isLoaded(submission))) {
         return <CircularProgress/>;
@@ -28,14 +34,53 @@ function QuestionsForm(props) {
 
     const deadlinePassed = quiz.deadline ? moment(quiz.deadline).isBefore(moment()) : false;
 
+    // get prev and next submission
+    let prevSubmissionID = "";
+    let nextSubmissionID = "";
+
+    if (isAdmin) {
+        const submissionIDs = Object.keys(quiz.submissions);
+        submissionIDs.map((k, i) => {
+            if (k == submissionID) {
+                prevSubmissionID = i === 0 ? "" : submissionIDs[i - 1];
+                nextSubmissionID = i === submissionIDs.length - 1 ? "" : submissionIDs[i + 1];
+            }
+        });
+    }
+
+    // quizLinkPrefix
+    const quizLinkPrefix = quiz.type == 'quiz' ? 'quizzes' : 'assignments';
+
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={24}>
 
+                {isAdmin && (
+                    <Grid item xs="12">
+                        <Grid container direction="row" justify="space-between">
+                            <Grid item>
+                                {prevSubmissionID && (
+                                    <MuiLink component={Link} to={`/${quizLinkPrefix}/${quizID}/submissions/${prevSubmissionID}`}>
+                                        <FontAwesomeIcon icon="hand-point-left" size="lg" fixedWidth/> Prev
+                                    </MuiLink>
+                                )}
+                            </Grid>
+                            <Grid item>
+                                {nextSubmissionID && (
+                                    <MuiLink component={Link} to={`/${quizLinkPrefix}/${quizID}/submissions/${nextSubmissionID}`}>
+                                        Next <FontAwesomeIcon icon="hand-point-right" size="lg" fixedWidth/>
+                                    </MuiLink>
+                                )}
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                )}
+
                 {deadlinePassed && (
                     <>
                         <Grid item xs={12}>
-                            <Typography color="secondary">Deadline (<Moment>{quiz.deadline}</Moment>) has passed.</Typography>
+                            <Typography color="secondary">Deadline (<Moment>{quiz.deadline}</Moment>) has
+                                passed.</Typography>
                         </Grid>
                     </>
                 )}
@@ -45,7 +90,8 @@ function QuestionsForm(props) {
 
                     return (
                         <Grid item xs={12} key={i}>
-                            {QuestionTypeControl && <QuestionTypeControl index={i} question={question} deadlinePassed={deadlinePassed} {...props} />}
+                            {QuestionTypeControl && <QuestionTypeControl index={i} question={question}
+                                                                         deadlinePassed={deadlinePassed} {...props} />}
                         </Grid>
                     );
                 })}
@@ -74,7 +120,7 @@ export default compose(
         if (submissionID) {
             queries.push({
                 path: `submissions/${submissionID}`
-            })
+            });
         }
 
         return queries;
@@ -142,7 +188,7 @@ export default compose(
             } = actions;
 
             if (!quiz.questions) {
-                return ;
+                return;
             }
 
             let score = 0;
