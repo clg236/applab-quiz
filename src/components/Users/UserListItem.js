@@ -16,6 +16,12 @@ const UserListItem = (props) => {
 
     const {uid, user, quizzes} = props;
 
+    let publishedQuizIDs = [];
+
+    if (isLoaded(quizzes) && !isEmpty(quizzes)) {
+        publishedQuizIDs = Object.keys(quizzes).filter(quizID => quizzes[quizID].published);
+    }
+
     return (
         <TableRow>
             <TableCell component="th">
@@ -36,7 +42,7 @@ const UserListItem = (props) => {
                         ? <Typography variant="body1">There is no quizzes.</Typography>
                         : (
                             <ul style={{listStyle: 'none', margin: 0, padding: 0}}>
-                                {Object.keys(quizzes).map(quizID => {
+                                {publishedQuizIDs.map(quizID => {
                                     return (
                                         <li key={quizID}>
                                             {user.quizzes && quizID in user.quizzes ? '✔ ' : '✘ '}
