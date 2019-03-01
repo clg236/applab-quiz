@@ -66,6 +66,9 @@
         "question-1": "Xu",
         "question-2": "Yes"
       },
+      "grades": {
+        "question-1": true
+      },
       "subject": {
         "id": "quiz-1",
         "name": "Quiz name",

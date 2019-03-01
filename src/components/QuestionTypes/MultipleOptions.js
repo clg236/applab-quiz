@@ -63,7 +63,11 @@ function ViewControl(props) {
     const {index, quiz, question, submission, deadlinePassed} = props;
 
     const answer = submission && submission.answers && submission.answers[question.id] ? submission.answers[question.id] : "";
-    const correct = answer && isCorrect(question, answer);
+
+    let correct = answer && isCorrect(question, answer);
+    if (submission.grades && question.id in submission.grades) {
+        correct = submission.grades[question.id];
+    }
 
     return (
         <FormControl required fullWidth disabled={!!submission || deadlinePassed}>

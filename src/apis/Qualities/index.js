@@ -10,6 +10,7 @@ export function saveQualities(submission, qualities, user) {
 
         if (!submission || !submission.id || !submission.subject || !qualities || !user || !user.uid) {
             reject();
+            return ;
         } else {
             firebase.updateWithMeta(`submissions/${submission.id}`, {
                 qualities,

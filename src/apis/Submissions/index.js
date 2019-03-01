@@ -6,6 +6,7 @@ export function removeSubmission(submission) {
 
         if (!id || !uid || !subject || !subject.id) {
             reject();
+            return ;
         }
 
         Promise.all([
@@ -16,3 +17,5 @@ export function removeSubmission(submission) {
         ]).then(_ => resolve());
     });
 };
+
+

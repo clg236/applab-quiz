@@ -9,6 +9,7 @@ export function addComment(submission, comment, user) {
 
         if (!submission || !submission.id || !submission.subject || !comment || !user || !user.uid) {
             reject();
+            return ;
         } else {
             firebase.pushWithMeta("comments", {
                 user,

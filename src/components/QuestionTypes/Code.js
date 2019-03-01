@@ -5,6 +5,7 @@ import {FormControl, Grid, withStyles} from "@material-ui/core";
 import {EditDeadlineControl, EditTitleControl} from "../Questions";
 import MonacoEditor from "react-monaco-editor";
 import {compose} from "redux";
+import Typography from "@material-ui/core/Typography";
 
 
 const styles = theme => ({
@@ -53,12 +54,21 @@ function ViewControl(props) {
 
     const options = {readOnly: !!submission || deadlinePassed};
 
+    const answer = submission && submission.answers && submission.answers[question.id] ? submission.answers[question.id] : "";
+    let correct = answer && isCorrect(question, answer);
+    if (submission.grades && question.id in submission.grades) {
+        correct = submission.grades[question.id];
+    }
+
     return (
         <Field
             name={`answers.${question.id}`}
             render={({field, form}) => (
                 <FormControl required fullWidth>
-                    <InputLabel>{`${index + 1}. ${question.title}`}</InputLabel>
+                    <InputLabel>
+                        {submission && <Typography variant="subtitle1" inline>{correct ? "✔" : "✘"} </Typography>}
+                        {`${index + 1}. ${question.title}`}
+                    </InputLabel>
 
                     {question.description && (
                         <div className={classes.viewDescription}

@@ -19,13 +19,17 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
 const styles = theme => ({
+    button: {
+        margin: theme.spacing.unit,
+    },
+
     submit: {
         marginTop: theme.spacing.unit,
     },
 });
 
 function QuestionsForm(props) {
-    const {quizID, quiz, submissionID, submission, handleSubmit, values, errors, isValid, isSubmitting, classes} = props;
+    const {quizID, quiz, submissionID, submission, handleSubmit, values, errors, isValid, isSubmitting, classes, enqueueSnackbar} = props;
     const isAdmin = API.Users.hasRole(ROLES.ROLE_ADMIN);
 
     if (!isLoaded(quiz) || (submissionID && !isLoaded(submission))) {
@@ -38,7 +42,7 @@ function QuestionsForm(props) {
     let prevSubmissionID = "";
     let nextSubmissionID = "";
 
-    if (isAdmin) {
+    if (isAdmin && quiz.submissions) {
         const submissionIDs = Object.keys(quiz.submissions);
         submissionIDs.map((k, i) => {
             if (k == submissionID) {
@@ -51,23 +55,33 @@ function QuestionsForm(props) {
     // quizLinkPrefix
     const quizLinkPrefix = quiz.type == 'quiz' ? 'quizzes' : 'assignments';
 
+    function markAsCorrect(question) {
+        API.Quizzes.gradeQuestion(quizID, quiz, submissionID, submission, question, true).then(_ => enqueueSnackbar("Submitted!"));
+    }
+
+    function markAsWrong(question) {
+        API.Quizzes.gradeQuestion(quizID, quiz, submissionID, submission, question, false).then(_ => enqueueSnackbar("Submitted!"));
+    }
+
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={24}>
 
                 {isAdmin && (
-                    <Grid item xs="12">
+                    <Grid item xs={12}>
                         <Grid container direction="row" justify="space-between">
                             <Grid item>
                                 {prevSubmissionID && (
-                                    <MuiLink component={Link} to={`/${quizLinkPrefix}/${quizID}/submissions/${prevSubmissionID}`}>
+                                    <MuiLink component={Link}
+                                             to={`/${quizLinkPrefix}/${quizID}/submissions/${prevSubmissionID}`}>
                                         <FontAwesomeIcon icon="hand-point-left" size="lg" fixedWidth/> Prev
                                     </MuiLink>
                                 )}
                             </Grid>
                             <Grid item>
                                 {nextSubmissionID && (
-                                    <MuiLink component={Link} to={`/${quizLinkPrefix}/${quizID}/submissions/${nextSubmissionID}`}>
+                                    <MuiLink component={Link}
+                                             to={`/${quizLinkPrefix}/${quizID}/submissions/${nextSubmissionID}`}>
                                         Next <FontAwesomeIcon icon="hand-point-right" size="lg" fixedWidth/>
                                     </MuiLink>
                                 )}
@@ -89,10 +103,22 @@ function QuestionsForm(props) {
                     const QuestionTypeControl = question.type && question.type in QuestionTypes ? QuestionTypes[question.type].ViewControl : null;
 
                     return (
-                        <Grid item xs={12} key={i}>
-                            {QuestionTypeControl && <QuestionTypeControl index={i} question={question}
-                                                                         deadlinePassed={deadlinePassed} {...props} />}
-                        </Grid>
+                        <React.Fragment key={i}>
+                            <Grid item xs={12}>
+                                {QuestionTypeControl && <QuestionTypeControl index={i} question={question}
+                                                                             deadlinePassed={deadlinePassed} {...props} />}
+                            </Grid>
+                            {isAdmin && submission && (
+                                <Grid item xs={12}>
+                                    <Button variant="contained" color="primary" className={classes.button} onClick={_ => markAsCorrect(question)}>
+                                        Mark as Correct
+                                    </Button>
+                                    <Button variant="contained" color="secondary" className={classes.button} onClick={_ => markAsWrong(question)}>
+                                        Mark as Wrong
+                                    </Button>
+                                </Grid>
+                            )}
+                        </React.Fragment>
                     );
                 })}
 
