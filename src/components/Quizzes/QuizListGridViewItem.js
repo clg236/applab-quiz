@@ -15,6 +15,9 @@ const styles = theme => ({
         width: 200,
         height: 180
     },
+    quizListGridViewItemContent: {
+        height: 125
+    },
     title: {
         textAlign: 'center',
     }
@@ -32,7 +35,7 @@ const QuizListGridViewItem = props => {
     return (
         <Grid item>
             <Card className={classes.quizListGridViewItem}>
-                <CardContent>
+                <CardContent className={classes.quizListGridViewItemContent}>
                     <Typography className={classes.title} variant="h5" component="h4" gutterBottom>
                         {quiz.name}
                     </Typography>
