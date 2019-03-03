@@ -13,7 +13,7 @@ import {push} from "connected-react-router";
 const styles = theme => ({
     quizListGridViewItem: {
         width: 200,
-        height: 140
+        height: 180
     },
     title: {
         textAlign: 'center',
