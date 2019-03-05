@@ -49,7 +49,7 @@ function ViewControl(props) {
     const answer = submission && submission.answers && submission.answers[question.id] ? submission.answers[question.id] : "";
 
     let correct = answer && isCorrect(question, answer);
-    if (submission.grades && question.id in submission.grades) {
+    if (submission && submission.grades && question.id in submission.grades) {
         correct = submission.grades[question.id];
     }
 
