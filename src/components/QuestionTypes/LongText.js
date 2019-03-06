@@ -1,9 +1,11 @@
 import React from 'react';
 import {Editor, InputLabel} from '../Form';
 import {Field} from 'formik';
-import {FormControl, Grid, withStyles} from "@material-ui/core";
+import {FormControl, Grid, Typography, withStyles} from "@material-ui/core";
 import {EditDeadlineControl, EditTitleControl} from "../Questions";
 import {compose} from "redux";
+import TextField from "../Form/TextField";
+import _ from "lodash";
 
 
 const styles = theme => ({
@@ -16,8 +18,16 @@ const styles = theme => ({
 });
 
 
-function validate(value) {
-    return !value ? 'Required' : '';
+function validate(value, question) {
+    if (!value) {
+        return 'Required';
+    }
+
+    if (question && question.maxWords && value.trim().split(/\s+/).length > question.maxWords) {
+        return "It's too long";
+    }
+
+    return '';
 }
 
 function isCorrect(question, value) {
@@ -45,6 +55,14 @@ function EditControl({questionIndex, question}) {
                     />
                 </FormControl>
             </Grid>
+            <Grid item xs={12}>
+                <Field
+                    name={`questions.${questionIndex}.maxWords`}
+                    render={({field}) => (
+                        <TextField label="Max words" fullWidth type="number" {...field} />
+                    )}
+                />
+            </Grid>
         </>
     );
 }
@@ -56,7 +74,7 @@ function ViewControl(props) {
         <Field
             name={`answers.${question.id}`}
             render={({field, form}) => (
-                <FormControl required fullWidth>
+                <FormControl required fullWidth error={form.errors && Boolean(_.get(form.errors, `answers.${question.id}`))}>
                     <InputLabel>{`${index + 1}. ${question.title}`}</InputLabel>
 
                     {question.description && (
@@ -64,10 +82,13 @@ function ViewControl(props) {
                              dangerouslySetInnerHTML={{__html: question.description}}/>
                     )}
 
-                    <Editor field={field} form={form} withMargin disabled={!!submission || deadlinePassed}/>
+                    <Editor field={field} form={form} withMargin
+                            maxWords={question.maxWords}
+                            disabled={!!submission || deadlinePassed}/>
+
                 </FormControl>
             )}
-            validate={validate}
+            validate={value => validate(value, question)}
         />
     );
 }
@@ -81,5 +102,9 @@ export default {
     ViewControl: ViewControl,
     isCorrect: isCorrect,
     sanitizeValue: sanitizeValue,
-    defaultValue: ""
+    defaultValue: "",
+    prepareForEditControl: question => {
+        question.maxWords = question.maxWords || 0;
+        return question;
+    }
 };

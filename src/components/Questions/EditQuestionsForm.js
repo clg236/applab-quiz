@@ -7,6 +7,7 @@ import {withSnackbar} from "notistack";
 import EditQuestionControl from './EditQuestionControl';
 import uuid from "uuid";
 import {connect} from "react-redux";
+import QuestionTypes from "../QuestionTypes";
 
 const EmptyQuestion = {
     id: '',
@@ -103,7 +104,15 @@ export default compose(
 
             if (isLoaded(quiz) && !isEmpty(quiz) && quiz.questions) {
                 questions = quiz.questions;
+
+                quiz.questions.forEach((question, i) => {
+                    if (question.type && question.type in QuestionTypes && QuestionTypes[question.type].prepareForEditControl) {
+                        questions[i] = QuestionTypes[question.type].prepareForEditControl(question);
+                    }
+                });
             }
+
+
 
             return {
                 questions

@@ -1,7 +1,8 @@
 import React from "react";
-import {withStyles} from "@material-ui/core";
+import {FormHelperText, withStyles} from "@material-ui/core";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Typography from "@material-ui/core/Typography";
 
 const styles = {
     default: {
@@ -33,26 +34,37 @@ const QuillConfig = {
 
 class Editor extends React.PureComponent {
 
-    handleDescriptionChanged = content => {
+    countWords = text => {
+        return text.trim().split(/\s+/).length;
+    }
+
+    handleDescriptionChanged = (content, delta, source, editor) => {
         const {field, form} = this.props;
         form.setFieldValue(field.name, content);
     }
 
 
     render = () => {
-        const {classes, form, field, disabled, ...others} = this.props;
-
+        const {classes, form, field, disabled, maxWords, ...others} = this.props;
         const css = classes.default;
 
         return (
-            <ReactQuill theme="snow" className={css} modules={QuillConfig.modules}
-                        formats={QuillConfig.formats}
-                        onChange={this.handleDescriptionChanged}
-                        name={field.name}
-                        value={field.value || ''}
-                        readOnly={!!disabled}
-                        {...others}
-            />
+            <>
+                <ReactQuill theme="snow" className={css} modules={QuillConfig.modules}
+                            formats={QuillConfig.formats}
+                            onChange={this.handleDescriptionChanged}
+                            name={field.name}
+                            value={field.value || ''}
+                            readOnly={!!disabled}
+                            {...others}
+                />
+                {maxWords && (
+                    <FormHelperText>
+                        {`${this.countWords(field.value)}/${maxWords} word(s)`}
+                    </FormHelperText>
+                )}
+
+            </>
         );
     }
 }
