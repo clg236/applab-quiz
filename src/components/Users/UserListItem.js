@@ -6,15 +6,13 @@ import {Link} from "react-router-dom";
 import {Typography} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import {firebaseConnect, getVal, isEmpty, isLoaded} from "react-redux-firebase";
-import {connect} from "react-redux";
-import {compose} from "redux";
+import {isEmpty, isLoaded} from "react-redux-firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 const UserListItem = (props) => {
 
-    const {uid, user, quizzes} = props;
+    const {uid, user, quizzes, showNotes} = props;
 
     let publishedQuizIDs = [];
 
@@ -54,6 +52,12 @@ const UserListItem = (props) => {
                         )
                 }
             </TableCell>
+
+            {showNotes && (
+                <TableCell>
+                    <div dangerouslySetInnerHTML={{__html: user.notes}}></div>
+                </TableCell>
+            )}
         </TableRow>
     );
 };

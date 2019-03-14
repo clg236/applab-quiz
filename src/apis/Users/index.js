@@ -29,3 +29,23 @@ export function hasRole(role) {
 
     return user.role === role;
 }
+
+export function saveProfile(uid, profile) {
+    const promise = new Promise((resolve, reject) => {
+        if (!uid) {
+            reject();
+            return;
+        } else {
+            if (_.isEmpty(profile)) {
+                resolve();
+                return;
+            }
+
+            firebase.update(`users/${uid}`, profile).then(ref => {
+                resolve(ref);
+            });
+        }
+    });
+
+    return promise;
+};

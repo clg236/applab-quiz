@@ -9,20 +9,23 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import UserListItem from "./UserListItem";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "../Form/TableCell";
+import * as ROLES from '../../constants/roles';
 
 const styles = theme => ({});
 
 
 const UserList = function (props) {
-    const {classes, users, quizzes} = props;
+    const {classes, profile, users, quizzes} = props;
 
     let content = "";
 
-    if (!isLoaded(users) || !isLoaded(quizzes)) {
+    if (!isLoaded(users) || !isLoaded(quizzes) || !isLoaded(profile)) {
         content = <CircularProgress/>;
     } else if (isEmpty(users)) {
         content = <Typography variant="body1">There is no users yet.</Typography>
     } else {
+
+        const showNotes = profile && profile.role == ROLES.ROLE_ADMIN;
 
         content = (
             <Table className={classes.table}>
@@ -30,11 +33,12 @@ const UserList = function (props) {
                     <TableRow>
                         <TableCell>User</TableCell>
                         <TableCell>Submissions</TableCell>
+                        {showNotes && <TableCell>Notes</TableCell>}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {Object.keys(users).map(key => (
-                        <UserListItem key={key} user={users[key]} uid={key} quizzes={quizzes}/>
+                        <UserListItem key={key} user={users[key]} uid={key} quizzes={quizzes} showNotes={showNotes}/>
                     ))}
                 </TableBody>
             </Table>
@@ -49,7 +53,7 @@ export default compose(
     firebaseConnect(() => ([
         {
             path: "users",
-            queryParams: ['orderByKey']
+            queryParams: ['orderByChild=role', 'equalTo=user']
         },
         {
             path: "quizzes",
@@ -59,6 +63,7 @@ export default compose(
 
     connect(
         state => ({
+            profile: state.firebase.profile,
             users: getVal(state.firebase.data, "users"),
             quizzes: getVal(state.firebase.data, "quizzes")
         })
