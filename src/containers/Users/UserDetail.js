@@ -8,7 +8,7 @@ import {Avatar, Paper, withStyles} from "@material-ui/core";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {SubmissionList} from "../../components/Submissions";
 import {ProfileForm} from "../../components/Users";
-
+import * as ROLES from '../../constants/roles';
 
 const styles = theme => ({
     paper: {
@@ -23,11 +23,12 @@ const styles = theme => ({
 
 const UserDetail = props => {
 
-    const {classes, uid, user} = props;
+    const {classes, uid, user, profile} = props;
+
 
     return (
         <main className={classes.content}>
-            {!isLoaded(user)
+            {!isLoaded(user) || !isLoaded(profile)
                 ? <CircularProgress/> : (
                     <>
                         <Typography variant="h4" gutterBottom component="h2">
@@ -37,10 +38,12 @@ const UserDetail = props => {
                             {user.displayName}
                         </Typography>
 
-                        <Paper className={classes.paper}>
-                            <Typography variant="h5" gutterBottom component="h3">Profile</Typography>
-                            <ProfileForm uid={user.uid}/>
-                        </Paper>
+                        {profile && profile.role == ROLES.ROLE_ADMIN && (
+                            <Paper className={classes.paper}>
+                                <Typography variant="h5" gutterBottom component="h3">Profile</Typography>
+                                <ProfileForm uid={user.uid}/>
+                            </Paper>
+                        )}
 
                         <Paper className={classes.paper}>
                             <Typography variant="h5" gutterBottom component="h3">Submissions</Typography>
@@ -71,6 +74,7 @@ export default compose(
 
             return ({
                 uid: id,
+                profile: state.firebase.profile,
                 user: getVal(state.firebase.data, `users/${id}`),
             });
         }
