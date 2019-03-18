@@ -68,14 +68,14 @@ function EditControl({questionIndex, question}) {
 }
 
 function ViewControl(props) {
-    const {classes, index, quiz, question, submission, deadlinePassed} = props;
+    const {classes, index, quiz, questionID, question, submission, deadlinePassed} = props;
 
     return (
         <Field
-            name={`answers.${question.id}`}
+            name={`answers.${questionID}`}
             render={({field, form}) => (
-                <FormControl required fullWidth error={form.errors && Boolean(_.get(form.errors, `answers.${question.id}`))}>
-                    <InputLabel>{`${index + 1}. ${question.title}`}</InputLabel>
+                <FormControl required fullWidth error={form.errors && Boolean(_.get(form.errors, `answers.${questionID}`))}>
+                    <InputLabel>{question.title}</InputLabel>
 
                     {question.description && (
                         <div className={classes.viewDescription}

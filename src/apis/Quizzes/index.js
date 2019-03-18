@@ -1,5 +1,6 @@
 import {firebase} from "../../store";
 import QuestionTypes from '../../components/QuestionTypes';
+import _ from "lodash";
 
 
 export function saveQuizInfo(info, quizID) {
@@ -27,7 +28,7 @@ export function saveQuizInfo(info, quizID) {
     return promise;
 };
 
-export function gradeQuestion(quizID, quiz, submissionID, submission, question, correct) {
+export function gradeQuestion(quizID, quiz, submissionID, submission, questionID, question, correct) {
     return new Promise((resolve, reject) => {
         const questions = quiz.questions;
         if (!questions) {
@@ -43,10 +44,10 @@ export function gradeQuestion(quizID, quiz, submissionID, submission, question, 
 
         // re-calculate the score
         let score = 0;
-        questions.forEach(q => {
+        _.forEach(questions, q => {
             const type = q.type;
 
-            if (q.id == question.id) {
+            if (q.id == questionID) {
                 if (correct) {
                     score++;
                 }
@@ -61,7 +62,7 @@ export function gradeQuestion(quizID, quiz, submissionID, submission, question, 
 
         Promise.all([
             firebase.set(`submissions/${submissionID}/score`, score),
-            firebase.set(`submissions/${submissionID}/grades/${question.id}`, correct)
+            firebase.set(`submissions/${submissionID}/grades/${questionID}`, correct)
         ]).then(_ => resolve());
     });
 }

@@ -50,24 +50,24 @@ function EditControl({questionIndex, question}) {
 }
 
 function ViewControl(props) {
-    const {classes, index, quiz, question, submission, deadlinePassed} = props;
+    const {classes, index, quiz, questionID, question, submission, deadlinePassed} = props;
 
     const options = {readOnly: !!submission || deadlinePassed};
 
-    const answer = submission && submission.answers && submission.answers[question.id] ? submission.answers[question.id] : "";
+    const answer = submission && submission.answers && submission.answers[questionID] ? submission.answers[questionID] : "";
     let correct = answer && isCorrect(question, answer);
-    if (submission && submission.grades && question.id in submission.grades) {
-        correct = submission.grades[question.id];
+    if (submission && submission.grades && questionID in submission.grades) {
+        correct = submission.grades[questionID];
     }
 
     return (
         <Field
-            name={`answers.${question.id}`}
+            name={`answers.${questionID}`}
             render={({field, form}) => (
                 <FormControl required fullWidth>
                     <InputLabel>
                         {submission && <Typography variant="subtitle1" inline>{correct ? "✔" : "✘"} </Typography>}
-                        {`${index + 1}. ${question.title}`}
+                        {question.title}
                     </InputLabel>
 
                     {question.description && (

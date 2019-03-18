@@ -26,14 +26,14 @@ function EditControl({questionIndex, question}) {
 }
 
 function ViewControl(props) {
-    const {index, quiz, question, submission, deadlinePassed} = props;
+    const {index, quiz, questionID, question, submission, deadlinePassed} = props;
 
     return (
         <Field
-            name={`answers.${question.id}`}
+            name={`answers.${questionID}`}
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
                 <TextField
-                    label={`${index + 1}. ${question.title}`}
+                    label={question.title}
                     required
                     multiline={false}
                     error={Boolean(touched[field.name] && errors[field.name])}

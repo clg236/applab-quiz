@@ -7,6 +7,7 @@ import {compose} from "redux";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
 import Moment from "react-moment";
+import _ from "lodash";
 
 const styles = theme => ({});
 
@@ -31,7 +32,7 @@ const QuizListTableViewItem = props => {
                 {quiz.deadline && <Moment format="MM/DD/YYYY HH:mm">{quiz.deadline}</Moment>}
             </TableCell>
             <TableCell align="left">
-                {submission ? submission.score : 0}/{quiz.questions ? quiz.questions.length : 0}
+                {submission ? submission.score : 0}/{quiz.questions ? _.size(quiz.questions): 0}
             </TableCell>
             <TableCell align="left">
                 {submission && <MuiLink href={'javascript:;'} onClick={handleClicked}>Comments</MuiLink>}

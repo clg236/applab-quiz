@@ -60,26 +60,26 @@ function EditControl(props) {
 }
 
 function ViewControl(props) {
-    const {index, quiz, question, submission, deadlinePassed} = props;
+    const {index, quiz, questionID, question, submission, deadlinePassed} = props;
 
-    const answer = submission && submission.answers && submission.answers[question.id] ? submission.answers[question.id] : "";
+    const answer = submission && submission.answers && submission.answers[questionID] ? submission.answers[questionID] : "";
 
     let correct = answer && isCorrect(question, answer);
-    if (submission && submission.grades && question.id in submission.grades) {
-        correct = submission.grades[question.id];
+    if (submission && submission.grades && questionID in submission.grades) {
+        correct = submission.grades[questionID];
     }
 
     return (
         <FormControl required fullWidth disabled={!!submission || deadlinePassed}>
             <FormLabel>
                 {submission && <Typography variant="subtitle1" inline>{correct ? "✔" : "✘"} </Typography>}
-                {`${index + 1}. ${question.title}`}
+                {question.title}
             </FormLabel>
             <FormGroup>
                 {question.options && question.options.map((option, i) => (
                     <Field
                         key={i}
-                        name={`answers.${question.id}.${i}`}
+                        name={`answers.${questionID}.${i}`}
                         render={({field, form: {values}}) => (
                             <FormControlLabel
                                 control={

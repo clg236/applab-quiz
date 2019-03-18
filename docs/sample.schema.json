@@ -19,33 +19,6 @@
   "quizzes": {
     "quiz-1": {
       "name": "General Quiz",
-      "questions": [
-        {
-          "title": "What's your name?",
-          "type": "short-text",
-          "answers": [],
-          "id": "question-1",
-          "options": [],
-          "answer": ""
-        },
-        {
-          "title": "Today is Sunday!",
-          "type": "single-option",
-          "options": [
-            {
-              "option": "Yes",
-              "id": "option-1"
-            },
-            {
-              "option": "No",
-              "id": "option-2"
-            }
-          ],
-          "answers": [],
-          "id": "question-2",
-          "answer": "option-1"
-        }
-      ],
       "deadline": "2019-01-01",
       "submissions": {
         "submission-1": true
@@ -54,7 +27,10 @@
       "users": {
         "user-1": true
       },
-      "type": "quiz"
+      "type": "quiz",
+      "questions": {
+        "question-1": true
+      }
     }
   },
   "submissions": {
@@ -100,6 +76,33 @@
         "type": "quiz"
       },
       "submissionID": "submission-1"
+    }
+  },
+  "questions": {
+    "question-1": {
+      "title": "What's your name?",
+      "type": "short-text",
+      "answers": [],
+      "id": "question-1",
+      "options": [],
+      "answer": ""
+    },
+    "question-2": {
+      "title": "Today is Sunday!",
+      "type": "single-option",
+      "options": [
+        {
+          "option": "Yes",
+          "id": "option-1"
+        },
+        {
+          "option": "No",
+          "id": "option-2"
+        }
+      ],
+      "answers": [],
+      "id": "question-2",
+      "answer": "option-1"
     }
   }
 }

@@ -4,9 +4,6 @@ const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
 
-// init app first
-admin.initializeApp();
-
 // set up emails
 const config = functions.config();
 const gmailEmail = config.gmail ? config.gmail.email : "";

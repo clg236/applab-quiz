@@ -3,7 +3,7 @@ import {withFormik} from 'formik';
 import {compose} from "redux";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import {firebaseConnect, getVal, isLoaded, withFirebase} from "react-redux-firebase";
+import {firebaseConnect, getVal, isLoaded, populate, withFirebase} from "react-redux-firebase";
 import {connect} from "react-redux";
 import {CircularProgress, Typography, withStyles} from "@material-ui/core";
 import QuestionTypes from '../QuestionTypes';
@@ -16,6 +16,8 @@ import * as ROLES from "../../constants/roles";
 import {default as MuiLink} from "@material-ui/core/Link";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {isPopulated} from "../../helpers";
+import _ from "lodash";
 
 
 const styles = theme => ({
@@ -55,13 +57,14 @@ function QuestionsForm(props) {
     // quizLinkPrefix
     const quizLinkPrefix = quiz.type == 'quiz' ? 'quizzes' : 'assignments';
 
-    function markAsCorrect(question) {
-        API.Quizzes.gradeQuestion(quizID, quiz, submissionID, submission, question, true).then(_ => enqueueSnackbar("Submitted!"));
+    function markAsCorrect(questionID, question) {
+        API.Quizzes.gradeQuestion(quizID, quiz, submissionID, submission, questionID, question, true).then(_ => enqueueSnackbar("Submitted!"));
     }
 
-    function markAsWrong(question) {
-        API.Quizzes.gradeQuestion(quizID, quiz, submissionID, submission, question, false).then(_ => enqueueSnackbar("Submitted!"));
+    function markAsWrong(questionID, question) {
+        API.Quizzes.gradeQuestion(quizID, quiz, submissionID, submission, questionID, question, false).then(_ => enqueueSnackbar("Submitted!"));
     }
+
 
     return (
         <form onSubmit={handleSubmit}>
@@ -99,21 +102,22 @@ function QuestionsForm(props) {
                     </>
                 )}
 
-                {quiz.questions && quiz.questions.map((question, i) => {
+                {quiz.questions && isPopulated(quiz.questions) && _.map(quiz.questions, (question, k) => {
                     const QuestionTypeControl = question.type && question.type in QuestionTypes ? QuestionTypes[question.type].ViewControl : null;
+                    const questionID = question.id ? question.id : k;
 
                     return (
-                        <React.Fragment key={i}>
+                        <React.Fragment key={k}>
                             <Grid item xs={12}>
-                                {QuestionTypeControl && <QuestionTypeControl index={i} question={question}
+                                {QuestionTypeControl && <QuestionTypeControl index={k} questionID={questionID} question={question}
                                                                              deadlinePassed={deadlinePassed} {...props} />}
                             </Grid>
                             {isAdmin && submission && (
                                 <Grid item xs={12}>
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={_ => markAsCorrect(question)}>
+                                    <Button variant="contained" color="primary" className={classes.button} onClick={_ => markAsCorrect(questionID, question)}>
                                         Mark as Correct
                                     </Button>
-                                    <Button variant="contained" color="secondary" className={classes.button} onClick={_ => markAsWrong(question)}>
+                                    <Button variant="contained" color="secondary" className={classes.button} onClick={_ => markAsWrong(questionID, question)}>
                                         Mark as Wrong
                                     </Button>
                                 </Grid>
@@ -140,12 +144,13 @@ function QuestionsForm(props) {
 export default compose(
     firebaseConnect(({quizID, submissionID}) => {
         const queries = [{
-            path: `quizzes/${quizID}`
+            path: `quizzes/${quizID}`,
+            populates: ["questions:questions"]
         }];
 
         if (submissionID) {
             queries.push({
-                path: `submissions/${submissionID}`
+                path: `submissions/${submissionID}`,
             });
         }
 
@@ -161,7 +166,9 @@ export default compose(
             return {
                 uid: state.firebase.auth.uid,
                 user: state.firebase.auth,
-                quiz: getVal(state.firebase.data, `quizzes/${quizID}`),
+                quiz: populate(state.firebase, `quizzes/${quizID}`, [
+                    "questions:questions"
+                ]),
                 submission: submissionID ? getVal(state.firebase.data, `submissions/${submissionID}`) : null
             };
         }, {
@@ -178,15 +185,16 @@ export default compose(
                 answers: {}
             };
 
-            if (isLoaded(quiz) && quiz.questions && (!submissionID || isLoaded(submission))) {
-                quiz.questions.map(question => {
+            if (isLoaded(quiz) && quiz.questions && isPopulated(quiz.questions) && (!submissionID || isLoaded(submission))) {
+                _.map(quiz.questions, (question, i) => {
                     const type = question.type;
+                    const questionID = question.id ? question.id : i;
 
                     if (type in QuestionTypes) {
-                        if (submission && submission.answers && question.id in submission.answers) {
-                            values['answers'][question.id] = submission.answers[question.id];
+                        if (submission && submission.answers && questionID in submission.answers) {
+                            values['answers'][questionID] = submission.answers[questionID];
                         } else {
-                            values['answers'][question.id] = QuestionTypes[type].defaultValue;
+                            values['answers'][questionID] = QuestionTypes[type].defaultValue;
                         }
                     }
                 });
@@ -218,13 +226,14 @@ export default compose(
             }
 
             let score = 0;
-            quiz.questions.forEach(question => {
+            _.forEach(quiz.questions, (question, i) => {
                 const type = question.type;
+                const questionID = question.id ? question.id : i;
 
                 if (type in QuestionTypes) {
-                    values['answers'][question.id] = QuestionTypes[type].sanitizeValue(values['answers'][question.id]);
+                    values['answers'][questionID] = QuestionTypes[type].sanitizeValue(values['answers'][questionID]);
 
-                    if (QuestionTypes[type].isCorrect(question, values['answers'][question.id])) {
+                    if (QuestionTypes[type].isCorrect(question, values['answers'][questionID])) {
                         score++;
                     }
                 }

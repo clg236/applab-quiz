@@ -44,23 +44,23 @@ function EditControl(props) {
 }
 
 function ViewControl(props) {
-    const {index, quiz, question, submission, deadlinePassed} = props;
+    const {index, quiz, questionID, question, submission, deadlinePassed} = props;
 
-    const answer = submission && submission.answers && submission.answers[question.id] ? submission.answers[question.id] : "";
+    const answer = submission && submission.answers && submission.answers[questionID] ? submission.answers[questionID] : "";
 
     let correct = answer && isCorrect(question, answer);
-    if (submission && submission.grades && question.id in submission.grades) {
-        correct = submission.grades[question.id];
+    if (submission && submission.grades && questionID in submission.grades) {
+        correct = submission.grades[questionID];
     }
 
     return (
         <Field
-            name={`answers.${question.id}`}
+            name={`answers.${questionID}`}
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
                 <FormControl required fullWidth disabled={!!submission || deadlinePassed}>
                     <FormLabel>
                         {submission && <Typography variant="subtitle1" inline>{correct ? "✔" : "✘"} </Typography>}
-                        {`${index + 1}. ${question.title}`}
+                        {question.title}
                     </FormLabel>
 
                     <RadioGroup aria-label={question.title} name={field.name}>

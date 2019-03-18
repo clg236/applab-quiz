@@ -2,12 +2,12 @@ import {Button, CircularProgress, Grid, withStyles} from "@material-ui/core";
 import {FieldArray, withFormik} from "formik";
 import React, {useState} from "react";
 import {compose} from "redux";
-import {firebaseConnect, getVal, isEmpty, isLoaded, withFirebase} from "react-redux-firebase";
+import {firebaseConnect, isEmpty, isLoaded, populate, withFirebase} from "react-redux-firebase";
 import {withSnackbar} from "notistack";
 import EditQuestionControl from './EditQuestionControl';
-import uuid from "uuid";
 import {connect} from "react-redux";
 import QuestionTypes from "../QuestionTypes";
+import {isPopulated} from "../../helpers";
 
 const EmptyQuestion = {
     id: '',
@@ -27,14 +27,14 @@ let QuestionsFieldArray = props => {
     let {expanded} = useState([]);
 
     function handleAddQuestion() {
-        push({...EmptyQuestion, id: uuid.v4()});
+        push({...EmptyQuestion});
     }
 
     return (
         <>
-            {questions.map((question, index) => (
-                <EditQuestionControl key={index} question={question} questionIndex={index}
-                                     expanded={expanded && expanded[index]} remove={remove}/>
+            {questions && questions.map((question, i) => (
+                <EditQuestionControl key={i} question={question} questionIndex={i}
+                                     expanded={expanded && expanded[i]} remove={remove}/>
             ))}
 
             <div>
@@ -54,6 +54,8 @@ const EditQuestionsForm = (props) => {
         return <CircularProgress/>;
     } else if (isEmpty(quiz)) {
         return "There is no such quiz.";
+    } else if (!isPopulated(quiz.questions)) {
+        return <CircularProgress/>;
     }
 
     return (
@@ -76,7 +78,10 @@ export default compose(
     firebaseConnect(({quizID}) => {
         return [
             {
-                path: `quizzes/${quizID}`
+                path: `quizzes/${quizID}`,
+                populates: [
+                    "questions:questions",
+                ]
             }
         ];
     }),
@@ -88,7 +93,9 @@ export default compose(
     connect(
         (state, {quizID}) => {
             return {
-                quiz: getVal(state.firebase.data, `quizzes/${quizID}`)
+                quiz: populate(state.firebase, `quizzes/${quizID}`, [
+                    "questions:questions",
+                ])
             }
         }
     ),
@@ -97,22 +104,28 @@ export default compose(
         enableReinitialize: true,
 
         mapPropsToValues: props => {
-            const {quiz} = props
+            const {quiz} = props;
 
             // TODO check if the question type exists
             let questions = [];
 
-            if (isLoaded(quiz) && !isEmpty(quiz) && quiz.questions) {
-                questions = quiz.questions;
+            if (isLoaded(quiz) && !isEmpty(quiz) && quiz.questions && isPopulated(quiz.questions)) {
+                Object.keys(quiz.questions).forEach((k, i) => {
+                    const question = quiz.questions[k];
 
-                quiz.questions.forEach((question, i) => {
-                    if (question.type && question.type in QuestionTypes && QuestionTypes[question.type].prepareForEditControl) {
-                        questions[i] = QuestionTypes[question.type].prepareForEditControl(question);
+                    if (question.type && question.type in QuestionTypes) {
+                        if (QuestionTypes[question.type].prepareForEditControl) {
+                            questions[i] = QuestionTypes[question.type].prepareForEditControl(question);
+                        } else {
+                            questions[i] = question;
+                        }
+                    } else {
+                        questions[i] = {...EmptyQuestion};
                     }
+
+                    questions[i].id = question.id ? question.id : k;
                 });
             }
-
-
 
             return {
                 questions
@@ -120,11 +133,7 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {quizID, quiz, firebase: {updateWithMeta}, enqueueSnackbar}} = actions;
-
-            if ("submissions" in quiz && Object.keys(quiz.submissions).length > 0) {
-                return ;
-            }
+            const {props: {quizID, quiz, firebase: {set, updateWithMeta, pushWithMeta}, enqueueSnackbar}} = actions;
 
             // filter out null values
             if (values.questions && values.questions.length > 0) {
@@ -135,7 +144,34 @@ export default compose(
                 });
             }
 
-            updateWithMeta(`quizzes/${quizID}`, values).then(() => enqueueSnackbar("Saved!"));
+
+            const updates = [];
+            values.questions.forEach(question => {
+                if (question.id) {
+                    updates.push(updateWithMeta(`questions/${question.id}`, question));
+                } else {
+                    updates.push(pushWithMeta("questions", question));
+                }
+            });
+
+            Promise.all(updates)
+                .then(references => {
+                    const updates = {};
+
+                    references.forEach((ref, i) => {
+                        // ref is available if we use pushWithMeta
+                        if (ref && ref.key) {
+                            updates[ref.key] = true;
+                        } else {
+                            // trying to get the id from values
+                            if (i < values.questions.length && values.questions[i].id) {
+                                updates[values.questions[i].id] = true;
+                            }
+                        }
+                    });
+
+                    set(`quizzes/${quizID}/questions`, updates).then(_ => enqueueSnackbar("Saved!"));
+                });
         }
     }),
 

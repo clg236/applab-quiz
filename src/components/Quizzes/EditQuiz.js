@@ -39,7 +39,7 @@ const EditQuiz = props => {
         return <Typography variant="body1">Item could not be found.</Typography>;
     }
 
-    const numQuestions = quiz && quiz.questions ? quiz.questions.length : 0;
+    const numQuestions = quiz && quiz.questions ? (quiz.questions.length ? quiz.questions.length : Object.keys(quiz.questions).length) : 0;
     const numSubmissions = quiz && quiz.submissions ? Object.keys(quiz.submissions).length : 0;
     const numQualities = quiz && quiz.qualities ? Object.keys(quiz.qualities).length : 0;
 
