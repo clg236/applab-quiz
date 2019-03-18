@@ -124,9 +124,8 @@ export default compose(
             const uid = props.firebase.auth().currentUser.uid;
 
             queries.push({
-                path: `users/${uid}`
-            }, {
-                path: `submissions`
+                path: `users/${uid}`,
+                populates: ["submissions:submissions"]
             });
         }
 

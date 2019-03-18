@@ -35,6 +35,9 @@ const QuillConfig = {
 class Editor extends React.PureComponent {
 
     countWords = text => {
+        if (!text) {
+            return 0;
+        }
         return text.trim().split(/\s+/).length;
     }
 
