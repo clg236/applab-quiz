@@ -44,16 +44,16 @@ export function gradeQuestion(quizID, quiz, submissionID, submission, questionID
 
         // re-calculate the score
         let score = 0;
-        _.forEach(questions, q => {
+        _.forEach(questions, (localQuestionID, q) => {
             const type = q.type;
 
-            if (q.id == questionID) {
+            if (localQuestionID == questionID) {
                 if (correct) {
                     score++;
                 }
             } else {
-                if (type in QuestionTypes && q.id in answers) {
-                    if (QuestionTypes[type].isCorrect(q, answers[q.id])) {
+                if (type in QuestionTypes && localQuestionID in answers) {
+                    if (QuestionTypes[type].isCorrect(q, answers[localQuestionID])) {
                         score++;
                     }
                 }
