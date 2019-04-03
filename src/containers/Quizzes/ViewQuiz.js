@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {firebaseConnect, getVal, isEmpty, isLoaded, populate} from 'react-redux-firebase';
+import {firebaseConnect, getVal, isEmpty, isLoaded, populate, withFirebase} from 'react-redux-firebase';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from "@material-ui/core";
@@ -109,6 +109,7 @@ const ViewQuiz = props => {
 
 
 export default compose(
+    withFirebase,
 
     firebaseConnect(props => {
         const {match: {params: {id, submissionID}}} = props;

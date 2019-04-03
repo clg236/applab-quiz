@@ -44,7 +44,7 @@ export function gradeQuestion(quizID, quiz, submissionID, submission, questionID
 
         // re-calculate the score
         let score = 0;
-        _.forEach(questions, (localQuestionID, q) => {
+        _.forEach(questions, (q, localQuestionID) => {
             const type = q.type;
 
             if (localQuestionID == questionID) {
