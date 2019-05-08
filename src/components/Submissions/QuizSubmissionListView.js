@@ -12,6 +12,20 @@ import QuizSubmissionListViewItem from "./QuizSubmissionListViewItem";
 const QuizSubmissionListView = props => {
     const {quiz} = props;
 
+    let submissions = [];
+
+    Object.keys(quiz.submissions).map(key => {
+        if (quiz.submissions[key] && typeof quiz.submissions[key] == 'object' && !isEmpty(quiz.submissions[key])) {
+            submissions.push([key, quiz.submissions[key]]);
+        }
+    });
+
+    if (Object.keys(submissions).length > 0) {
+        submissions.sort((a, b) => {
+            return a[1].user.displayName > b[1].user.displayName ? 1 : -1;
+        });
+    }
+
     return (
         <Table>
             <TableHead>
@@ -24,17 +38,15 @@ const QuizSubmissionListView = props => {
             </TableHead>
 
             <TableBody>
-                {Object.keys(quiz.submissions).map(key => {
-                    if (quiz.submissions[key] && typeof quiz.submissions[key] == 'object' && !isEmpty(quiz.submissions[key])) {
-                        return (
-                            <QuizSubmissionListViewItem
-                                key={key}
-                                quiz={quiz}
-                                submissionID={key}
-                                submission={quiz.submissions[key]}
-                            />
-                        );
-                    }
+                {submissions.map(([key, submission]) => {
+                    return (
+                        <QuizSubmissionListViewItem
+                            key={key}
+                            quiz={quiz}
+                            submissionID={key}
+                            submission={submission}
+                        />
+                    );
                 })}
             </TableBody>
         </Table>
