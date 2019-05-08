@@ -109,8 +109,6 @@ const ViewQuiz = props => {
 
 
 export default compose(
-    withFirebase,
-
     firebaseConnect(props => {
         const {match: {params: {id, submissionID}}} = props;
         const queries = [{

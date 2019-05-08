@@ -25,9 +25,9 @@ const Home = props => {
 
 
 export default compose(
-    withFirebase,
 
     firebaseConnect(props => {
+        console.log(props);
         const uid = props.firebase.auth().currentUser.uid;
 
         return [{
