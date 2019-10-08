@@ -7,7 +7,17 @@ import FormLabel from '@material-ui/core/FormLabel';
 import {Field, getIn} from 'formik';
 import {Grid, Typography} from "@material-ui/core";
 import {EditOptionsControl, EditTitleControl} from "../Questions";
+import {Editor, InputLabel} from "../Form";
 
+
+const styles = theme => ({
+    viewDescription: {
+        marginBottom: theme.spacing.unit * 2,
+    },
+    field: {
+        height: "100%"
+    }
+});
 
 function validate(value) {
     return !value ? 'Required' : '';
@@ -35,6 +45,18 @@ function EditControl(props) {
             </Grid>
 
             <Grid item xs={12}>
+                <FormControl fullWidth>
+                    <InputLabel>Question Content</InputLabel>
+                    <Field className={styles.theme}
+                           name={`questions.${questionIndex}.description`}
+                           render={({field, form}) => (
+                               <Editor field={field} form={form} withMargin/>
+                           )}
+                    />
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
                 <div>
                     <EditOptionsControl questionIndex={questionIndex} multiple={false}/>
                 </div>
@@ -44,7 +66,7 @@ function EditControl(props) {
 }
 
 function ViewControl(props) {
-    const {index, quiz, questionID, question, submission, deadlinePassed} = props;
+    const {classes, index, quiz, questionID, question, submission, deadlinePassed} = props;
 
     const answer = submission && submission.answers && submission.answers[questionID] ? submission.answers[questionID] : "";
 
@@ -62,6 +84,11 @@ function ViewControl(props) {
                         {submission && <Typography variant="subtitle1" inline>{correct ? "✔" : "✘"} </Typography>}
                         {question.title}
                     </FormLabel>
+
+                    {question.description && (
+                        <div className={classes.viewDescription}
+                             dangerouslySetInnerHTML={{__html: question.description}}/>
+                    )}
 
                     <RadioGroup aria-label={question.title} name={field.name}>
                         {question.options && question.options.map((option, i) => {
