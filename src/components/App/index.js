@@ -23,6 +23,7 @@ import {
     faFeather
 } from '@fortawesome/free-solid-svg-icons';
 import Moment from 'react-moment';
+import {Router} from "react-router-dom";
 
 const font = "'Lato', sans-serif";
 
@@ -72,7 +73,9 @@ function App() {
                 <ConnectedRouter history={history}>
                     <SnackbarProvider>
                         <MuiThemeProvider theme={theme}>
-                            <Layout/>
+                            <Router history={history}>
+                                <Layout/>
+                            </Router>
                         </MuiThemeProvider>
                     </SnackbarProvider>
                 </ConnectedRouter>
