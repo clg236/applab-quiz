@@ -84,7 +84,7 @@ function ViewControl(props) {
 
                     <Editor field={field} form={form} withMargin
                             maxWords={question.maxWords}
-                            disabled={!!submission || deadlinePassed}/>
+                            disabled={!!submission}/>
 
                 </FormControl>
             )}

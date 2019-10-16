@@ -8,6 +8,7 @@ import TableCell from "../Form/TableCell";
 import API from "../../apis";
 import {withSnackbar} from "notistack";
 import {compose} from "redux";
+import moment from "moment";
 
 const UserSubmissionListViewItem = props => {
 
@@ -28,7 +29,7 @@ const UserSubmissionListViewItem = props => {
             <TableCell component="th">
                 <MuiLink component={Link} to={link}>{submission.subject.name} ({submission.subject.type})</MuiLink>
             </TableCell>
-            <TableCell>{submission.score}</TableCell>
+            <TableCell>{submission.hasOwnProperty('calculatedScore') ? submission.calculatedScore : submission.score}</TableCell>
             <TableCell><Moment>{submission.createdAt}</Moment></TableCell>
             <TableCell>
                 <Button size="small" color="secondary" onClick={handleDeleteClicked}>Delete</Button>

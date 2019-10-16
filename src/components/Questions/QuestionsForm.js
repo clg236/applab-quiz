@@ -39,6 +39,7 @@ function QuestionsForm(props) {
     }
 
     const deadlinePassed = quiz.deadline ? moment(quiz.deadline).isBefore(moment()) : false;
+    const allowSubmission = !submission || !deadlinePassed;
 
     // get prev and next submission
     let prevSubmissionID = "";
@@ -109,15 +110,18 @@ function QuestionsForm(props) {
                     return (
                         <React.Fragment key={k}>
                             <Grid item xs={12}>
-                                {QuestionTypeControl && <QuestionTypeControl index={k} questionID={questionID} question={question}
-                                                                             deadlinePassed={deadlinePassed} {...props} />}
+                                {QuestionTypeControl &&
+                                <QuestionTypeControl index={k} questionID={questionID} question={question}
+                                                     deadlinePassed={deadlinePassed} {...props} />}
                             </Grid>
                             {isAdmin && submission && (
                                 <Grid item xs={12}>
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={_ => markAsCorrect(questionID, question)}>
+                                    <Button variant="contained" color="primary" className={classes.button}
+                                            onClick={_ => markAsCorrect(questionID, question)}>
                                         Mark as Correct
                                     </Button>
-                                    <Button variant="contained" color="secondary" className={classes.button} onClick={_ => markAsWrong(questionID, question)}>
+                                    <Button variant="contained" color="secondary" className={classes.button}
+                                            onClick={_ => markAsWrong(questionID, question)}>
                                         Mark as Wrong
                                     </Button>
                                 </Grid>
@@ -126,7 +130,7 @@ function QuestionsForm(props) {
                     );
                 })}
 
-                {!submission && !deadlinePassed && (
+                {allowSubmission && (
                     <Grid item xs={12}>
                         <Button color="primary" variant="contained" type="submit"
                                 disabled={!isValid || isSubmitting} className={classes.submit}>
@@ -239,9 +243,18 @@ export default compose(
                 }
             });
 
+            let calculatedScore = score;
+            if (quiz.deadline) {
+                const diffInDays = moment().add(1, "days").diff(moment(quiz.deadline), 'days');
+                if (diffInDays > 0) {
+                    calculatedScore = Math.max(0, calculatedScore * (1 - 0.1 * diffInDays).toFixed(2));
+                }
+            }
+
             pushWithMeta("submissions", {
                 answers: values['answers'],
                 score: score,
+                calculatedScore: calculatedScore,
                 user: {uid, displayName, photoURL},
                 subject: {
                     id: quizID,

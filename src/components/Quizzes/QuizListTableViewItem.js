@@ -12,7 +12,7 @@ import _ from "lodash";
 const styles = theme => ({});
 
 const QuizListTableViewItem = props => {
-    const {classes, quizID, quiz, submission, quizURL, index, pushToHistory} = props;
+    const {classes, quizID, quiz, submission, quizURL, index, pushToHistory, showScoreColumn} = props;
 
     function handleClicked() {
         if (quizURL) {
@@ -31,9 +31,11 @@ const QuizListTableViewItem = props => {
             <TableCell align="left">
                 {quiz.deadline && <Moment format="MM/DD/YYYY HH:mm">{quiz.deadline}</Moment>}
             </TableCell>
-            <TableCell align="left">
-                {submission ? submission.score : 0}/{quiz.questions ? _.size(quiz.questions): 0}
-            </TableCell>
+            {showScoreColumn && (
+                <TableCell align="left">
+                    {submission ? submission.score : 0}/{quiz.questions ? _.size(quiz.questions) : 0}
+                </TableCell>
+            )}
             <TableCell align="left">
                 {submission && <MuiLink href={'javascript:;'} onClick={handleClicked}>Comments</MuiLink>}
             </TableCell>
@@ -43,7 +45,7 @@ const QuizListTableViewItem = props => {
 
 export default compose(
     connect(null, {
-       pushToHistory: push
+        pushToHistory: push
     }),
     withStyles(styles)
 )(QuizListTableViewItem);

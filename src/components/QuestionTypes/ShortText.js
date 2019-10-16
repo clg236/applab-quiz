@@ -37,7 +37,7 @@ function ViewControl(props) {
                     required
                     multiline={false}
                     error={Boolean(touched[field.name] && errors[field.name])}
-                    disabled={!!submission || deadlinePassed}
+                    disabled={!!submission}
                     value={field.value || ''}
                     name={field.name}
                     onChange={handleChange}

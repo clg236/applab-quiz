@@ -52,7 +52,8 @@ function EditControl({questionIndex, question}) {
 function ViewControl(props) {
     const {classes, index, quiz, questionID, question, submission, deadlinePassed} = props;
 
-    const options = {readOnly: !!submission || deadlinePassed};
+    const options = {readOnly: !!submission};
+
 
     const answer = submission && submission.answers && submission.answers[questionID] ? submission.answers[questionID] : "";
     let correct = answer && isCorrect(question, answer);

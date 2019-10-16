@@ -33,7 +33,7 @@ const styles = theme => ({
 });
 
 const QuizList = props => {
-    const {classes, user, quizzes, view, type} = props;
+    const {classes, user, quizzes, view, type, showScoreColumn} = props;
 
     let quizURL = props.quizURL;
     if (!quizURL) {
@@ -49,13 +49,18 @@ const QuizList = props => {
     if (!isLoaded(quizzes) || (user && !isLoaded(user))) {
         content = <CircularProgress size={20}/>
     } else if (isEmpty(quizzes)) {
-        content = <Typography variant="body1" gutterBottom>{props.type === 'assignment' ? 'no current assignments' : 'no current quizzes'}</Typography>;
+        content = <Typography variant="body1"
+                              gutterBottom>{props.type === 'assignment' ? 'no current assignments' : 'no current quizzes'}</Typography>;
     } else {
         const View = view && view == 'grid' ? QuizListGridView : QuizListTableView;
-        content = <View quizzes={quizzes} user={user} quizURL={quizURL}/>;
+        content = <View quizzes={quizzes} user={user} quizURL={quizURL} showScoreColumn={showScoreColumn}/>;
     }
 
     return content;
+};
+
+QuizList.defaultProps = {
+    showScoreColumn: true
 };
 
 export default compose(
@@ -116,7 +121,6 @@ export default compose(
             return data;
         }
     ),
-
 
 
     withStyles(styles)

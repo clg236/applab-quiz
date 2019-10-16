@@ -93,7 +93,7 @@ function ViewControl(props) {
     }
 
     return (
-        <FormControl required fullWidth disabled={!!submission || deadlinePassed}>
+        <FormControl required fullWidth disabled={!!submission}>
             <FormLabel>
                 {submission && <Typography variant="subtitle1" inline>{correct ? "✔" : "✘"} </Typography>}
                 {question.title}

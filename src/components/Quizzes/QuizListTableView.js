@@ -12,8 +12,8 @@ const styles = theme => ({
 
 });
 
-const QuizListGridView = props => {
-    const {classes, user, quizzes, quizURL, } = props;
+const QuizListTableView = props => {
+    const {classes, user, quizzes, quizURL, showScoreColumn} = props;
 
     function getSubmission(quizID) {
         if (!user || !user.submissions || Object.keys(user.submissions).length === 0) {
@@ -37,7 +37,7 @@ const QuizListGridView = props => {
                     <TableCell>#</TableCell>
                     <TableCell align="left">Topic</TableCell>
                     <TableCell align="left">Due</TableCell>
-                    <TableCell align="left">Score</TableCell>
+                    {showScoreColumn && <TableCell align="left">Score</TableCell>}
                     <TableCell align="left">Comments</TableCell>
                 </TableRow>
             </TableHead>
@@ -50,6 +50,7 @@ const QuizListGridView = props => {
                         quiz={quizzes[key]}
                         submission={getSubmission(key)}
                         quizURL={quizURL}
+                        showScoreColumn={showScoreColumn}
                     />
                 ))}
             </TableBody>
@@ -59,4 +60,4 @@ const QuizListGridView = props => {
 
 export default compose(
     withStyles(styles)
-)(QuizListGridView);
+)(QuizListTableView);

@@ -7,11 +7,10 @@ import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 import {withStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import {EditQuiz, QuizList} from "../../components/Quizzes";
+import {QuizList} from "../../components/Quizzes";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {UserIsAdmin} from "../../components/Auth";
 
@@ -96,7 +95,7 @@ const AdminListAssignments = ({classes}) => {
             <Grid container spacing={16}>
                 <Grid item md={12} xs={12}>
                     <Paper className={classes.list}>
-                        <QuizList type="assignment" showUnpublished quizURL="/assignments/:id/edit"/>
+                        <QuizList type="assignment" showUnpublished showScoreColumn={false} quizURL="/assignments/:id/edit"/>
                     </Paper>
                 </Grid>
 

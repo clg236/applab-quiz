@@ -1,6 +1,7 @@
 import {firebase} from "../../store";
 import QuestionTypes from '../../components/QuestionTypes';
 import _ from "lodash";
+import moment from "moment";
 
 
 export function saveQuizInfo(info, quizID) {
@@ -60,8 +61,17 @@ export function gradeQuestion(quizID, quiz, submissionID, submission, questionID
             }
         });
 
+        let calculatedScore = score;
+        if (quiz.deadline) {
+            const diffInDays = moment(submission.createdAt).add(1, "days").diff(moment(quiz.deadline), 'days');
+            if (diffInDays > 0) {
+                calculatedScore = Math.max(0, calculatedScore * (1 - 0.1 * diffInDays).toFixed(2));
+            }
+        }
+
         Promise.all([
             firebase.set(`submissions/${submissionID}/score`, score),
+            firebase.set(`submissions/${submissionID}/calculatedScore`, calculatedScore),
             firebase.set(`submissions/${submissionID}/grades/${questionID}`, correct)
         ]).then(_ => resolve());
     });

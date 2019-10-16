@@ -12,9 +12,7 @@ import React from 'react';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import {withFirebase} from 'react-redux-firebase';
-import {push} from 'connected-react-router';
 import {Link} from 'react-router-dom';
-import ACTIONS from '../../actions';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
@@ -64,7 +62,9 @@ function DrawerComponent(props) {
 
     // layout context
     const handleDrawerClose = () => {
-        dispatch(ACTIONS.LAYOUT.closeDrawer());
+        dispatch({
+            type: "CLOSE_DRAWER"
+        });
     }
 
     // firebase
@@ -89,24 +89,24 @@ function DrawerComponent(props) {
             </div>
             <Divider/>
             <List>
-                    <ListItem button component={props => <Link {...props} to={ROUTES.HOME}/>}>
-                        <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="home" size="sm" fixedWidth/>
-                        </ListItemIcon>
-                        <ListItemText primary="home"/>
-                    </ListItem>
-                    <ListItem button component={props => <Link {...props} to={ROUTES.LIST_QUIZZES}/>}>
-                        <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="vial" size="sm" fixedWidth/>
-                        </ListItemIcon>
-                        <ListItemText primary="quizzes"/>
-                    </ListItem>
-                    <ListItem button component={props => <Link {...props} to={ROUTES.LIST_ASSIGNMENTS}/>}>
-                        <ListItemIcon className={classes.drawerIcon}>
-                            <FontAwesomeIcon icon="scroll" size="sm" fixedWidth/>
-                        </ListItemIcon>
-                        <ListItemText primary="assignments"/>
-                    </ListItem>
+                <ListItem button component={props => <Link {...props} to={ROUTES.HOME}/>}>
+                    <ListItemIcon className={classes.drawerIcon}>
+                        <FontAwesomeIcon icon="home" size="sm" fixedWidth/>
+                    </ListItemIcon>
+                    <ListItemText primary="home"/>
+                </ListItem>
+                <ListItem button component={props => <Link {...props} to={ROUTES.LIST_QUIZZES}/>}>
+                    <ListItemIcon className={classes.drawerIcon}>
+                        <FontAwesomeIcon icon="vial" size="sm" fixedWidth/>
+                    </ListItemIcon>
+                    <ListItemText primary="quizzes"/>
+                </ListItem>
+                <ListItem button component={props => <Link {...props} to={ROUTES.LIST_ASSIGNMENTS}/>}>
+                    <ListItemIcon className={classes.drawerIcon}>
+                        <FontAwesomeIcon icon="scroll" size="sm" fixedWidth/>
+                    </ListItemIcon>
+                    <ListItemText primary="assignments"/>
+                </ListItem>
             </List>
 
             {profile.role == ROLES.ROLE_ADMIN && (

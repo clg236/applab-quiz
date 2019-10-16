@@ -9,7 +9,6 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import React, {useState} from 'react';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
-import Logo from '../../img/logo.png'
 
 //fontawesome icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -18,7 +17,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {connect} from 'react-redux';
-import ACTIONS from '../../actions';
 
 const styles = theme => ({
     appBar: {
@@ -41,9 +39,13 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
 
     function handleToggleDrawerClicked() {
         if (drawer.open) {
-            dispatch(ACTIONS.LAYOUT.closeDrawer());
+            dispatch({
+                type: "CLOSE_DRAWER"
+            });
         } else {
-            dispatch(ACTIONS.LAYOUT.openDrawer());
+            dispatch({
+                type: "OPEN_DRAWER"
+            });
         }
     }
 
