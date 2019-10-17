@@ -13,7 +13,7 @@ import {Editor, InputLabel} from "../Form";
 
 const styles = theme => ({
     viewDescription: {
-        marginBottom: theme.spacing.unit * 2,
+        marginBottom: theme.spacing(2),
     },
     field: {
         height: "100%"
@@ -95,7 +95,7 @@ function ViewControl(props) {
     return (
         <FormControl required fullWidth disabled={!!submission}>
             <FormLabel>
-                {submission && <Typography variant="subtitle1" inline>{correct ? "✔" : "✘"} </Typography>}
+                {submission && <Typography variant="subtitle1" display={"inline"}>{correct ? "✔" : "✘"} </Typography>}
                 {question.title}
             </FormLabel>
 

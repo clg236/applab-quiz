@@ -22,11 +22,11 @@ import _ from "lodash";
 
 const styles = theme => ({
     button: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(1),
     },
 
     submit: {
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1),
     },
 });
 
@@ -69,7 +69,7 @@ function QuestionsForm(props) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid container spacing={24}>
+            <Grid container spacing={3}>
 
                 {isAdmin && (
                     <Grid item xs={12}>

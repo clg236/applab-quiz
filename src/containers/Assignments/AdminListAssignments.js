@@ -18,7 +18,7 @@ import {UserIsAdmin} from "../../components/Auth";
 const styles = theme => ({
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing(3),
         height: '100vh',
         overflow: 'auto',
     },
@@ -26,7 +26,7 @@ const styles = theme => ({
     list: {
         width: '100%',
         overflowX: 'auto',
-        marginBottom: theme.spacing.unit * 3,
+        marginBottom: theme.spacing(3),
     },
     card: {
         minWidth: 275,
@@ -61,7 +61,7 @@ const AdminListAssignments = ({classes}) => {
     return (
         <main className={classes.content}>
             <Typography variant="h5" component="h6">Create and Manage Assignments</Typography>
-            <Grid container spacing={16}>
+            <Grid container spacing={2}>
                 <Grid item>
                     <Card className={classes.card}>
                         <CardContent>
@@ -92,7 +92,7 @@ const AdminListAssignments = ({classes}) => {
                 </Grid>
             </Grid>
             <Typography variant="h5" component="h6" gutterBottom>All Assignments</Typography>
-            <Grid container spacing={16}>
+            <Grid container spacing={2}>
                 <Grid item md={12} xs={12}>
                     <Paper className={classes.list}>
                         <QuizList type="assignment" showUnpublished showScoreColumn={false} quizURL="/assignments/:id/edit"/>

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Editor, InputLabel} from '../Form';
 import {Field} from 'formik';
-import {FormControl, Grid, Typography, withStyles} from "@material-ui/core";
-import {EditDeadlineControl, EditTitleControl} from "../Questions";
+import {FormControl, Grid, withStyles} from "@material-ui/core";
+import {EditTitleControl} from "../Questions";
 import {compose} from "redux";
 import TextField from "../Form/TextField";
 import _ from "lodash";
@@ -10,7 +10,7 @@ import _ from "lodash";
 
 const styles = theme => ({
     viewDescription: {
-        marginBottom: theme.spacing.unit * 2,
+        marginBottom: theme.spacing(2),
     },
     field: {
         height: "100%"
@@ -74,7 +74,8 @@ function ViewControl(props) {
         <Field
             name={`answers.${questionID}`}
             render={({field, form}) => (
-                <FormControl required fullWidth error={form.errors && Boolean(_.get(form.errors, `answers.${questionID}`))}>
+                <FormControl required fullWidth
+                             error={form.errors && Boolean(_.get(form.errors, `answers.${questionID}`))}>
                     <InputLabel>{question.title}</InputLabel>
 
                     {question.description && (

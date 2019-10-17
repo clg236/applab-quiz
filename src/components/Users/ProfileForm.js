@@ -27,7 +27,7 @@ const ProfileForm = props => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid container spacing={24}>
+            <Grid container spacing={3}>
                 <Grid item md={12}>
                     <Field
                         name="writingAbility"
@@ -80,7 +80,7 @@ const ProfileForm = props => {
                     </FormControl>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item md={12}>
                     <Button color="primary" variant="contained" type="submit" disabled={isSubmitting || !isValid}>Save</Button>
                 </Grid>
             </Grid>

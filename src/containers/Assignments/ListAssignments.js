@@ -17,19 +17,19 @@ const styles = theme => ({
     list: {
         width: '100%',
         overflowX: 'auto',
-        marginBottom: theme.spacing.unit * 3,
+        marginBottom: theme.spacing(3),
     },
 
     paperPadding: {
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing(3),
     },
 
     comments: {
-        marginTop: theme.spacing.unit * 2
+        marginTop: theme.spacing(2)
     },
 
     commentForm: {
-        marginTop: theme.spacing.unit * 2
+        marginTop: theme.spacing(2)
     }
 });
 

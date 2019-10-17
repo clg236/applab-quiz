@@ -8,7 +8,6 @@ import TableCell from "../Form/TableCell";
 import API from "../../apis";
 import {withSnackbar} from "notistack";
 import {compose} from "redux";
-import moment from "moment";
 
 const UserSubmissionListViewItem = props => {
 

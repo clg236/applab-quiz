@@ -23,7 +23,7 @@ const CommentForm = props => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid container spacing={24}>
+            <Grid container spacing={3}>
                 <Grid item md={12}>
                     <Field
                         name="comment"

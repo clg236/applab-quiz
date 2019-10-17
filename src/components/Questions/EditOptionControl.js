@@ -21,7 +21,7 @@ const EditOptionControl = props => {
     if (multiple) {
         answerFieldChecked = Boolean(getIn(helper.form.values, answerFieldName));
     } else {
-        answerFieldChecked = getIn(helper.form.values, answerFieldName) == option.id;
+        answerFieldChecked = getIn(helper.form.values, answerFieldName) === option.id;
     }
 
     function handleDelete() {

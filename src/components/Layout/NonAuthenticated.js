@@ -8,7 +8,7 @@ import { withTheme } from '@material-ui/core/styles';
 function NonAuthenticatedLayout(props) {
     return (
         <div>
-             <Unsplashed keywords={['shanghai']}  style={{paddingTop: props.theme.spacing.unit * 8, height: "100vh"}}>
+             <Unsplashed keywords={['shanghai']}  style={{paddingTop: props.theme.spacing(8), height: "100vh"}}>
                 <SignInPage />
              </Unsplashed>
         </div>
@@ -16,4 +16,4 @@ function NonAuthenticatedLayout(props) {
     )
 }
 
-export default withTheme()(NonAuthenticatedLayout);
+export default withTheme(NonAuthenticatedLayout);

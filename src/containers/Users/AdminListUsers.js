@@ -11,7 +11,7 @@ import {UserIsAdmin} from "../../components/Auth";
 const styles = theme => ({
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing(3),
         height: '100vh',
         overflow: 'auto',
     },
@@ -19,7 +19,7 @@ const styles = theme => ({
     list: {
         width: '100%',
         overflowX: 'auto',
-        marginBottom: theme.spacing.unit * 3,
+        marginBottom: theme.spacing(3),
     }
 });
 
@@ -31,10 +31,10 @@ const AdminListUsers = ({classes}) => {
                 Users
             </Typography>
 
-            <Grid container spacing={16}>
+            <Grid container spacing={2}>
                 <Grid item md={12}>
                     <Paper className={classes.list}>
-                        <UserList />
+                        <UserList/>
                     </Paper>
                 </Grid>
             </Grid>

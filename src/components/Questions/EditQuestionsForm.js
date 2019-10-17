@@ -60,7 +60,7 @@ const EditQuestionsForm = (props) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid container spacing={24}>
+            <Grid container spacing={3}>
                 <Grid item md={12}>
                     <FieldArray name="questions" component={QuestionsFieldArray}/>
                 </Grid>
@@ -133,7 +133,7 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {quizID, quiz, firebase: {set, updateWithMeta, pushWithMeta}, enqueueSnackbar}} = actions;
+            const {props: {quizID, firebase: {set, updateWithMeta, pushWithMeta}, enqueueSnackbar}} = actions;
 
             // filter out null values
             if (values.questions && values.questions.length > 0) {

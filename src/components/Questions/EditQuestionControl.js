@@ -30,7 +30,7 @@ const EditQuestionControl = props => {
                 </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-                <Grid container spacing={24}>
+                <Grid container spacing={3}>
                     <Field type="hidden" name={`questions.${questionIndex}.id`}/>
 
                     <Grid item xs={12}>

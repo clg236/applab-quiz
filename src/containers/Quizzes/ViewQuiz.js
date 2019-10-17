@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {firebaseConnect, getVal, isEmpty, isLoaded, populate, withFirebase} from 'react-redux-firebase';
+import {firebaseConnect, getVal, isEmpty, isLoaded, populate} from 'react-redux-firebase';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from "@material-ui/core";
@@ -17,28 +17,28 @@ import * as ROLES from "../../constants/roles";
 const styles = theme => ({
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing(3),
         height: '100vh',
         overflow: 'auto',
     },
 
     paper: {
         ...theme.mixins.gutters(),
-        paddingTop: theme.spacing.unit * 2,
-        paddingBottom: theme.spacing.unit * 2,
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
     },
 
     form: {
-        marginTop: theme.spacing.unit * 2,
-        padding: theme.spacing.unit * 2
+        marginTop: theme.spacing(2),
+        padding: theme.spacing(2)
     },
 
     comments: {
-        marginTop: theme.spacing.unit * 2
+        marginTop: theme.spacing(2)
     },
 
     commentForm: {
-        marginTop: theme.spacing.unit * 2
+        marginTop: theme.spacing(2)
     }
 });
 
@@ -77,7 +77,7 @@ const ViewQuiz = props => {
                 )}
 
                 <Paper className={classnames(classes.paper, classes.form)}>
-                    <QuestionsForm quizID={quizID} submissionID={submissionID} type={type} />
+                    <QuestionsForm quizID={quizID} submissionID={submissionID} type={type}/>
                 </Paper>
 
                 {submissionID && (

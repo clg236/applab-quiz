@@ -8,7 +8,7 @@ import {UserIsAdmin} from "../../components/Auth";
 const styles = theme => ({
     root: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing(3),
         height: '100vh',
         overflow: 'auto',
     }
@@ -23,7 +23,7 @@ const EditQuizPage = props => {
         <main className={classes.root}>
             <Typography variant="h4" gutterBottom component="h2">Edit Quiz</Typography>
 
-            <EditQuiz quizID={id} type="quiz" redirectURL={redirectURL} />
+            <EditQuiz quizID={id} type="quiz" redirectURL={redirectURL}/>
         </main>
     );
 };

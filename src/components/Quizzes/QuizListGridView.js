@@ -23,7 +23,7 @@ const QuizListGridView = props => {
     }
 
     return (
-        <Grid container spacing={24}>
+        <Grid container spacing={3}>
             {quizzes && Object.keys(quizzes).map(key => (
                 <QuizListGridViewItem
                     key={key}

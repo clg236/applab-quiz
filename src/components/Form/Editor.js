@@ -61,12 +61,11 @@ class Editor extends React.PureComponent {
                             readOnly={!!disabled}
                             {...others}
                 />
-                {maxWords && (
+                {maxWords > 0 && (
                     <FormHelperText>
                         {`${this.countWords(field.value)}/${maxWords} word(s)`}
                     </FormHelperText>
                 )}
-
             </>
         );
     }

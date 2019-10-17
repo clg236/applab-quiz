@@ -12,12 +12,14 @@ import _ from "lodash";
 const styles = theme => ({});
 
 const QuizListTableViewItem = props => {
-    const {classes, quizID, quiz, submission, quizURL, index, pushToHistory, showScoreColumn} = props;
+    const {quizID, quiz, submission, quizURL, index, pushToHistory, showScoreColumn} = props;
 
-    function handleClicked() {
+    function handleClicked(e) {
         if (quizURL) {
             pushToHistory(quizURL.replace(/:id/, quizID));
         }
+
+        e.preventDefault();
     }
 
     return (
@@ -26,7 +28,7 @@ const QuizListTableViewItem = props => {
                 {index + 1}
             </TableCell>
             <TableCell align="left">
-                <MuiLink href={'javascript:;'} onClick={handleClicked}>{quiz.name}</MuiLink>
+                <MuiLink href='#' onClick={handleClicked}>{quiz.name}</MuiLink>
             </TableCell>
             <TableCell align="left">
                 {quiz.deadline && <Moment format="MM/DD/YYYY HH:mm">{quiz.deadline}</Moment>}
@@ -37,7 +39,7 @@ const QuizListTableViewItem = props => {
                 </TableCell>
             )}
             <TableCell align="left">
-                {submission && <MuiLink href={'javascript:;'} onClick={handleClicked}>Comments</MuiLink>}
+                {submission && <MuiLink href="#" onClick={handleClicked}>Comments</MuiLink>}
             </TableCell>
         </TableRow>
     )

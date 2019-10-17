@@ -44,7 +44,9 @@ const QuizListGridViewItem = props => {
                         <strong>Due:</strong> {quiz.deadline ? <Moment>{quiz.deadline}</Moment> : "No due date"}
                     </Typography>
 
-                    <Typography className={classes.title} variant="caption">{hasSubmission ? "completed" : "not started"}</Typography>
+                    <div className={classes.title}>
+                        <Typography variant="caption">{hasSubmission ? "completed" : "not started"}</Typography>
+                    </div>
                 </CardContent>
                 <CardActions style={{justifyContent: 'center'}}>
                     <Button size="small" onClick={handleClicked}>GO FORTH AND PROSPER!</Button>

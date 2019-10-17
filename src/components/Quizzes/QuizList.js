@@ -10,7 +10,7 @@ import QuizListTableView from "./QuizListTableView";
 const styles = theme => ({
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing(3),
         height: '100vh',
         overflow: 'auto',
 
@@ -19,7 +19,7 @@ const styles = theme => ({
     list: {
         width: '100%',
         overflowX: 'auto',
-        marginBottom: theme.spacing.unit * 3,
+        marginBottom: theme.spacing(3),
     },
 
     table: {

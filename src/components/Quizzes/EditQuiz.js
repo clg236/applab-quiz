@@ -5,7 +5,7 @@ import {CircularProgress, Typography, withStyles} from "@material-ui/core";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import EditQuizInfoForm from "./QuizInfoForm";
-import {EditQuestionsForm as EditQuestionsForm} from "../Questions";
+import {EditQuestionsForm} from "../Questions";
 import {SubmissionList} from "../Submissions";
 import {connect} from "react-redux";
 import {firebaseConnect, getVal, isEmpty, isLoaded} from "react-redux-firebase";
@@ -14,12 +14,12 @@ import {EditQualitiesForm} from "../Qualities";
 const styles = theme => ({
     root: {
         ...theme.mixins.gutters(),
-        paddingTop: theme.spacing.unit * 2,
-        paddingBottom: theme.spacing.unit * 2,
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
     },
 
     tabContainer: {
-        marginTop: theme.spacing.unit * 4,
+        marginTop: theme.spacing(4),
     }
 });
 
@@ -30,7 +30,7 @@ const EditQuiz = props => {
     const [selectedTab, setSelectedTab] = useState(0);
 
     function handleTabChange(event, value) {
-         setSelectedTab(value);
+        setSelectedTab(value);
     }
 
     if (!isLoaded(quiz)) {
@@ -68,7 +68,6 @@ const EditQuiz = props => {
 };
 
 export default compose(
-
     firebaseConnect(({quizID}) => {
         return [
             {

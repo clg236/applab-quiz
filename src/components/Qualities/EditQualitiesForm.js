@@ -71,7 +71,7 @@ const EditQualitiesForm = (props) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid container spacing={24}>
+            <Grid container spacing={3}>
                 <Grid item md={12}>
                     <FieldArray name="qualities" component={QualityFieldsArray}/>
                 </Grid>
@@ -125,7 +125,7 @@ export default compose(
         },
 
         handleSubmit: (values, actions) => {
-            const {props: {quizID, quiz, firebase: {updateWithMeta}, enqueueSnackbar}} = actions;
+            const {props: {quizID, firebase: {updateWithMeta}, enqueueSnackbar}} = actions;
             updateWithMeta(`quizzes/${quizID}`, values).then(() => enqueueSnackbar("Saved!"));
         }
     }),

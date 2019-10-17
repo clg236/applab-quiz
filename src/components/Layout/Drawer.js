@@ -41,9 +41,9 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        width: theme.spacing.unit * 5,
+        width: theme.spacing(5),
         [theme.breakpoints.up('sm')]: {
-            width: theme.spacing.unit * 7,
+            width: theme.spacing(7),
         },
     },
 
@@ -53,12 +53,12 @@ const styles = theme => ({
     },
     icon: {
         fontSize: '32px !important',
-        marginBottom: theme.spacing.unit
+        marginBottom: theme.spacing(1)
     }
 });
 
 function DrawerComponent(props) {
-    const {classes, firebase, auth, profile, dispatch, drawer} = props;
+    const {classes, firebase, profile, dispatch, drawer} = props;
 
     // layout context
     const handleDrawerClose = () => {
@@ -89,19 +89,23 @@ function DrawerComponent(props) {
             </div>
             <Divider/>
             <List>
-                <ListItem button component={props => <Link {...props} to={ROUTES.HOME}/>}>
+                <ListItem button
+                          component={React.forwardRef((props, ref) => <Link {...props} to={ROUTES.HOME} ref={ref}/>)}>
                     <ListItemIcon className={classes.drawerIcon}>
                         <FontAwesomeIcon icon="home" size="sm" fixedWidth/>
                     </ListItemIcon>
                     <ListItemText primary="home"/>
                 </ListItem>
-                <ListItem button component={props => <Link {...props} to={ROUTES.LIST_QUIZZES}/>}>
+                <ListItem button component={React.forwardRef((props, ref) => <Link {...props} to={ROUTES.LIST_QUIZZES}
+                                                                                   ref={ref}/>)}>
                     <ListItemIcon className={classes.drawerIcon}>
                         <FontAwesomeIcon icon="vial" size="sm" fixedWidth/>
                     </ListItemIcon>
                     <ListItemText primary="quizzes"/>
                 </ListItem>
-                <ListItem button component={props => <Link {...props} to={ROUTES.LIST_ASSIGNMENTS}/>}>
+                <ListItem button
+                          component={React.forwardRef((props, ref) => <Link {...props} to={ROUTES.LIST_ASSIGNMENTS}
+                                                                            ref={ref}/>)}>
                     <ListItemIcon className={classes.drawerIcon}>
                         <FontAwesomeIcon icon="scroll" size="sm" fixedWidth/>
                     </ListItemIcon>
@@ -109,11 +113,14 @@ function DrawerComponent(props) {
                 </ListItem>
             </List>
 
-            {profile.role == ROLES.ROLE_ADMIN && (
+            {profile.role === ROLES.ROLE_ADMIN && (
                 <>
                     <Divider/>
                     <List>
-                        <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_USERS}/>}>
+                        <ListItem button component={React.forwardRef((props, ref) => <Link {...props}
+                                                                                           to={ROUTES.ADMIN_LIST_USERS}
+                                                                                           ref={ref}/>)}>
+
                             <ListItemIcon className={classes.drawerIcon}>
                                 <FontAwesomeIcon icon="user-astronaut" fixedWidth/>
                             </ListItemIcon>
@@ -121,7 +128,10 @@ function DrawerComponent(props) {
                         </ListItem>
                     </List>
                     <List>
-                        <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_QUIZZES}/>}>
+                        <ListItem button component={React.forwardRef((props, ref) => <Link {...props}
+                                                                                           to={ROUTES.ADMIN_LIST_QUIZZES}
+                                                                                           ref={ref}/>)}>
+
                             <ListItemIcon className={classes.drawerIcon}>
                                 <FontAwesomeIcon icon="feather" size="sm" fixedWidth/>
                             </ListItemIcon>
@@ -129,7 +139,10 @@ function DrawerComponent(props) {
                         </ListItem>
                     </List>
                     <List>
-                        <ListItem button component={props => <Link {...props} to={ROUTES.ADMIN_LIST_ASSIGNMENTS}/>}>
+                        <ListItem button component={React.forwardRef((props, ref) => <Link {...props}
+                                                                                           to={ROUTES.ADMIN_LIST_ASSIGNMENTS}
+                                                                                           ref={ref}/>)}>
+
                             <ListItemIcon className={classes.drawerIcon}>
                                 <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
                             </ListItemIcon>

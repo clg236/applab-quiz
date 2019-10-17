@@ -12,13 +12,14 @@ import {Editor, InputLabel} from "../Form";
 
 const styles = theme => ({
     viewDescription: {
-        marginBottom: theme.spacing.unit * 2,
+        marginBottom: theme.spacing(2),
     },
     field: {
         height: "100%"
     }
 });
 
+// eslint-disable-next-line no-unused-vars
 function validate(value) {
     return !value ? 'Required' : '';
 }
@@ -81,7 +82,7 @@ function ViewControl(props) {
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
                 <FormControl required fullWidth disabled={!!submission}>
                     <FormLabel>
-                        {submission && <Typography variant="subtitle1" inline>{correct ? "✔" : "✘"} </Typography>}
+                        {submission && <Typography variant="subtitle1" display={"inline"}>{correct ? "✔" : "✘"} </Typography>}
                         {question.title}
                     </FormLabel>
 

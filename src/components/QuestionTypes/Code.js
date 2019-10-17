@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
     viewDescription: {
-        marginBottom: theme.spacing.unit * 2,
+        marginBottom: theme.spacing(2),
     }
 });
 
@@ -67,7 +67,7 @@ function ViewControl(props) {
             render={({field, form}) => (
                 <FormControl required fullWidth>
                     <InputLabel>
-                        {submission && <Typography variant="subtitle1" inline>{correct ? "✔" : "✘"} </Typography>}
+                        {submission && <Typography variant="subtitle1" display={"inline"}>{correct ? "✔" : "✘"} </Typography>}
                         {question.title}
                     </InputLabel>
 

@@ -10,7 +10,7 @@ export const UserHasRole = role => {
     // If selector is true, wrapper will not redirect
     // For example let's check that state contains user data
     authenticatedSelector: ({firebase: {profile}}) => {
-      return !!profile.isLoaded && !profile.isEmpty && profile.role == role;
+      return !!profile.isLoaded && !profile.isEmpty && profile.role === role;
     },
 
     redirectAction: replace,
