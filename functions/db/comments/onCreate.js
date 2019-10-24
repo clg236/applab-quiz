@@ -17,7 +17,7 @@ const mailTransport = nodemailer.createTransport({
     },
 });
 
-const instructors = ['lx5@nyu.edu', 'clg236@nyu.edu', 'lke229@nyu.edu', 'yh1437@nyu.edu'];
+const instructors = ['lx5@nyu.edu', 'clg236@nyu.edu', 'yh1437@nyu.edu', 'ows1@nyu.edu', 'konrad.krawczyk@nyu.edu'];
 
 const APP_NAME = 'App Lab 2.0';
 
