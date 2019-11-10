@@ -70,8 +70,11 @@ function QuestionsForm(props) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
+            {"description" in quiz && quiz.description && (
+                <div dangerouslySetInnerHTML={{__html: quiz.description}}/>
+            )}
 
+            <Grid container spacing={3}>
                 {isAdmin && (
                     <Grid item xs={12}>
                         <Grid container direction="row" justify="space-between">
@@ -138,7 +141,8 @@ function QuestionsForm(props) {
                             Submit!
                         </Button>
                         {isAdmin && submission && (
-                            <Button color="primary" variant="contained"  disabled={isSubmitting} className={classes.submit} onClick={e => {
+                            <Button color="primary" variant="contained" disabled={isSubmitting}
+                                    className={classes.submit} onClick={e => {
                                 API.Submissions.removeSubmission({...submission, id: submissionID});
                             }}>
                                 Remove submission

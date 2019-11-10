@@ -1,6 +1,6 @@
 import React from 'react';
 import {compose} from 'redux';
-import {CircularProgress, Grid, withStyles} from "@material-ui/core";
+import {CircularProgress, FormControl, Grid, withStyles} from "@material-ui/core";
 import {Field, withFormik} from "formik";
 import Button from "@material-ui/core/Button";
 import {firebaseConnect, getVal, isEmpty, isLoaded, withFirebase} from "react-redux-firebase";
@@ -11,11 +11,13 @@ import Switch from "@material-ui/core/Switch";
 import {connect} from "react-redux";
 import {push} from "connected-react-router";
 import API from "../../apis";
+import {Editor, InputLabel} from "../Form";
 
 const styles = theme => ({});
 
 const INITIAL_VALUES = {
     name: "",
+    description: "",
     deadline: "",
     published: true,
     type: "quiz"
@@ -38,10 +40,21 @@ const QuizInfoForm = (props) => {
                             <TextField label="Name" required fullWidth={true} {...field}
                                        error={Boolean(errors[field.name])}/>
                         )}
-
                     />
                 </Grid>
 
+
+                <Grid item md={12}>
+                    <FormControl fullWidth >
+                        <InputLabel>Description</InputLabel>
+                        <Field
+                               name="description"
+                               render={({field, form}) => (
+                                   <Editor field={field} form={form} withMargin/>
+                               )}
+                        />
+                    </FormControl>
+                </Grid>
 
                 <Grid item md={12}>
                     <Field
@@ -120,6 +133,7 @@ export default compose(
                 } else {
                     return {
                         name: quiz.name,
+                        description: "description" in quiz ? quiz.description : "",
                         deadline: "deadline" in quiz ? quiz.deadline : "",
                         published: "published" in quiz ? quiz.published : true,
                         type
