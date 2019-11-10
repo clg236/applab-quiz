@@ -27,6 +27,7 @@ const styles = theme => ({
 
     submit: {
         marginTop: theme.spacing(1),
+        marginRight: theme.spacing(2)
     },
 });
 
@@ -136,6 +137,13 @@ function QuestionsForm(props) {
                                 disabled={!isValid || isSubmitting} className={classes.submit}>
                             Submit!
                         </Button>
+                        {isAdmin && submission && (
+                            <Button color="primary" variant="contained"  disabled={isSubmitting} className={classes.submit} onClick={e => {
+                                API.Submissions.removeSubmission({...submission, id: submissionID});
+                            }}>
+                                Remove submission
+                            </Button>
+                        )}
                     </Grid>
                 )}
 

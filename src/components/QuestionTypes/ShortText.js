@@ -1,11 +1,51 @@
 import React from 'react';
 import {TextField} from '../Form';
-import {Field} from 'formik';
-import {Grid} from "@material-ui/core";
-import {EditDeadlineControl, EditTitleControl} from "../Questions";
+import {Field, getIn} from 'formik';
+import {FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup} from "@material-ui/core";
+import {EditTitleControl} from "../Questions";
+import _ from "lodash";
+import Link from "@material-ui/core/Link";
+import Typography from "@material-ui/core/Typography";
+import InputLabel from "@material-ui/core/InputLabel";
+
+// For url patterns, see https://stackoverflow.com/a/5717133
+const Formats = {
+    'text': {
+        'label': 'Plain text',
+        'pattern': '',
+    },
+    'url': {
+        'label': 'URL',
+        'pattern': new RegExp('^https?:\\/\\/'+ // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$','i'),
+    },
+    'github': {
+        'label': 'Github URL',
+        'pattern': new RegExp('^https?:\\/\\/'+ // protocol
+            '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)*github.com'+ // domain name
+            '(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$','i'),
+    },
+    'heroku': {
+        'label': 'Heroku URL',
+        'pattern': new RegExp('^https?:\\/\\/'+ // protocol
+            '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)*heroku.com'+ // domain name
+            '(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$','i'),
+    },
+};
 
 
-function validate(value) {
+function validate(value, question) {
+    if ('format' in question && question.format in Formats && Formats[question.format].pattern) {
+        return !!Formats[question.format].pattern.test(value) ? '' : 'Not well formatted';
+    }
     return !value ? 'Required' : '';
 }
 
@@ -19,15 +59,57 @@ function sanitizeValue(value) {
 
 function EditControl({questionIndex, question}) {
     return (
-        <Grid item xs={12}>
-            <EditTitleControl name={`questions.${questionIndex}.title`}/>
-        </Grid>
+        <>
+            <Grid item xs={12}>
+                <EditTitleControl name={`questions.${questionIndex}.title`}/>
+            </Grid>
+
+            <Grid item xs={12}>
+                <Field
+                    name={`questions.${questionIndex}.format`}
+                    render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
+                        <FormControl>
+                            <FormLabel>Format</FormLabel>
+                            <RadioGroup aria-label="Format" name={field.name}>
+                                {Object.keys(Formats).map(key => {
+                                    const checked = getIn(values, field.name) === key;
+                                    const radio = (
+                                        <Radio
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={key}
+                                            checked={checked}
+                                        />
+                                    );
+                                    return (
+                                        <FormControlLabel key={key} value={key}
+                                                      control={radio} label={Formats[key].label}/>
+                                    );
+                                })}
+                            </RadioGroup>
+                        </FormControl>
+                    )}
+                />
+            </Grid>
+        </>
     );
 }
 
 function ViewControl(props) {
     const {index, quiz, questionID, question, submission, deadlinePassed} = props;
 
+    // only show this for viewing it
+    if (submission && 'format' in question && _.indexOf(['url', 'github', 'heroku'], question.format) >= 0) {
+        const url = submission.answers[questionID];
+        return (
+            <>
+                <InputLabel disabled required>
+                    {question.title}
+                </InputLabel>
+                {url && <Typography style={{padding: '8px 0'}}><Link href={url} target="_blank">{url}</Link></Typography>}
+            </>
+        );
+    }
     return (
         <Field
             name={`answers.${questionID}`}
@@ -44,7 +126,7 @@ function ViewControl(props) {
                     onBlur={handleBlur}
                 />
             )}
-            validate={validate}
+            validate={value => validate(value, question)}
         />
     );
 }
