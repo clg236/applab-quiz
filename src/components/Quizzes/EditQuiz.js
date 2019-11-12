@@ -10,6 +10,7 @@ import {SubmissionList} from "../Submissions";
 import {connect} from "react-redux";
 import {firebaseConnect, getVal, isEmpty, isLoaded} from "react-redux-firebase";
 import {EditQualitiesForm} from "../Qualities";
+import CommentsUploader from "../Comments/CommentsUploader";
 
 const styles = theme => ({
     root: {
@@ -55,6 +56,7 @@ const EditQuiz = props => {
                 <Tab label={`Questions (${numQuestions})`}/>
                 <Tab label={`Qualities (${numQualities})`}/>
                 <Tab label={`Submissions (${numSubmissions})`}/>
+                <Tab label="Upload comments" />
             </Tabs>
 
             <div className={classes.tabContainer}>
@@ -62,6 +64,7 @@ const EditQuiz = props => {
                 {selectedTab === 1 && (<EditQuestionsForm quizID={quizID} type={type} redirectURL={redirectURL}/>)}
                 {selectedTab === 2 && (<EditQualitiesForm quizID={quizID} type={type} redirectURL={redirectURL}/>)}
                 {selectedTab === 3 && (<SubmissionList quizID={quizID}/>)}
+                {selectedTab === 4 && (<CommentsUploader quizID={quizID}/>)}
             </div>
         </Paper>
     );
