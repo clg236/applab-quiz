@@ -35,7 +35,7 @@
     "file-loader": "2.0.0",
     "firebase": "^7.2.1",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
-    "formik": "^2.0.3",
+    "formik": "^2.0.6",
     "fs-extra": "7.0.0",
     "grpc": "^1.24.0",
     "html-webpack-plugin": "4.0.0-alpha.2",

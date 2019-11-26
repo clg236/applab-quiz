@@ -34,52 +34,41 @@ const QuizInfoForm = (props) => {
         <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
                 <Grid item md={12}>
-                    <Field
-                        name="name"
-                        render={({field}) => (
-                            <TextField label="Name" required fullWidth={true} {...field}
-                                       error={Boolean(errors[field.name])}/>
-                        )}
-                    />
+                    <Field name="name">
+                        {({field, form}) => (<TextField label="Name" required fullWidth={true} {...field}
+                                                        error={Boolean(errors[field.name])}/>)}
+                    </Field>
                 </Grid>
 
 
                 <Grid item md={12}>
-                    <FormControl fullWidth >
+                    <FormControl fullWidth>
                         <InputLabel>Description</InputLabel>
                         <Field
-                               name="description"
-                               render={({field, form}) => (
-                                   <Editor field={field} form={form} withMargin/>
-                               )}
-                        />
+                            name="description">
+                            {({field, form}) => (<Editor field={field} form={form} withMargin/>)}
+                        </Field>
                     </FormControl>
                 </Grid>
 
                 <Grid item md={12}>
-                    <Field
-                        name="deadline"
-                        render={({field}) => (
+                    <Field name="deadline">
+                        {({field, form, meta}) => (
                             <TextField label="Deadline" type="datetime-local" fullWidth {...field}
-                                       error={Boolean(errors[field.name])}/>
-                        )}
-                    />
+                                       error={Boolean(errors[field.name])}/>)}
+                    </Field>
                 </Grid>
 
                 <Grid item md={12}>
-                    <Field
-                        name="published"
-                        render={({field}) => (
-                            <FormControlLabel control={
-                                <Switch
-                                    checked={Boolean(field.value)}
-                                    onChange={field.onChange}
-                                    value="hello"
-                                    name={field.name}
-                                />
-                            } label="Published?"/>
-                        )}
-                    />
+                    <Field name="published">{({field, form, meta}) => (
+                        <FormControlLabel control={
+                            <Switch
+                                checked={Boolean(field.value)}
+                                onChange={field.onChange}
+                                name={field.name}
+                            />
+                        } label="Published?"/>
+                    )}</Field>
                 </Grid>
 
                 <Grid item xs={12}>
