@@ -95,7 +95,7 @@ const AdminListAssignments = ({classes}) => {
             <Grid container spacing={2}>
                 <Grid item md={12} xs={12}>
                     <Paper className={classes.list}>
-                        <QuizList type="assignment" showUnpublished showScoreColumn={false} quizURL="/assignments/:id/edit"/>
+                        <QuizList type="assignment" showUnpublished showScoreColumn={false} showActionsColumn quizURL="/assignments/:id/edit"/>
                     </Paper>
                 </Grid>
 

@@ -33,7 +33,7 @@ const styles = theme => ({
 });
 
 const QuizList = props => {
-    const {classes, user, quizzes, view, type, showScoreColumn} = props;
+    const {classes, user, quizzes, view, type, showScoreColumn, showActionsColumn} = props;
 
     let quizURL = props.quizURL;
     if (!quizURL) {
@@ -53,14 +53,15 @@ const QuizList = props => {
                               gutterBottom>{props.type === 'assignment' ? 'no current assignments' : 'no current quizzes'}</Typography>;
     } else {
         const View = view && view == 'grid' ? QuizListGridView : QuizListTableView;
-        content = <View quizzes={quizzes} user={user} quizURL={quizURL} showScoreColumn={showScoreColumn}/>;
+        content = <View quizzes={quizzes} user={user} quizURL={quizURL} showScoreColumn={showScoreColumn} showActionsColumn={showActionsColumn}/>;
     }
 
     return content;
 };
 
 QuizList.defaultProps = {
-    showScoreColumn: true
+    showScoreColumn: true,
+    showActionsColumn: false
 };
 
 export default compose(

@@ -7,13 +7,16 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "../Form/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import QuizListTableViewItem from "./QuizListTableViewItem";
+import API from "../../apis";
+import * as ROLES from "../../constants/roles";
 
 const styles = theme => ({
 
 });
 
 const QuizListTableView = props => {
-    const {classes, user, quizzes, quizURL, showScoreColumn} = props;
+    const {classes, user, quizzes, quizURL, showScoreColumn, showActionsColumn} = props;
+    const isAdmin = API.Users.hasRole(ROLES.ROLE_ADMIN);
 
     function getSubmission(quizID) {
         if (!user || !user.submissions || Object.keys(user.submissions).length === 0) {
@@ -39,6 +42,7 @@ const QuizListTableView = props => {
                     <TableCell align="left">Due</TableCell>
                     {showScoreColumn && <TableCell align="left">Score</TableCell>}
                     <TableCell align="left">Comments</TableCell>
+                    {isAdmin && showActionsColumn && <TableCell align="left">Actions</TableCell>}
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -51,6 +55,7 @@ const QuizListTableView = props => {
                         submission={getSubmission(key)}
                         quizURL={quizURL}
                         showScoreColumn={showScoreColumn}
+                        showActionsColumn={showActionsColumn}
                     />
                 ))}
             </TableBody>

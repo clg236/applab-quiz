@@ -103,7 +103,7 @@ const AdminListQuizzes = ({classes}) => {
             <Grid container spacing={2}>
                 <Grid item md={12} xs={12}>
                     <Paper className={classes.list}>
-                        <QuizList type="quiz" showUnpublished showScoreColumn={false} quizURL="/quizzes/:id/edit"/>
+                        <QuizList type="quiz" showUnpublished showScoreColumn={false} showActionsColumn quizURL="/quizzes/:id/edit"/>
                     </Paper>
                 </Grid>
             </Grid>

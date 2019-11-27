@@ -8,11 +8,15 @@ import {push} from "connected-react-router";
 import {connect} from "react-redux";
 import Moment from "react-moment";
 import _ from "lodash";
+import API from "../../apis";
+import * as ROLES from "../../constants/roles";
+import {downloadSubmissions} from "../../apis/Quizzes";
 
 const styles = theme => ({});
 
 const QuizListTableViewItem = props => {
-    const {quizID, quiz, submission, quizURL, index, pushToHistory, showScoreColumn} = props;
+    const {quizID, quiz, submission, quizURL, index, pushToHistory, showScoreColumn, showActionsColumn} = props;
+    const isAdmin = API.Users.hasRole(ROLES.ROLE_ADMIN);
 
     function handleClicked(e) {
         if (quizURL) {
@@ -20,6 +24,10 @@ const QuizListTableViewItem = props => {
         }
 
         e.preventDefault();
+    }
+
+    function handleDownload() {
+        downloadSubmissions(quiz);
     }
 
     return (
@@ -41,6 +49,9 @@ const QuizListTableViewItem = props => {
             <TableCell align="left">
                 {submission && <MuiLink href="#" onClick={handleClicked}>Comments</MuiLink>}
             </TableCell>
+            {isAdmin && showActionsColumn && <TableCell align="left">
+                <MuiLink href="#" onClick={handleDownload}>Download</MuiLink>
+            </TableCell>}
         </TableRow>
     )
 }
