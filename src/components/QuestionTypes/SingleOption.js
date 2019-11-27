@@ -8,6 +8,7 @@ import {Field, getIn} from 'formik';
 import {Grid, Typography} from "@material-ui/core";
 import {EditOptionsControl, EditTitleControl} from "../Questions";
 import {Editor, InputLabel} from "../Form";
+import _ from "lodash";
 
 
 const styles = theme => ({
@@ -80,7 +81,8 @@ function ViewControl(props) {
         <Field
             name={`answers.${questionID}`}
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
-                <FormControl required fullWidth disabled={!!submission}>
+                <FormControl required fullWidth disabled={!!submission}
+                             error={Boolean(getIn(errors, field.name))}>
                     <FormLabel>
                         {submission && <Typography variant="subtitle1" display={"inline"}>{correct ? "✔" : "✘"} </Typography>}
                         {question.title}

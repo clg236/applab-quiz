@@ -1,5 +1,9 @@
-import {TextField as MuiTextField, withStyles} from "@material-ui/core";
+import {FormControl, TextField as MuiTextField, withStyles} from "@material-ui/core";
 import React from "react";
+import {getIn} from "formik";
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const styles = {
     label: {
@@ -12,12 +16,13 @@ const styles = {
     }
 };
 
-const TextField = ({classes, ...others}) => (
-    <MuiTextField
-        fullWidth
-        InputLabelProps={{shrink: true, classes: {shrink: classes.label}}}
-        InputProps={{classes: {formControl: classes.inputFormControl}}}
-        {...others} />
+const TextField = ({classes, description, label, helperText, ...others}) => (
+    <FormControl fullWidth {...others}>
+        <InputLabel shrink={true} className={classes.label}>{label}</InputLabel>
+        {description && <div dangerouslySetInnerHTML={{__html: description}}/>}
+        <Input className={classes.inputFormControl} {...others} fullWidth />
+        {helperText && <FormHelperText>{helperText}</FormHelperText>}
+    </FormControl>
 );
 
 export default withStyles(styles)(TextField);

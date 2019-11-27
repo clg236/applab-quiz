@@ -1,12 +1,11 @@
 import React from 'react';
-import {TextField} from '../Form';
+import {Editor, TextField, InputLabel} from '../Form';
 import {Field, getIn} from 'formik';
 import {FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup} from "@material-ui/core";
 import {EditTitleControl} from "../Questions";
 import _ from "lodash";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
 
 // For url patterns, see https://stackoverflow.com/a/5717133
 const Formats = {
@@ -42,6 +41,16 @@ const Formats = {
 };
 
 
+const styles = theme => ({
+    viewDescription: {
+        marginBottom: theme.spacing(2),
+    },
+    field: {
+        height: "100%"
+    }
+});
+
+
 function validate(value, question) {
     if ('format' in question && question.format in Formats && Formats[question.format].pattern) {
         return !!Formats[question.format].pattern.test(value) ? '' : 'Not well formatted';
@@ -62,6 +71,18 @@ function EditControl({questionIndex, question}) {
         <>
             <Grid item xs={12}>
                 <EditTitleControl name={`questions.${questionIndex}.title`}/>
+            </Grid>
+
+            <Grid item xs={12}>
+                <FormControl fullWidth>
+                    <InputLabel fullWidth>Question Content</InputLabel>
+                    <Field className={styles.theme}
+                           name={`questions.${questionIndex}.description`}
+                           render={({field, form}) => (
+                               <Editor field={field} form={form} withMargin/>
+                           )}
+                    />
+                </FormControl>
             </Grid>
 
             <Grid item xs={12}>
@@ -110,22 +131,28 @@ function ViewControl(props) {
             </>
         );
     }
+
+
     return (
         <Field
             name={`answers.${questionID}`}
-            render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => (
-                <TextField
-                    label={question.title}
-                    required
-                    multiline={false}
-                    error={Boolean(touched[field.name] && errors[field.name])}
-                    disabled={!!submission}
-                    value={field.value || ''}
-                    name={field.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-            )}
+            render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => {
+                return (
+                    <TextField
+                        label={question.title}
+                        required
+                        multiline={false}
+                        error={Boolean(getIn(touched, field.name) && getIn(errors, field.name))}
+                        disabled={!!submission}
+                        value={field.value || ''}
+                        name={field.name}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        description={question.description || ""}
+                        helperText={getIn(errors, field.name)}
+                    />
+                )
+            }}
             validate={value => validate(value, question)}
         />
     );

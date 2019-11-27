@@ -1,6 +1,6 @@
 import React from 'react';
 import {Editor, InputLabel} from '../Form';
-import {Field} from 'formik';
+import {Field, getIn} from 'formik';
 import {FormControl, Grid, withStyles} from "@material-ui/core";
 import {EditDeadlineControl, EditTitleControl} from "../Questions";
 import MonacoEditor from "react-monaco-editor";
@@ -65,7 +65,7 @@ function ViewControl(props) {
         <Field
             name={`answers.${questionID}`}
             render={({field, form}) => (
-                <FormControl required fullWidth>
+                <FormControl required fullWidth error={Boolean(getIn(form.errors, field.name))}>
                     <InputLabel>
                         {submission && <Typography variant="subtitle1" display={"inline"}>{correct ? "✔" : "✘"} </Typography>}
                         {question.title}
