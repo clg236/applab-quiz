@@ -12,6 +12,8 @@ import UserSubmissionListViewItem from "./UserSubmissionListViewItem";
 const UserSubmissionListView = props => {
     const {user} = props;
 
+    let quizzes = {};
+
     return (
         <Table>
             <TableHead>
@@ -26,6 +28,12 @@ const UserSubmissionListView = props => {
             <TableBody>
                 {Object.keys(user.submissions).map(key => {
                     if (user.submissions[key] && typeof user.submissions[key] == 'object' && !isEmpty(user.submissions[key])) {
+                        const quiz = user.submissions[key].subject;
+                        if (quiz && quizzes.hasOwnProperty(quiz.id)) {
+                            return "";
+                        }
+                        quizzes[quiz.id] = true;
+
                         return (
                             <UserSubmissionListViewItem
                                 key={key}
