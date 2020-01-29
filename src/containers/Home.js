@@ -11,7 +11,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import EditIcon from '@material-ui/icons/Edit'
+import EditIcon from '@material-ui/icons/EditOutlined'
 import StartIcon from '@material-ui/icons/Check'
 
 
@@ -53,7 +53,7 @@ const useStyles = makeStyles({
 const Home = props => {
     const {user} = props;
     const classes = useStyles();
-    let isStarted = "false";
+    let isStarted = 1;
 
     return (
         <main>
@@ -61,30 +61,28 @@ const Home = props => {
             <Card className={classes.card} variant="outlined">
                 <CardContent>
                     <div className={classes.header}>
-                    <Typography className={classes.title} color="textSecondary" >
-                        Assignment Title
+                        <Typography className={classes.title} color="textSecondary" >
+                            Assignment Title
                     </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                        due: 02/27/2019
+                        <Typography className={classes.pos} color="textSecondary">
+                            due: 02/27/2019
                     </Typography>
                     </div>
                     <div>
-                    <Typography className={classes.status} color="textSecondary">
-                        not started
-                    </Typography> 
+                        <Typography className={classes.status} color="textSecondary">
+                            not started
+                    </Typography>
                     </div>
-              
- 
-        <Typography variant="body2" >
-          description of the assignment goes here...
-        </Typography>
-      </CardContent>
-      <CardActions>
-        {isStarted ? <Button startIcon={<StartIcon />} size="small" variant="contained" color="primary">START</Button> : <Button startIcon={<EditIcon />} size="small">Edit</Button>}
-      </CardActions>
-    </Card>
-
+                    <Typography variant="body2" >
+                        description of the assignment goes here...
+                </Typography>
+                    </CardContent>
+                    <CardActions>
+                        {!isStarted ? <Button startIcon={<StartIcon />} size="small" variant="contained" color="primary">START</Button> : <Button variant="outlined" startIcon={<EditIcon />} size="small">Edit</Button>}
+                    </CardActions>
+            </Card>
             
+
             <Typography component="h2" variant="h4" gutterBottom>Current Quizzes</Typography>
             <QuizList user={user} type="quiz" view="grid"/>
 
