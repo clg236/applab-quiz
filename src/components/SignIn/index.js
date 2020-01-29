@@ -13,6 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import FormGroup from '@material-ui/core/FormGroup';
 import Logo from '../../img/logo.png'
+import DeleteIcon from '@material-ui/icons/ChildCareOutlined';
+
+import styled from 'styled-components';
 
 import {withFirebase} from 'react-redux-firebase';
 
@@ -30,7 +33,7 @@ const styles = theme => ({
 
     main: {
         width: 'auto',
-        display: 'block', // Fix IE 11 issue.
+        //display: 'block', // Fix IE 11 issue.
         marginLeft: theme.spacing(3),
         marginRight: theme.spacing(3),
         [theme.breakpoints.up(400 + theme.spacing(3 * 2))]: {
@@ -41,21 +44,21 @@ const styles = theme => ({
     },
     paper: {
         marginTop: 10,
+        marginBottom: 75,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'start',
         padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(3)}px`,
-        opacity: 0.75,
         boxShadow: "none",
         overflow: "hidden"
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+    logo: {
+        paddingBottom: '1em'
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
+        paddingTop: 25,
     },
     submit: {
         paddingTop: 10,
@@ -113,36 +116,26 @@ function SignIn(props) {
             <div className={classes.main}>
                 <CssBaseline/>
                 <Paper className={classes.paper}>
-                    <img src={Logo} alt="logo"/>
-                </Paper>
-                <Paper className={classes.paper}>
-                    <Avatar className={classes.avatar}><LockIcon/></Avatar>
-                    <Typography component="h1" variant="h5">Sign in</Typography>
+                    <div className={classes.logo}>
+                        <img src={Logo} alt="logo" width="150px" />
+                    </div>
+                    <Typography component="h1" variant="h5">APPLICATION LAB</Typography>
+                    <Typography component="h2">Spring 2020</Typography>
+                    <Typography component="body">Welcome message...</Typography>
                     <form className={classes.form} onSubmit={handleFormSubmit}>
-                        {/* <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="email">Email Address</InputLabel>
-                            <Input id="email" name="email" autoComplete="email" autoFocus value={email} onChange={handleInputChange} placeholder="Email Address" />
-                        </FormControl>
-
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="password">Password</InputLabel>
-                            <Input name="password" type="password" id="password" autoComplete="current-password" value={password} onChange={handleInputChange} placeholder="Password" />
-                        </FormControl> */}
-
                         <FormGroup>
-                            <Button type="submit" fullWidth variant="contained" color="secondary"
-                                    className={classes.submit}>Sign In As Guest</Button>
-                            <Divider variant="middle"/>
-                            <Divider variant="middle"/>
-                            <Divider variant="middle"/>
-                            <Divider variant="middle"/>
-                            <Button onClick={handleSignInWithGoogleClicked} type="submit" fullWidth variant="contained"
-                                    color="primary">Sign In As Student</Button>
+                            <Button 
+                                onClick={handleSignInWithGoogleClicked} 
+                                startIcon={<DeleteIcon />}
+                                type="submit" 
+                                variant="contained"
+                                color="primary">NYU Student Sign In
+                            </Button>
                         </FormGroup>
                     </form>
                 </Paper>
                 <Paper className={classes.paper}>
-                    <Typography>By your use of these resources, you agree to abide by the <a
+                    <Typography component="body" align="center">By your use of these resources, you agree to abide by the <a
                         href="http://www.nyu.edu/about/policies-guidelines-compliance/policies-and-guidelines/responsible-use-of-nyu-computers-and-data-policy-on.html">Policy
                         on Responsible Use of NYU Computers and Data.</a></Typography>
                 </Paper>
