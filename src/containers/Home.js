@@ -9,12 +9,16 @@ import {firebaseConnect, getVal, withFirebase} from "react-redux-firebase";
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/EditOutlined'
-import StartIcon from '@material-ui/icons/Check'
-
-
+import StartIcon from '@material-ui/icons/Check';
+import CommentsIcon from '@material-ui/icons/CommentOutlined';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
+import { red } from '@material-ui/core/colors';
 
 const styles = theme => ({});
 
@@ -24,11 +28,7 @@ const useStyles = makeStyles({
       maxWidth: 400,
     },
     header: {
-        display: 'flex',
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        
     },
     title: {
         color: 'black',
@@ -46,34 +46,37 @@ const useStyles = makeStyles({
         alignItems: 'flex-end',
         fontSize: 10,
         color: '#FD6FFF'
-    }
+    },
+    avatar: {
+        backgroundColor: '#7D4CDB',
+      },
   });
 
 
 const Home = props => {
     const {user} = props;
     const classes = useStyles();
-    let isStarted = 1;
+    let isStarted = 0;
+    let unreadCommentCount = 2;
 
     return (
         <main>
             <Typography component="h2" variant="h4" gutterBottom>Activities</Typography>
             <Card className={classes.card} variant="outlined">
-                <CardContent>
-                    <div className={classes.header}>
-                        <Typography className={classes.title} color="textSecondary" >
-                            Assignment Title
-                    </Typography>
-                        <Typography className={classes.pos} color="textSecondary">
-                            due: 02/27/2019
-                    </Typography>
-                    </div>
-                    <div>
-                        <Typography className={classes.status} color="textSecondary">
-                            not started
-                    </Typography>
-                    </div>
-                    <Typography variant="body2" >
+                <CardHeader className={classes.header} title="Introduce Youself!" subheader="Due February 25th" 
+                action={
+                    <Badge badgeContent={unreadCommentCount} overlap="circle" color="primary">
+                    <IconButton color="primary" aria-label="comments">
+                        <CommentsIcon />
+                    </IconButton>
+                    </Badge>
+                    }
+                avatar={<Avatar aria-label="recipe" className={classes.avatar}>
+            1
+          </Avatar>}>
+                </CardHeader>
+                <CardContent> 
+                    <Typography variant="body1" >
                         description of the assignment goes here...
                 </Typography>
                     </CardContent>
