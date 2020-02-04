@@ -18,7 +18,6 @@ import CommentsIcon from '@material-ui/icons/CommentOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Avatar from '@material-ui/core/Avatar';
-import { red } from '@material-ui/core/colors';
 
 const styles = theme => ({});
 

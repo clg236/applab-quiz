@@ -7,10 +7,29 @@ import MonacoEditor from "react-monaco-editor";
 import {compose} from "redux";
 import Typography from "@material-ui/core/Typography";
 
+//material ui for new homepage prototype
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import { makeStyles } from '@material-ui/core/styles';
+import EditIcon from '@material-ui/icons/EditOutlined'
+import StartIcon from '@material-ui/icons/Check';
+import CommentsIcon from '@material-ui/icons/CommentOutlined';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
+
 
 const styles = theme => ({
     viewDescription: {
         marginBottom: theme.spacing(2),
+    },
+    header: {
+        backgroundColor: '#6FFFB0'
+    },
+    avatar: {
+        backgroundColor: '#FD6FFF',
     }
 });
 
@@ -29,13 +48,14 @@ function sanitizeValue(value) {
 
 function EditControl({questionIndex, question}) {
     return (
-        <>
+        <div>
             <Grid item xs={12}>
                 <EditTitleControl name={`questions.${questionIndex}.title`}/>
             </Grid>
 
             <Grid item xs={12}>
                 <FormControl fullWidth>
+
                     <InputLabel>Description</InputLabel>
                     <Field
                         name={`questions.${questionIndex}.description`}
@@ -45,7 +65,7 @@ function EditControl({questionIndex, question}) {
                     />
                 </FormControl>
             </Grid>
-        </>
+        </div>
     );
 }
 
@@ -65,9 +85,14 @@ function ViewControl(props) {
         <Field
             name={`answers.${questionID}`}
             render={({field, form}) => (
+                <Card variant="outlined">
+                <CardHeader titleTypographyProps={{variant:'h3' }} className={classes.header} title={question.title} avatar={<Avatar aria-label="recipe" className={classes.avatar}>
+            1
+          </Avatar>}></CardHeader>
+                <CardContent>
                 <FormControl required fullWidth error={Boolean(getIn(form.errors, field.name))}>
                     <InputLabel>
-                        {submission && <Typography variant="subtitle1" display={"inline"}>{correct ? "✔" : "✘"} </Typography>}
+                        {submission && <Typography variant="h2" color="primary" display={"inline"}>{correct ? "✔" : "✘"} </Typography>}
                         {question.title}
                     </InputLabel>
 
@@ -86,6 +111,8 @@ function ViewControl(props) {
                         options={options}
                     />
                 </FormControl>
+                </CardContent>
+                </Card>
             )}
             validate={validate}
         />

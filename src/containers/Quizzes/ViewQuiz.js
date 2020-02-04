@@ -13,6 +13,20 @@ import {QualitiesForm} from "../../components/Qualities";
 import API from "../../apis";
 import * as ROLES from "../../constants/roles";
 
+//material ui for new homepage prototype
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import EditIcon from '@material-ui/icons/EditOutlined'
+import StartIcon from '@material-ui/icons/Check';
+import CommentsIcon from '@material-ui/icons/CommentOutlined';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
+
 
 const styles = theme => ({
     content: {
@@ -39,6 +53,10 @@ const styles = theme => ({
 
     commentForm: {
         marginTop: theme.spacing(2)
+    },
+    header: {
+        backgroundColor: '#7D4CDB',
+        color: 'white',
     }
 });
 
@@ -68,17 +86,26 @@ const ViewQuiz = props => {
 
         content = (
             <>
-                <Typography variant="h4" gutterBottom component="h2">
-                    {quiz.name}
-                </Typography>
+            <Card className={classes.card} variant="outlined">
+                <CardHeader titleTypographyProps={{variant:'h2' }} className={classes.header} title={quiz.name} >
+                </CardHeader>
+                <CardContent> 
+                    <Typography variant="body1" >
+                        description of the assignment goes here...
+                    </Typography>
+                </CardContent>
+            </Card>
+                {/* <Typography variant="h4" gutterBottom component="h2">
+                    {quiz.name} 
+                </Typography> */}
 
                 {submissionID && submission && submission.user && (
                     <Typography variant="subheading">by {submission.user.displayName}</Typography>
                 )}
 
-                <Paper className={classnames(classes.paper, classes.form)}>
+                
                     <QuestionsForm quizID={quizID} submissionID={submissionID} type={type}/>
-                </Paper>
+                
 
                 {submissionID && (
                     <Paper className={classnames(classes.paper, classes.comments)}>

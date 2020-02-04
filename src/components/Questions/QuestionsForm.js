@@ -19,6 +19,19 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {isPopulated} from "../../helpers";
 import _ from "lodash";
 
+//material ui for new homepage prototype
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import { makeStyles } from '@material-ui/core/styles';
+import EditIcon from '@material-ui/icons/EditOutlined'
+import StartIcon from '@material-ui/icons/Check';
+import CommentsIcon from '@material-ui/icons/CommentOutlined';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
+
 
 const styles = theme => ({
     button: {
@@ -101,7 +114,7 @@ function QuestionsForm(props) {
                 {deadlinePassed && (
                     <>
                         <Grid item xs={12}>
-                            <Typography color="secondary">Deadline (<Moment>{quiz.deadline}</Moment>) has
+                            <Typography variant="h2" color="primary">Deadline (<Moment>{quiz.deadline}</Moment>) has
                                 passed.</Typography>
                         </Grid>
                     </>
@@ -113,11 +126,14 @@ function QuestionsForm(props) {
 
                     return (
                         <React.Fragment key={k}>
+                            
                             <Grid item xs={12}>
                                 {QuestionTypeControl &&
                                 <QuestionTypeControl index={k} questionID={questionID} question={question}
                                                      deadlinePassed={deadlinePassed} {...props} />}
+
                             </Grid>
+                            
                             {isAdmin && submission && (
                                 <Grid item xs={12}>
                                     <Button variant="contained" color="primary" className={classes.button}
@@ -129,7 +145,9 @@ function QuestionsForm(props) {
                                         Mark as Wrong
                                     </Button>
                                 </Grid>
+                                
                             )}
+                            
                         </React.Fragment>
                     );
                 })}
