@@ -81,7 +81,7 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
                     noWrap
                     className={classes.title}
                 >
-                    App Lab 2.0
+                    Application Lab - Spring 2020
                 </Typography>
                 <IconButton color="inherit">
                     <Badge badgeContent={0} color="secondary">

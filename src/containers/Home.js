@@ -62,7 +62,7 @@ const Home = props => {
         <main>
             <Typography component="h2" variant="h4" gutterBottom>Activities</Typography>
             <Card className={classes.card} variant="outlined">
-                <CardHeader className={classes.header} title="Introduce Youself!" subheader="Due February 25th" 
+                <CardHeader titleTypographyProps={{variant:'h5' }} className={classes.header} title="Introduce Youself!" subheader="Due February 25th" 
                 action={
                     <Badge badgeContent={unreadCommentCount} overlap="circle" color="primary">
                     <IconButton color="primary" aria-label="comments">

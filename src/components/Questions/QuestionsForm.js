@@ -49,7 +49,9 @@ function QuestionsForm(props) {
     const isAdmin = API.Users.hasRole(ROLES.ROLE_ADMIN);
 
     if (!isLoaded(quiz) || (submissionID && !isLoaded(submission))) {
-        return <CircularProgress/>;
+        return (<div>
+            <CircularProgress/>
+        </div>);
     }
 
     const deadlinePassed = quiz.deadline ? moment(quiz.deadline).isBefore(moment()) : false;
@@ -111,14 +113,7 @@ function QuestionsForm(props) {
                     </Grid>
                 )}
 
-                {deadlinePassed && (
-                    <>
-                        <Grid item xs={12}>
-                            <Typography variant="h2" color="primary">Deadline (<Moment>{quiz.deadline}</Moment>) has
-                                passed.</Typography>
-                        </Grid>
-                    </>
-                )}
+
 
                 {quiz.questions && isPopulated(quiz.questions) && _.map(quiz.questions, (question, k) => {
                     const QuestionTypeControl = question.type && question.type in QuestionTypes ? QuestionTypes[question.type].ViewControl : null;
@@ -126,12 +121,20 @@ function QuestionsForm(props) {
 
                     return (
                         <React.Fragment key={k}>
-                            
+                        {deadlinePassed && (
+                    <>
+                        <Grid item xs={12}>
+                            <Typography variant="h6" color="primary">Deadline (<Moment>{quiz.deadline}</Moment>) has
+                                passed.</Typography>
+                        </Grid>
+                    </>
+                )}
                             <Grid item xs={12}>
+
                                 {QuestionTypeControl &&
                                 <QuestionTypeControl index={k} questionID={questionID} question={question}
                                                      deadlinePassed={deadlinePassed} {...props} />}
-
+                                            
                             </Grid>
                             
                             {isAdmin && submission && (

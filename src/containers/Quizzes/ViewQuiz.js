@@ -90,6 +90,7 @@ const ViewQuiz = props => {
                 <CardHeader titleTypographyProps={{variant:'h2' }} className={classes.header} title={quiz.name} >
                 </CardHeader>
                 <CardContent> 
+                    
                     <Typography variant="body1" >
                         description of the assignment goes here...
                     </Typography>

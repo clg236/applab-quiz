@@ -86,7 +86,7 @@ function ViewControl(props) {
             name={`answers.${questionID}`}
             render={({field, form}) => (
                 <Card variant="outlined">
-                <CardHeader titleTypographyProps={{variant:'h3' }} className={classes.header} title={question.title}></CardHeader>
+                <CardHeader titleTypographyProps={{variant:'h5' }} className={classes.header} title={question.title}></CardHeader>
                 <CardContent>
                 <FormControl required fullWidth error={Boolean(getIn(form.errors, field.name))}>
                     <InputLabel>
