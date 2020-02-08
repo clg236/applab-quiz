@@ -9,11 +9,29 @@ import * as ROUTES from '../../constants/routes';
 import HomePage from '../../containers/Home';
 import {Route, Switch} from 'react-router-dom';
 
-import {CreateQuizPage, EditQuizPage, AdminListQuizzesPage, ListQuizzesPage, ViewQuizPage} from "../../containers/Quizzes";
-import {CreateAssignmentPage, EditAssignmentPage, AdminListAssignmentsPage, ListAssignmentsPage, ViewAssignmentPage} from "../../containers/Assignments";
+import {
+    CreateQuizPage,
+    EditQuizPage,
+    AdminListQuizzesPage,
+    ListQuizzesPage,
+    ViewQuizPage
+} from "../../containers/Quizzes";
+import {
+    CreateAssignmentPage,
+    EditAssignmentPage,
+    AdminListAssignmentsPage,
+    ListAssignmentsPage,
+    ViewAssignmentPage
+} from "../../containers/Assignments";
 import {AdminListUsersPage, UserDetailPage} from "../../containers/Users";
 
 import logo from "../../img/logo.png"
+import {
+    AdminListActivitiesPage,
+    CreateActivityPage,
+    EditActivityPage,
+    ViewActivityPage
+} from "../../containers/Activities";
 
 const styles = theme => ({
     root: {
@@ -35,7 +53,7 @@ function AuthenticatedLayout({classes, location}) {
         <div className={classes.root}>
             <CssBaseline/>
             <AppBarComponent/>
-            <DrawerComponent 
+            <DrawerComponent
                 logoText={'App Lab 2.0'}
                 logo={logo}
             />
@@ -53,17 +71,21 @@ function AuthenticatedLayout({classes, location}) {
                     <Route path={ROUTES.VIEW_QUIZ_SUBMISSION} component={ViewQuizPage}/>
                     <Route path={ROUTES.VIEW_QUIZ} component={ViewQuizPage}/>
 
-
                     <Route exact path={ROUTES.CREATE_ASSIGNMENT} component={CreateAssignmentPage}/>
                     <Route path={ROUTES.Edit_ASSIGNMENT} component={EditAssignmentPage}/>
                     <Route path={ROUTES.VIEW_ASSIGNMENT_SUBMISSION} component={ViewAssignmentPage}/>
                     <Route path={ROUTES.VIEW_ASSIGNMENT} component={ViewAssignmentPage}/>
 
+                    <Route exact path={ROUTES.CREATE_ACTIVITY} component={CreateActivityPage}/>
+                    <Route path={ROUTES.Edit_ACTIVITY} component={EditActivityPage}/>
+                    <Route path={ROUTES.VIEW_ACTIVITY_SUBMISSION} component={ViewActivityPage}/>
+                    <Route path={ROUTES.VIEW_ACTIVITY} component={ViewActivityPage}/>
 
                     <Route exact path={ROUTES.ADMIN_LIST_QUIZZES} component={AdminListQuizzesPage}/>
                     <Route path={ROUTES.Edit_QUIZ} component={EditQuizPage}/>
 
                     <Route exact path={ROUTES.ADMIN_LIST_ASSIGNMENTS} component={AdminListAssignmentsPage}/>
+                    <Route exact path={ROUTES.ADMIN_LIST_ACTIVITIES} component={AdminListActivitiesPage}/>
 
                     <Route exact path={ROUTES.ADMIN_LIST_USERS} component={AdminListUsersPage}/>
                     <Route path={ROUTES.VIEW_USER} component={UserDetailPage}/>

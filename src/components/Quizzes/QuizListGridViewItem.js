@@ -9,58 +9,75 @@ import Moment from "react-moment";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {push} from "connected-react-router";
+import CardHeader from "@material-ui/core/CardHeader";
+import Badge from "@material-ui/core/Badge";
+import IconButton from "@material-ui/core/IconButton";
+import CommentsIcon from "@material-ui/icons/CommentOutlined";
+import Avatar from "@material-ui/core/Avatar";
+import StartIcon from "@material-ui/icons/Check";
+import EditIcon from "@material-ui/icons/EditOutlined";
+import {makeStyles, createStyles} from "@material-ui/core/styles";
 
-const styles = theme => ({
-    quizListGridViewItem: {
-        width: 200,
-        height: 180
+
+const useStyles = makeStyles(theme => createStyles({
+    card: {
+        margin: theme.spacing(2),
+        display: 'flex',
+        flexDirection: "column",
+        justifyContent: "space-between",
     },
-    quizListGridViewItemContent: {
-        height: 125
+    avatar: {
+        backgroundColor: '#7D4CDB',
     },
-    title: {
-        textAlign: 'center',
-    }
-});
+}));
 
 const QuizListGridViewItem = props => {
-    const {classes, quizID, quiz, hasSubmission, quizURL, pushToHistory} = props;
+    const {index, quizID, quiz, hasSubmission, quizURL, pushToHistory} = props;
+
+    const classes = useStyles();
+
+    // TODO
+    const unreadComments = 2;
 
     function handleClicked() {
-        if (quizURL) {
-            pushToHistory(quizURL.replace(/:id/, quizID));
-        }
+        quizURL && pushToHistory(quizURL.replace(/:id/, quizID));
     }
 
     return (
-        <Grid item>
-            <Card className={classes.quizListGridViewItem}>
-                <CardContent className={classes.quizListGridViewItemContent}>
-                    <Typography className={classes.title} variant="h5" component="h4" gutterBottom>
-                        {quiz.name}
-                    </Typography>
+        <Grid item md={3} xs={12} component={Card} className={classes.card}>
+            <div>
+                <CardHeader titleTypographyProps={{variant: 'h5'}} className={classes.header} title={quiz.name}
+                            subheader={quiz.deadline ?
+                                <span>Due: <Moment>{quiz.deadline}</Moment></span> : "Due: No due date"}
+                            action={
+                                <Badge badgeContent={unreadComments} overlap="circle" color="primary">
+                                    <IconButton color="primary" aria-label="comments">
+                                        <CommentsIcon/>
+                                    </IconButton>
+                                </Badge>
+                            }
+                            avatar={<Avatar aria-label="index" className={classes.avatar}>{index + 1}</Avatar>}>
+                </CardHeader>
 
-                    <Typography className={classes.title} variant="body1" >
-                        <strong>Due:</strong> {quiz.deadline ? <Moment>{quiz.deadline}</Moment> : "No due date"}
-                    </Typography>
-
-                    <div className={classes.title}>
-                        <Typography variant="caption">{hasSubmission ? "completed" : "not started"}</Typography>
-                    </div>
+                <CardContent>
+                    <Typography variant="body1"
+                                dangerouslySetInnerHTML={{__html: quiz.description.replace(/<p><br\/?><\/p>/mg, "")}}/>
                 </CardContent>
-                <CardActions style={{justifyContent: 'center'}}>
-                    <Button size="small" onClick={handleClicked}>GO FORTH AND PROSPER!</Button>
-                </CardActions>
-            </Card>
+            </div>
+
+            <CardActions>
+                {!hasSubmission ? <Button startIcon={<StartIcon/>} size="small" variant="contained"
+                                         color="primary" onClick={handleClicked}>START</Button> :
+                    <Button variant="outlined" startIcon={<EditIcon/>} size="small"
+                            onClick={handleClicked}>Edit</Button>}
+            </CardActions>
         </Grid>
     )
 }
-
 
 
 export default compose(
     connect(null, {
         pushToHistory: push
     }),
-    withStyles(styles)
 )(QuizListGridViewItem);

@@ -157,12 +157,16 @@ export default compose(
                         if (!redirectURL) {
                             if (values.type == 'quiz') {
                                 redirectURL = `quizzes/:id`;
-                            } else {
+                            } else if (values.type == 'assignment') {
                                 redirectURL = `assignments/:id`;
+                            } else if (values.type == 'activity') {
+                                redirectURL = `activities/:id`;
                             }
                         }
 
-                        pushToHistory(redirectURL.replace(/:id/, ref.key));
+                        if (redirectURL && ref) {
+                            pushToHistory(redirectURL.replace(/:id/, ref.key));
+                        }
                     }
                 });
         }

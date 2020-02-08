@@ -117,17 +117,17 @@ function SignIn(props) {
                 <CssBaseline/>
                 <Paper className={classes.paper}>
                     <div className={classes.logo}>
-                        <img src={Logo} alt="logo" width="150px" />
+                        <img src={Logo} alt="logo" width="150px"/>
                     </div>
                     <Typography component="h1" variant="h5">APPLICATION LAB</Typography>
                     <Typography component="h2">Spring 2020</Typography>
-                    <Typography component="body">Welcome message...</Typography>
+                    <Typography component="p">Welcome message...</Typography>
                     <form className={classes.form} onSubmit={handleFormSubmit}>
                         <FormGroup>
-                            <Button 
-                                onClick={handleSignInWithGoogleClicked} 
-                                startIcon={<DeleteIcon />}
-                                type="submit" 
+                            <Button
+                                onClick={handleSignInWithGoogleClicked}
+                                startIcon={<DeleteIcon/>}
+                                type="submit"
                                 variant="contained"
                                 color="primary">NYU Student Sign In
                             </Button>
@@ -135,9 +135,10 @@ function SignIn(props) {
                     </form>
                 </Paper>
                 <Paper className={classes.paper}>
-                    <Typography component="body" align="center">By your use of these resources, you agree to abide by the <a
-                        href="http://www.nyu.edu/about/policies-guidelines-compliance/policies-and-guidelines/responsible-use-of-nyu-computers-and-data-policy-on.html">Policy
-                        on Responsible Use of NYU Computers and Data.</a></Typography>
+                    <Typography component="p" align="center">By your use of these resources, you agree to abide by
+                        the <a
+                            href="http://www.nyu.edu/about/policies-guidelines-compliance/policies-and-guidelines/responsible-use-of-nyu-computers-and-data-policy-on.html">Policy
+                            on Responsible Use of NYU Computers and Data.</a></Typography>
                 </Paper>
             </div>
         </div>

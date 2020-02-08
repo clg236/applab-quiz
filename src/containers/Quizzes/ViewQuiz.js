@@ -19,7 +19,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/EditOutlined'
 import StartIcon from '@material-ui/icons/Check';
 import CommentsIcon from '@material-ui/icons/CommentOutlined';
@@ -86,27 +86,23 @@ const ViewQuiz = props => {
 
         content = (
             <>
-            <Card className={classes.card} variant="outlined">
-                <CardHeader titleTypographyProps={{variant:'h2' }} className={classes.header} title={quiz.name} >
-                </CardHeader>
-                <CardContent> 
-                    
-                    <Typography variant="body1" >
-                        description of the assignment goes here...
-                    </Typography>
-                </CardContent>
-            </Card>
-                {/* <Typography variant="h4" gutterBottom component="h2">
-                    {quiz.name} 
-                </Typography> */}
+                <Card className={classes.card} variant="outlined">
+                    <CardHeader titleTypographyProps={{variant: 'h2'}} className={classes.header} title={quiz.name}>
+                    </CardHeader>
+
+                    {quiz && quiz.description && (
+                        <CardContent>
+                            <Typography variant="body1"
+                                        dangerouslySetInnerHTML={{__html: quiz.description.replace(/<p><br\/?><\/p>/mg, "")}}/>
+                        </CardContent>
+                    )}
+                </Card>
 
                 {submissionID && submission && submission.user && (
                     <Typography variant="subheading">by {submission.user.displayName}</Typography>
                 )}
 
-                
-                    <QuestionsForm quizID={quizID} submissionID={submissionID} type={type}/>
-                
+                <QuestionsForm quizID={quizID} submissionID={submissionID} type={type}/>
 
                 {submissionID && (
                     <Paper className={classnames(classes.paper, classes.comments)}>

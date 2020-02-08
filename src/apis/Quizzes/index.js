@@ -20,7 +20,7 @@ export function saveQuizInfo(info, quizID) {
         if (quizID) {
             save = firebase.updateWithMeta(`quizzes/${quizID}`, info);
         } else {
-            save = firebase.pushWithMeta("quizzes", info);
+            save = firebase.pushWithMeta("quizzes", info, null);
         }
 
         save.then(ref => {
@@ -85,7 +85,7 @@ function getSubmissions(quiz) {
 
         if (!quiz.submissions) {
             resolve([]);
-            return ;
+            return;
         }
 
         _.each(Object.keys(quiz.submissions), id => {
@@ -109,7 +109,7 @@ function getQuestions(quiz) {
 
         if (!quiz.questions) {
             resolve([]);
-            return ;
+            return;
         }
 
         _.each(Object.keys(quiz.questions), id => {
@@ -151,8 +151,8 @@ export function downloadSubmissions(quiz) {
 
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const ws = XLSX.utils.aoa_to_sheet(rows);
-        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
-        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const wb = {Sheets: {'data': ws}, SheetNames: ['data']};
+        const excelBuffer = XLSX.write(wb, {bookType: 'xlsx', type: 'array'});
         const data = new Blob([excelBuffer], {type: fileType});
         FileSaver.saveAs(data, "submissions.xlsx");
     });

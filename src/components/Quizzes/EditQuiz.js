@@ -56,7 +56,7 @@ const EditQuiz = props => {
                 <Tab label={`Questions (${numQuestions})`}/>
                 <Tab label={`Qualities (${numQualities})`}/>
                 <Tab label={`Submissions (${numSubmissions})`}/>
-                <Tab label="Upload comments" />
+                <Tab label="Upload comments"/>
             </Tabs>
 
             <div className={classes.tabContainer}>

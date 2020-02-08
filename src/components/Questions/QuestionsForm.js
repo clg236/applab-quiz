@@ -85,10 +85,6 @@ function QuestionsForm(props) {
 
     return (
         <form onSubmit={handleSubmit}>
-            {"description" in quiz && quiz.description && (
-                <div dangerouslySetInnerHTML={{__html: quiz.description}}/>
-            )}
-
             <Grid container spacing={3}>
                 {isAdmin && (
                     <Grid item xs={12}>

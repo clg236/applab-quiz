@@ -149,6 +149,17 @@ function DrawerComponent(props) {
                             <ListItemText primary="assignments" secondary="create and manage assignments"/>
                         </ListItem>
                     </List>
+
+                    <List>
+                        <ListItem button component={React.forwardRef((props, ref) => <Link {...props}
+                                                                                           to={ROUTES.ADMIN_LIST_ACTIVITIES}
+                                                                                           ref={ref}/>)}>
+                            <ListItemIcon className={classes.drawerIcon}>
+                                <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
+                            </ListItemIcon>
+                            <ListItemText primary="activities" secondary="create and manage activities"/>
+                        </ListItem>
+                    </List>
                 </>
             )}
 
