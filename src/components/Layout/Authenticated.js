@@ -9,29 +9,10 @@ import * as ROUTES from '../../constants/routes';
 import HomePage from '../../containers/Home';
 import {Route, Switch} from 'react-router-dom';
 
-import {
-    CreateQuizPage,
-    EditQuizPage,
-    AdminListQuizzesPage,
-    ListQuizzesPage,
-    ViewQuizPage
-} from "../../containers/Quizzes";
-import {
-    CreateAssignmentPage,
-    EditAssignmentPage,
-    AdminListAssignmentsPage,
-    ListAssignmentsPage,
-    ViewAssignmentPage
-} from "../../containers/Assignments";
+import * as Quizzes from "../../containers/Quizzes";
+import * as Assignments from "../../containers/Assignments";
+import * as Activities from "../../containers/Activities";
 import {AdminListUsersPage, UserDetailPage} from "../../containers/Users";
-
-import logo from "../../img/logo.png"
-import {
-    AdminListActivitiesPage,
-    CreateActivityPage,
-    EditActivityPage,
-    ViewActivityPage
-} from "../../containers/Activities";
 
 const styles = theme => ({
     root: {
@@ -46,50 +27,82 @@ const styles = theme => ({
     appBarSpacer: theme.mixins.toolbar
 });
 
+const routes = [
+    {path: ROUTES.LANDING, component: HomePage, exact: true, icon: "home", label: "home"},
+    {path: ROUTES.HOME, component: HomePage, exact: true},
+    {path: ROUTES.LIST_QUIZZES, component: Quizzes.ListQuizzesPage, exact: true, icon: "vial", label: "quizzes"},
+    {
+        path: ROUTES.LIST_ASSIGNMENTS,
+        component: Assignments.ListAssignmentsPage,
+        exact: true,
+        icon: "scroll",
+        label: "assignments"
+    },
+
+    {path: ROUTES.CREATE_QUIZ, component: Quizzes.CreateQuizPage, exact: true, admin: true},
+    {path: ROUTES.Edit_QUIZ, component: Quizzes.EditQuizPage, exact: false, admin: true},
+    {path: ROUTES.VIEW_QUIZ_SUBMISSION, component: Quizzes.ViewQuizPage, exact: false},
+    {path: ROUTES.VIEW_QUIZ, component: Quizzes.ViewQuizPage, exact: false},
+
+    {path: ROUTES.CREATE_ASSIGNMENT, component: Assignments.CreateAssignmentPage, exact: true, admin: true},
+    {path: ROUTES.Edit_ASSIGNMENT, component: Assignments.EditAssignmentPage, exact: false, admin: true},
+    {path: ROUTES.VIEW_ASSIGNMENT_SUBMISSION, component: Assignments.ViewAssignmentPage, exact: false},
+    {path: ROUTES.VIEW_ASSIGNMENT, component: Assignments.ViewAssignmentPage, exact: false},
+
+    {path: ROUTES.CREATE_ACTIVITY, component: Activities.CreateActivityPage, exact: true, admin: true},
+    {path: ROUTES.Edit_ACTIVITY, component: Activities.EditActivityPage, exact: false, admin: true},
+    {path: ROUTES.VIEW_ACTIVITY_SUBMISSION, component: Activities.ViewActivityPage, exact: false},
+    {path: ROUTES.VIEW_ACTIVITY, component: Activities.ViewActivityPage, exact: false},
+
+    {
+        path: ROUTES.ADMIN_LIST_USERS,
+        component: AdminListUsersPage,
+        exact: true,
+        admin: true,
+        icon: "user-astronaut",
+        label: "people"
+    },
+    {
+        path: ROUTES.ADMIN_LIST_QUIZZES,
+        component: Quizzes.AdminListQuizzesPage,
+        exact: true,
+        admin: true,
+        icon: "feather",
+        label: "quizzes"
+    },
+    {
+        path: ROUTES.ADMIN_LIST_ASSIGNMENTS,
+        component: Assignments.AdminListAssignmentsPage,
+        exact: true,
+        admin: true,
+        icon: "plus-square",
+        label: "assignments"
+    },
+    {
+        path: ROUTES.ADMIN_LIST_ACTIVITIES,
+        component: Activities.AdminListActivitiesPage,
+        exact: true,
+        admin: true,
+        icon: "plus-square",
+        label: "activities"
+    },
+
+    {path: ROUTES.VIEW_USER, component: UserDetailPage, exact: false, admin: true},
+];
+
 
 function AuthenticatedLayout({classes, location}) {
-
     return (
         <div className={classes.root}>
             <CssBaseline/>
             <AppBarComponent/>
-            <DrawerComponent
-                logoText={'App Lab 2.0'}
-                logo={logo}
-            />
+            <DrawerComponent routes={routes}/>
 
             <main className={classes.content}>
                 <div className={classes.appBarSpacer}/>
                 <Switch location={location}>
-                    <Route exact path={ROUTES.LANDING} component={HomePage}/>
-                    <Route exact path={ROUTES.HOME} component={HomePage}/>
-                    <Route exact path={ROUTES.LIST_QUIZZES} component={ListQuizzesPage}/>
-                    <Route exact path={ROUTES.LIST_ASSIGNMENTS} component={ListAssignmentsPage}/>
-
-                    <Route exact path={ROUTES.CREATE_QUIZ} component={CreateQuizPage}/>
-                    <Route path={ROUTES.Edit_QUIZ} component={EditQuizPage}/>
-                    <Route path={ROUTES.VIEW_QUIZ_SUBMISSION} component={ViewQuizPage}/>
-                    <Route path={ROUTES.VIEW_QUIZ} component={ViewQuizPage}/>
-
-                    <Route exact path={ROUTES.CREATE_ASSIGNMENT} component={CreateAssignmentPage}/>
-                    <Route path={ROUTES.Edit_ASSIGNMENT} component={EditAssignmentPage}/>
-                    <Route path={ROUTES.VIEW_ASSIGNMENT_SUBMISSION} component={ViewAssignmentPage}/>
-                    <Route path={ROUTES.VIEW_ASSIGNMENT} component={ViewAssignmentPage}/>
-
-                    <Route exact path={ROUTES.CREATE_ACTIVITY} component={CreateActivityPage}/>
-                    <Route path={ROUTES.Edit_ACTIVITY} component={EditActivityPage}/>
-                    <Route path={ROUTES.VIEW_ACTIVITY_SUBMISSION} component={ViewActivityPage}/>
-                    <Route path={ROUTES.VIEW_ACTIVITY} component={ViewActivityPage}/>
-
-                    <Route exact path={ROUTES.ADMIN_LIST_QUIZZES} component={AdminListQuizzesPage}/>
-                    <Route path={ROUTES.Edit_QUIZ} component={EditQuizPage}/>
-
-                    <Route exact path={ROUTES.ADMIN_LIST_ASSIGNMENTS} component={AdminListAssignmentsPage}/>
-                    <Route exact path={ROUTES.ADMIN_LIST_ACTIVITIES} component={AdminListActivitiesPage}/>
-
-                    <Route exact path={ROUTES.ADMIN_LIST_USERS} component={AdminListUsersPage}/>
-                    <Route path={ROUTES.VIEW_USER} component={UserDetailPage}/>
-
+                    {routes.map((route, index) => <Route key={index} exact={route.exact} path={route.path}
+                                                         component={route.component}/>)}
                     <Route render={() => (<div>404</div>)}/>
                 </Switch>
 

@@ -10,9 +10,6 @@ import React, {useState} from 'react';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
 
-//fontawesome icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-
 
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';

@@ -9,7 +9,6 @@ import {withStyles} from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import classNames from 'classnames';
 import React from 'react';
-import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import {withFirebase} from 'react-redux-firebase';
 import {Link} from 'react-router-dom';
@@ -58,19 +57,19 @@ const styles = theme => ({
 });
 
 function DrawerComponent(props) {
-    const {classes, firebase, profile, dispatch, drawer} = props;
+    const {classes, firebase, profile, dispatch, drawer, routes} = props;
 
     // layout context
     const handleDrawerClose = () => {
         dispatch({
             type: "CLOSE_DRAWER"
         });
-    }
+    };
 
     // firebase
     const handleSignOutClicked = () => {
         firebase.logout();
-    }
+    };
 
     const isDrawerOpen = drawer.open;
 
@@ -89,81 +88,42 @@ function DrawerComponent(props) {
             </div>
             <Divider/>
             <List>
-                <ListItem button
-                          component={React.forwardRef((props, ref) => <Link {...props} to={ROUTES.HOME} ref={ref}/>)}>
-                    <ListItemIcon className={classes.drawerIcon}>
-                        <FontAwesomeIcon icon="home" size="sm" fixedWidth/>
-                    </ListItemIcon>
-                    <ListItemText primary="home"/>
-                </ListItem>
-                <ListItem button component={React.forwardRef((props, ref) => <Link {...props} to={ROUTES.LIST_QUIZZES}
-                                                                                   ref={ref}/>)}>
-                    <ListItemIcon className={classes.drawerIcon}>
-                        <FontAwesomeIcon icon="vial" size="sm" fixedWidth/>
-                    </ListItemIcon>
-                    <ListItemText primary="quizzes"/>
-                </ListItem>
-                <ListItem button
-                          component={React.forwardRef((props, ref) => <Link {...props} to={ROUTES.LIST_ASSIGNMENTS}
-                                                                            ref={ref}/>)}>
-                    <ListItemIcon className={classes.drawerIcon}>
-                        <FontAwesomeIcon icon="scroll" size="sm" fixedWidth/>
-                    </ListItemIcon>
-                    <ListItemText primary="assignments"/>
-                </ListItem>
+                {routes.filter(route => route.label && !route.admin).map((route, index) => {
+                    return (
+                        <ListItem key={index} button component={Link} to={route.path}>
+                            {route.icon && (
+                                <ListItemIcon className={classes.drawerIcon}>
+                                    <FontAwesomeIcon icon={route.icon} size="sm" fixedWidth/>
+                                </ListItemIcon>
+                            )}
+                            <ListItemText primary={route.label}/>
+                        </ListItem>
+                    );
+                })}
             </List>
 
             {profile.role === ROLES.ROLE_ADMIN && (
                 <>
                     <Divider/>
                     <List>
-                        <ListItem button component={React.forwardRef((props, ref) => <Link {...props}
-                                                                                           to={ROUTES.ADMIN_LIST_USERS}
-                                                                                           ref={ref}/>)}>
-
-                            <ListItemIcon className={classes.drawerIcon}>
-                                <FontAwesomeIcon icon="user-astronaut" fixedWidth/>
-                            </ListItemIcon>
-                            <ListItemText primary="people"/>
-                        </ListItem>
-                    </List>
-                    <List>
-                        <ListItem button component={React.forwardRef((props, ref) => <Link {...props}
-                                                                                           to={ROUTES.ADMIN_LIST_QUIZZES}
-                                                                                           ref={ref}/>)}>
-
-                            <ListItemIcon className={classes.drawerIcon}>
-                                <FontAwesomeIcon icon="feather" size="sm" fixedWidth/>
-                            </ListItemIcon>
-                            <ListItemText primary="quizzes" secondary="create and manage quizzes"/>
-                        </ListItem>
-                    </List>
-                    <List>
-                        <ListItem button component={React.forwardRef((props, ref) => <Link {...props}
-                                                                                           to={ROUTES.ADMIN_LIST_ASSIGNMENTS}
-                                                                                           ref={ref}/>)}>
-
-                            <ListItemIcon className={classes.drawerIcon}>
-                                <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
-                            </ListItemIcon>
-                            <ListItemText primary="assignments" secondary="create and manage assignments"/>
-                        </ListItem>
-                    </List>
-
-                    <List>
-                        <ListItem button component={React.forwardRef((props, ref) => <Link {...props}
-                                                                                           to={ROUTES.ADMIN_LIST_ACTIVITIES}
-                                                                                           ref={ref}/>)}>
-                            <ListItemIcon className={classes.drawerIcon}>
-                                <FontAwesomeIcon icon="plus-square" size="sm" fixedWidth/>
-                            </ListItemIcon>
-                            <ListItemText primary="activities" secondary="create and manage activities"/>
-                        </ListItem>
+                        {routes.filter(route => route.label && !!route.admin).map((route, index) => {
+                            return (
+                                <ListItem key={index} button component={Link} to={route.path}>
+                                    {route.icon && (
+                                        <ListItemIcon className={classes.drawerIcon}>
+                                            <FontAwesomeIcon icon={route.icon} size="sm" fixedWidth/>
+                                        </ListItemIcon>
+                                    )}
+                                    <ListItemText primary={route.label}/>
+                                </ListItem>
+                            );
+                        })}
                     </List>
                 </>
             )}
 
             <Divider/>
+
             <List>
                 <div>
                     <ListItem button onClick={handleSignOutClicked}>
