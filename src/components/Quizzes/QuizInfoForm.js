@@ -75,7 +75,7 @@ const QuizInfoForm = (props) => {
                         <Field 
                             
                             name="description">
-                            {({field, form}) => (<Editor field={field} form={form} withMargin/>)}
+                            {({field, form}) => (<Editor field={field} form={form} withMargin />)}
                         </Field>
                     </FormControl>
 
