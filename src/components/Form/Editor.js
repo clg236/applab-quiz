@@ -2,7 +2,14 @@ import React from "react";
 import {FormHelperText, withStyles} from "@material-ui/core";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
 import Typography from "@material-ui/core/Typography";
+import styled from 'styled-components';
+
+const EditorWrapper = styled.div`
+    box-shadow: 0 0 3px #ddd;
+    margin-top: 10px;
+`
 
 const styles = {
     default: {
@@ -52,7 +59,7 @@ class Editor extends React.PureComponent {
         const css = classes.default;
 
         return (
-            <>
+            <EditorWrapper>
                 <ReactQuill theme="bubble" className={css} modules={QuillConfig.modules}
                             formats={QuillConfig.formats}
                             onChange={this.handleDescriptionChanged}
@@ -66,7 +73,7 @@ class Editor extends React.PureComponent {
                         {`${this.countWords(field.value)}/${maxWords} word(s)`}
                     </FormHelperText>
                 )}
-            </>
+            </EditorWrapper>
         );
     }
 }

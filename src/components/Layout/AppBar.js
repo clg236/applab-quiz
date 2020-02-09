@@ -9,7 +9,10 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import React, {useState} from 'react';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
-
+import {Link} from 'react-router-dom';
+import AddIcon from '@material-ui/icons/AddBoxOutlined';
+import Button from '@material-ui/core/Button';
+import * as ROUTES from '../../constants/routes';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -29,6 +32,11 @@ const styles = theme => ({
     },
     title: {
         flexGrow: 1,
+        textDecoration: 'none',
+        color: 'white'
+    },
+    button: {
+        margin: 10
     }
 });
 
@@ -73,20 +81,28 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
                 </IconButton>
                 <Typography
                     component="h1"
-                    variant="h6"
+                    variant="h5"
                     color="inherit"
                     noWrap
                     className={classes.title}
                 >
-                    Application Lab - Spring 2020
+                <Link className={classes.title} href="#" variant="body2">
+                Application Lab - Spring 2020
+  </Link>
+                    
                 </Typography>
-                <IconButton color="inherit">
-                    <Badge badgeContent={0} color="secondary">
-                        <NotificationsIcon/>
-                    </Badge>
-                </IconButton>
+                <Button
+                    variant="outlined"
+                    color="inherit"
+                    aria-label="create a new activity"
+                    component={Link} to={ROUTES.CREATE_ACTIVITY}
+                    className={classes.button}
+                    startIcon={<AddIcon />}
+                >
+                Create Activity
+                </Button>
 
-                <IconButton
+                {/* <IconButton
                     aria-owns={Boolean(menuAnchorEl) ? 'menu-appbar' : undefined}
                     aria-haspopup="true"
                     onClick={handleAccountClicked}
@@ -97,8 +113,8 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
                             <Avatar alt={auth.name} src={auth.photoURL}/> :
                             <Avatar alt={auth.name}><AccountCircle/></Avatar>
                     }
-                </IconButton>
-                <Menu
+                </IconButton> */}
+                {/* <Menu
                     id="menu-appbar"
                     anchorEl={menuAnchorEl}
                     anchorOrigin={{
@@ -113,8 +129,8 @@ function AppBarComponent({classes, auth, drawer, dispatch}) {
                     onClose={handleMenuClose}
                 >
                     <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-                </Menu>
+                    <MenuItem onClick={handleMenuClose}>My Activities</MenuItem>
+                </Menu> */}
             </Toolbar>
         </AppBar>
     );

@@ -34,7 +34,7 @@ const styles = theme => ({
     fields: {
         marginTop: '25px',
         backgroundColor: 'black'
-    }
+    },
 });
 
 const INITIAL_VALUES = {
@@ -54,7 +54,7 @@ const QuizInfoForm = (props) => {
 
     return (
         <Card variant="outlined">
-            <CardHeader className={classes.header} title="Create an Activity" subheader="Please complete the * fields below"></CardHeader>
+            <CardHeader className={classes.header} title="Create an Activity" subheaderTypographyProps={{color:"secondary"}} subheader="Please complete the * fields below"></CardHeader>
             <CardContent>
 
             
@@ -62,11 +62,11 @@ const QuizInfoForm = (props) => {
 
 
                     <Field name="Activity Title"  >
-                        {({field, form}) => (<TextField margin="dense" label="Activity Title" required fullWidth={true} {...field}
+                        {({field, form}) => (<TextField margin="normal" label="Activity Title" required fullWidth={true} {...field}
                                                         error={Boolean(errors[field.name])}/>)}
                     </Field>
                     <Field name="Activity SubTitle" >
-                        {({field, form}) => (<TextField margin="dense" label="Activity Subtitle" required fullWidth={true} {...field}
+                        {({field, form}) => (<TextField margin="normal" label="Activity Subtitle" required fullWidth={true} {...field}
                                                         error={Boolean(errors[field.name])}/>)}
                     </Field>
                     <FormControl fullWidth margin="dense">
@@ -75,7 +75,7 @@ const QuizInfoForm = (props) => {
                         <Field 
                             
                             name="description">
-                            {({field, form}) => (<Editor field={field} form={form} withMargin />)}
+                            {({field, form}) => (<Editor field={field} className={classes.editor} placeholder="type something..." form={form} />)}
                         </Field>
                     </FormControl>
 
@@ -83,7 +83,7 @@ const QuizInfoForm = (props) => {
   
                     <Field name="deadline">
                         {({field, form, meta}) => (
-                            <TextField label="Deadline" margin="dense" type="datetime-local" fullWidth {...field}
+                            <TextField label="Deadline" margin="normal" type="datetime-local" fullWidth {...field}
                                        error={Boolean(errors[field.name])}/>)}
                     </Field>
   

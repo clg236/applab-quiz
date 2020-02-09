@@ -9,9 +9,12 @@ import TableBody from "@material-ui/core/TableBody";
 import QuizListTableViewItem from "./QuizListTableViewItem";
 import API from "../../apis";
 import * as ROLES from "../../constants/roles";
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
-
+    table: {
+        //minWidth: 650,
+      },
 });
 
 const QuizListTableView = props => {
@@ -34,15 +37,15 @@ const QuizListTableView = props => {
     }
 
     return (
-        <Table>
+        <Table className={classes.table}>
             <TableHead>
                 <TableRow>
-                    <TableCell>#</TableCell>
-                    <TableCell align="left">Topic</TableCell>
-                    <TableCell align="left">Due</TableCell>
-                    {showScoreColumn && <TableCell align="left">Score</TableCell>}
-                    <TableCell align="left">Comments</TableCell>
-                    {isAdmin && showActionsColumn && <TableCell align="left">Actions</TableCell>}
+                <TableCell><Typography variant="h6" color="inherit">#</Typography></TableCell>
+                    <TableCell align="left"><Typography variant="h6" color="inherit">Topic</Typography></TableCell>
+                    <TableCell align="left"><Typography variant="h6" color="inherit">Due</Typography></TableCell>
+                    {showScoreColumn && <TableCell align="left"><Typography variant="h6" color="inherit">Score</Typography></TableCell>}
+                    <TableCell align="left"><Typography variant="h6" color="inherit">Comments</Typography></TableCell>
+                    {isAdmin && showActionsColumn && <TableCell align="left"><Typography variant="h6" color="inherit">Actions</Typography></TableCell>}
                 </TableRow>
             </TableHead>
             <TableBody>

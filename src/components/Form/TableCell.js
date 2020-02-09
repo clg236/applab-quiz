@@ -4,10 +4,10 @@ import TableCell from "@material-ui/core/TableCell";
 
 export default withStyles(theme => ({
     head: {
-        backgroundColor: "#ff4081",
+        backgroundColor: "#7D4CDB",
         color: "white",
     },
     body: {
-        fontSize: 11,
+        fontSize: 24,
     },
 }))(TableCell);

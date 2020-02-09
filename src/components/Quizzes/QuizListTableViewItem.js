@@ -11,11 +11,16 @@ import _ from "lodash";
 import API from "../../apis";
 import * as ROLES from "../../constants/roles";
 import {downloadSubmissions} from "../../apis/Quizzes";
+import Typography from '@material-ui/core/Typography';
 
-const styles = theme => ({});
+const styles = theme => ({
+    cell: {
+        fontSize: '1.1em'
+    }
+});
 
 const QuizListTableViewItem = props => {
-    const {quizID, quiz, submission, quizURL, index, pushToHistory, showScoreColumn, showActionsColumn} = props;
+    const {classes, quizID, quiz, submission, quizURL, index, pushToHistory, showScoreColumn, showActionsColumn} = props;
     const isAdmin = API.Users.hasRole(ROLES.ROLE_ADMIN);
 
     function handleClicked(e) {
@@ -31,26 +36,26 @@ const QuizListTableViewItem = props => {
     }
 
     return (
-        <TableRow>
+        <TableRow className={classes.cell}>
             <TableCell align="left">
-                {index + 1}
+                <Typography variant="h6">{index + 1}</Typography>
             </TableCell>
             <TableCell align="left">
-                <MuiLink href='#' onClick={handleClicked}>{quiz.name}</MuiLink>
+            <Typography variant="h6"><MuiLink href='#' onClick={handleClicked}>{quiz.name}</MuiLink></Typography>
             </TableCell>
             <TableCell align="left">
-                {quiz.deadline && <Moment format="MM/DD/YYYY HH:mm">{quiz.deadline}</Moment>}
+            <Typography variant="h6">{quiz.deadline && <Moment format="MM/DD/YYYY HH:mm">{quiz.deadline}</Moment>}</Typography>
             </TableCell>
             {showScoreColumn && (
                 <TableCell align="left">
-                    {submission ? submission.score : 0}/{quiz.questions ? _.size(quiz.questions) : 0}
+                <Typography variant="h6">{submission ? submission.score : 0}/{quiz.questions ? _.size(quiz.questions) : 0}</Typography>
                 </TableCell>
             )}
             <TableCell align="left">
-                {submission && <MuiLink href="#" onClick={handleClicked}>Comments</MuiLink>}
+            <Typography variant="h6">{submission && <MuiLink href="#" onClick={handleClicked}>Comments</MuiLink>}</Typography>
             </TableCell>
             {isAdmin && showActionsColumn && <TableCell align="left">
-                <MuiLink href="#" onClick={handleDownload}>Download</MuiLink>
+            <Typography variant="h6"><MuiLink href="#" onClick={handleDownload}>Download</MuiLink></Typography>
             </TableCell>}
         </TableRow>
     )

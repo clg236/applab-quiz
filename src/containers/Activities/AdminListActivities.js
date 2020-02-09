@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 import {withStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
@@ -39,7 +40,7 @@ const styles = theme => ({
         transform: 'scale(0.8)',
     },
     title: {
-        fontSize: 14,
+        fontSize: 28,
     },
     pos: {
         marginBottom: 12,
@@ -59,49 +60,14 @@ const AdminListActivities = ({classes}) => {
     }
 
     return (
-        <main className={classes.content}>
-            <Typography variant="h5" component="h6">Create and Manage Activities</Typography>
-            <Grid container spacing={2}>
-                <Grid item>
-                    <Card className={classes.card}>
-                        <CardContent>
-                            <Typography className={classes.title}>
-                                Create an activity instructions...
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small" component={Link} to={ROUTES.CREATE_ACTIVITY}>
-                                <FontAwesomeIcon icon="plus-square" size="lg" fixedWidth/>Create an activity
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid>
-                <Grid item>
-                    <Card className={classes.card}>
-                        <CardContent>
-                            <Typography className={classes.title}>
-                                View statistics and cool graphs...
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small" component={Link} to={ROUTES.CREATE_ASSIGNMENT}>
-                                <FontAwesomeIcon icon="chart-line" size="lg" fixedWidth/> View Analytics
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid>
-            </Grid>
-            <Typography variant="h5" component="h6" gutterBottom>All Activities</Typography>
-            <Grid container spacing={2}>
-                <Grid item md={12} xs={12}>
-                    <Paper className={classes.list}>
-                        <QuizList type="activity" showUnpublished showScoreColumn={false} showActionsColumn
+        <Card variant="outlined">
+            <CardHeader title="Activity Submissions" subheader="The tables below lists all submitted activities">
+            </CardHeader>
+            <CardContent>
+            <QuizList type="activity" showUnpublished showScoreColumn={false} showActionsColumn
                                   quizURL="/activities/:id/edit"/>
-                    </Paper>
-                </Grid>
-
-            </Grid>
-        </main>
+            </CardContent>
+        </Card>
     );
 };
 

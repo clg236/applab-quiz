@@ -14,16 +14,35 @@ import {withFirebase} from 'react-redux-firebase';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Typography from '@material-ui/core/Typography';
 
-const DRAWER_WIDTH = 240;
+//material ui for new homepage prototype
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import {makeStyles} from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
+
+const DRAWER_WIDTH = 260;
 
 const styles = theme => ({
     toolbarIcon: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         padding: '0 8px',
+        backgroundColor: '#81FCED',
         ...theme.mixins.toolbar,
+    },
+    drawerHeader: {
+        display: 'flex',
+        flexDirection: 'column',
+        paddingLeft: '24px',
+        backgroundColor: '#81FCED',
+        color: '#7D4CDB',
+        padding: '10px'
     },
     drawerPaper: {
         position: 'relative',
@@ -42,13 +61,13 @@ const styles = theme => ({
         }),
         width: '0',
         [theme.breakpoints.up('sm')]: {
-            width: '240px',
+            width: '0',
         },
     },
 
     drawerIcon: {
         marginLeft: 8,
-        marginRight: 8
+        color: '#7D4CDB'
     },
     icon: {
         fontSize: '32px !important',
@@ -74,23 +93,29 @@ function DrawerComponent(props) {
     const isDrawerOpen = drawer.open;
 
     return (
+
         <Drawer
-            variant="permanent"
+            variant="temporary"
             classes={{
                 paper: classNames(classes.drawerPaper, !isDrawerOpen && classes.drawerPaperClose),
             }}
             open={isDrawerOpen}
+            ModalProps={{ onBackdropClick: handleDrawerClose }}
         >
             <div className={classes.toolbarIcon}>
+                <div className={classes.drawerHeader}>
+                <Typography variant="body1" color="inherit">Welcome</Typography>
+                <Typography variant="h5" color="inherit" gutterBottom>Christian Grewell</Typography>
+                </div>
+                
                 <IconButton onClick={handleDrawerClose}>
                     <ChevronLeftIcon/>
                 </IconButton>
             </div>
-            <Divider/>
             <List>
                 {routes.filter(route => route.label && !route.admin).map((route, index) => {
                     return (
-                        <ListItem key={index} button component={Link} to={route.path}>
+                        <ListItem key={index} onClick={handleDrawerClose} button component={Link} to={route.path}>
                             {route.icon && (
                                 <ListItemIcon className={classes.drawerIcon}>
                                     <FontAwesomeIcon icon={route.icon} size="sm" fixedWidth/>
@@ -104,11 +129,13 @@ function DrawerComponent(props) {
 
             {profile.role === ROLES.ROLE_ADMIN && (
                 <>
-                    <Divider/>
+                    <div className={classes.drawerHeader}>
+                    <Typography variant="h6" color="inherit">Instructor Actions</Typography>
+                </div>
                     <List>
                         {routes.filter(route => route.label && !!route.admin).map((route, index) => {
                             return (
-                                <ListItem key={index} button component={Link} to={route.path}>
+                                <ListItem key={index} button onClick={handleDrawerClose} component={Link} to={route.path}>
                                     {route.icon && (
                                         <ListItemIcon className={classes.drawerIcon}>
                                             <FontAwesomeIcon icon={route.icon} size="sm" fixedWidth/>
@@ -130,12 +157,13 @@ function DrawerComponent(props) {
                         <ListItemIcon className={classes.drawerIcon}>
                             <FontAwesomeIcon icon="sign-out-alt" size="sm" fixedWidth/>
                         </ListItemIcon>
-                        <ListItemText primary="sign out"/>
+                        <ListItemText primary="SIGN OUT"/>
                     </ListItem>
                 </div>
             </List>
 
         </Drawer>
+
     );
 }
 

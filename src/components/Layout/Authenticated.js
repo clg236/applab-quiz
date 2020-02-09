@@ -28,26 +28,26 @@ const styles = theme => ({
 });
 
 const routes = [
-    {path: ROUTES.LANDING, component: HomePage, exact: true, icon: "home", label: "home"},
+    {path: ROUTES.LANDING, component: HomePage, exact: true, icon: "home", label: "HOME"},
     {path: ROUTES.HOME, component: HomePage, exact: true},
-    {path: ROUTES.LIST_QUIZZES, component: Quizzes.ListQuizzesPage, exact: true, icon: "vial", label: "quizzes"},
+    {path: ROUTES.LIST_QUIZZES, component: Quizzes.ListQuizzesPage, exact: true, icon: "vial", label: "SYLLABUS"},
     {
         path: ROUTES.LIST_ASSIGNMENTS,
         component: Assignments.ListAssignmentsPage,
         exact: true,
         icon: "scroll",
-        label: "assignments"
+        label: "ACTIVITIES SUMMARY"
     },
 
-    {path: ROUTES.CREATE_QUIZ, component: Quizzes.CreateQuizPage, exact: true, admin: true},
-    {path: ROUTES.Edit_QUIZ, component: Quizzes.EditQuizPage, exact: false, admin: true},
-    {path: ROUTES.VIEW_QUIZ_SUBMISSION, component: Quizzes.ViewQuizPage, exact: false},
-    {path: ROUTES.VIEW_QUIZ, component: Quizzes.ViewQuizPage, exact: false},
+    // {path: ROUTES.CREATE_QUIZ, component: Quizzes.CreateQuizPage, exact: true, admin: true},
+    // {path: ROUTES.Edit_QUIZ, component: Quizzes.EditQuizPage, exact: false, admin: true},
+    // {path: ROUTES.VIEW_QUIZ_SUBMISSION, component: Quizzes.ViewQuizPage, exact: false},
+    // {path: ROUTES.VIEW_QUIZ, component: Quizzes.ViewQuizPage, exact: false},
 
-    {path: ROUTES.CREATE_ASSIGNMENT, component: Assignments.CreateAssignmentPage, exact: true, admin: true},
-    {path: ROUTES.Edit_ASSIGNMENT, component: Assignments.EditAssignmentPage, exact: false, admin: true},
-    {path: ROUTES.VIEW_ASSIGNMENT_SUBMISSION, component: Assignments.ViewAssignmentPage, exact: false},
-    {path: ROUTES.VIEW_ASSIGNMENT, component: Assignments.ViewAssignmentPage, exact: false},
+    // {path: ROUTES.CREATE_ASSIGNMENT, component: Assignments.CreateAssignmentPage, exact: true, admin: true},
+    // {path: ROUTES.Edit_ASSIGNMENT, component: Assignments.EditAssignmentPage, exact: false, admin: true},
+    // {path: ROUTES.VIEW_ASSIGNMENT_SUBMISSION, component: Assignments.ViewAssignmentPage, exact: false},
+    // {path: ROUTES.VIEW_ASSIGNMENT, component: Assignments.ViewAssignmentPage, exact: false},
 
     {path: ROUTES.CREATE_ACTIVITY, component: Activities.CreateActivityPage, exact: true, admin: true},
     {path: ROUTES.Edit_ACTIVITY, component: Activities.EditActivityPage, exact: false, admin: true},
@@ -60,31 +60,31 @@ const routes = [
         exact: true,
         admin: true,
         icon: "user-astronaut",
-        label: "people"
+        label: "STUDENT LIST"
     },
-    {
-        path: ROUTES.ADMIN_LIST_QUIZZES,
-        component: Quizzes.AdminListQuizzesPage,
-        exact: true,
-        admin: true,
-        icon: "feather",
-        label: "quizzes"
-    },
-    {
-        path: ROUTES.ADMIN_LIST_ASSIGNMENTS,
-        component: Assignments.AdminListAssignmentsPage,
-        exact: true,
-        admin: true,
-        icon: "plus-square",
-        label: "assignments"
-    },
+    // {
+    //     path: ROUTES.ADMIN_LIST_QUIZZES,
+    //     component: Quizzes.AdminListQuizzesPage,
+    //     exact: true,
+    //     admin: true,
+    //     icon: "feather",
+    //     label: "quizzes"
+    // },
+    // {
+    //     path: ROUTES.ADMIN_LIST_ASSIGNMENTS,
+    //     component: Assignments.AdminListAssignmentsPage,
+    //     exact: true,
+    //     admin: true,
+    //     icon: "plus-square",
+    //     label: "assignments"
+    // },
     {
         path: ROUTES.ADMIN_LIST_ACTIVITIES,
         component: Activities.AdminListActivitiesPage,
         exact: true,
         admin: true,
         icon: "plus-square",
-        label: "activities"
+        label: "ACTIVITIES OVERVIEW"
     },
 
     {path: ROUTES.VIEW_USER, component: UserDetailPage, exact: false, admin: true},
