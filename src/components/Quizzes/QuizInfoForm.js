@@ -13,7 +13,29 @@ import {push} from "connected-react-router";
 import API from "../../apis";
 import {Editor, InputLabel} from "../Form";
 
-const styles = theme => ({});
+//material ui for new homepage prototype
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import {makeStyles} from '@material-ui/core/styles';
+import EditIcon from '@material-ui/icons/EditOutlined'
+import StartIcon from '@material-ui/icons/Check';
+import CommentsIcon from '@material-ui/icons/CommentOutlined';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
+
+const styles = theme => ({
+    header: {
+        backgroundColor: '#7D4CDB',
+        color: 'white',
+    },
+    fields: {
+        marginTop: '25px',
+        backgroundColor: 'black'
+    }
+});
 
 const INITIAL_VALUES = {
     name: "",
@@ -31,35 +53,42 @@ const QuizInfoForm = (props) => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-                <Grid item md={12}>
-                    <Field name="name">
-                        {({field, form}) => (<TextField label="Name" required fullWidth={true} {...field}
+        <Card variant="outlined">
+            <CardHeader className={classes.header} title="Create an Activity" subheader="Please complete the * fields below"></CardHeader>
+            <CardContent>
+
+            
+        <form onSubmit={handleSubmit} >
+
+
+                    <Field name="Activity Title"  >
+                        {({field, form}) => (<TextField margin="dense" label="Activity Title" required fullWidth={true} {...field}
                                                         error={Boolean(errors[field.name])}/>)}
                     </Field>
-                </Grid>
-
-
-                <Grid item md={12}>
-                    <FormControl fullWidth>
-                        <InputLabel>Description</InputLabel>
-                        <Field
+                    <Field name="Activity SubTitle" >
+                        {({field, form}) => (<TextField margin="dense" label="Activity Subtitle" required fullWidth={true} {...field}
+                                                        error={Boolean(errors[field.name])}/>)}
+                    </Field>
+                    <FormControl fullWidth margin="dense">
+                        
+                        <InputLabel>Activity Description</InputLabel>
+                        <Field 
+                            
                             name="description">
                             {({field, form}) => (<Editor field={field} form={form} withMargin/>)}
                         </Field>
                     </FormControl>
-                </Grid>
 
-                <Grid item md={12}>
+
+  
                     <Field name="deadline">
                         {({field, form, meta}) => (
-                            <TextField label="Deadline" type="datetime-local" fullWidth {...field}
+                            <TextField label="Deadline" margin="dense" type="datetime-local" fullWidth {...field}
                                        error={Boolean(errors[field.name])}/>)}
                     </Field>
-                </Grid>
+  
 
-                <Grid item md={12}>
+               
                     <Field name="published">{({field, form, meta}) => (
                         <FormControlLabel control={
                             <Switch
@@ -67,17 +96,22 @@ const QuizInfoForm = (props) => {
                                 onChange={field.onChange}
                                 name={field.name}
                             />
-                        } label="Published?"/>
+                        } label="Publish immediately?"/>
                     )}</Field>
-                </Grid>
+             
 
-                <Grid item xs={12}>
-                    <Button color="primary" variant="contained" type="submit" disabled={isSubmitting || !isValid}>
-                        {quizID && quiz ? "Save" : "Submit"}
-                    </Button>
-                </Grid>
-            </Grid>
+
+
+
+            
         </form>
+        </CardContent>
+        <CardActions>
+                <Button fullWidth color="primary" variant="contained" type="submit" disabled={isSubmitting || !isValid}>
+                        {quizID && quiz ? "Save" : "Continue"}
+                    </Button>
+                </CardActions>
+        </Card>
     );
 };
 

@@ -29,6 +29,11 @@ const useStyles = makeStyles(theme => createStyles({
     avatar: {
         backgroundColor: '#7D4CDB',
     },
+    actions: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+    }
 }));
 
 const QuizListGridViewItem = props => {
@@ -60,16 +65,19 @@ const QuizListGridViewItem = props => {
                 </CardHeader>
 
                 <CardContent>
-                    <Typography variant="body1"
+                    <Typography variant="body2"
                                 dangerouslySetInnerHTML={{__html: quiz.description.replace(/<p><br\/?><\/p>/mg, "")}}/>
                 </CardContent>
             </div>
 
-            <CardActions>
-                {!hasSubmission ? <Button startIcon={<StartIcon/>} size="small" variant="contained"
+            <CardActions >
+              
+                {!hasSubmission ? <Button fullWidth startIcon={<StartIcon/>} size="small" variant="contained"
                                          color="primary" onClick={handleClicked}>START</Button> :
-                    <Button variant="outlined" startIcon={<EditIcon/>} size="small"
+                    <Button variant="outlined" fullWidth startIcon={<EditIcon/>} size="small"
                             onClick={handleClicked}>Edit</Button>}
+
+
             </CardActions>
         </Grid>
     )

@@ -6,6 +6,21 @@ import {EditTitleControl} from "../Questions";
 import _ from "lodash";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
+import styled from 'styled-components';
+
+//material ui for new homepage prototype
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Button from '@material-ui/core/Button';
+import {makeStyles} from '@material-ui/core/styles';
+import EditIcon from '@material-ui/icons/EditOutlined'
+import StartIcon from '@material-ui/icons/Check';
+import CommentsIcon from '@material-ui/icons/CommentOutlined';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
 
 // For url patterns, see https://stackoverflow.com/a/5717133
 const Formats = {
@@ -40,6 +55,15 @@ const Formats = {
     },
 };
 
+const CardWrapper = styled.div`
+
+    margin-top: 16px;
+`
+
+const CardHeaderWrapper = styled.div`
+    background-color: #7D4CDB;
+    color: white;
+`
 
 const styles = theme => ({
     viewDescription: {
@@ -47,6 +71,13 @@ const styles = theme => ({
     },
     field: {
         height: "100%"
+    },
+    card: {
+        marginTop: theme.spacing(2),
+    },
+    header: {
+        backgroundColor: '#7D4CDB',
+        color: 'white',
     }
 });
 
@@ -117,18 +148,22 @@ function EditControl({questionIndex, question}) {
 }
 
 function ViewControl(props) {
-    const {index, quiz, questionID, question, submission, deadlinePassed} = props;
+    const {classes, index, quiz, questionID, question, submission, deadlinePassed} = props;
 
     // only show this for viewing it
     if (submission && 'format' in question && _.indexOf(['url', 'github', 'heroku'], question.format) >= 0) {
         const url = submission.answers[questionID];
         return (
-            <>
-                <InputLabel disabled required>
+            <div>
+            <InputLabel disabled required>
                     {question.title}
                 </InputLabel>
                 {url && <Typography style={{padding: '8px 0'}}><Link href={url} target="_blank">{url}</Link></Typography>}
-            </>
+
+            </div>
+        
+                
+
         );
     }
 
@@ -138,19 +173,30 @@ function ViewControl(props) {
             name={`answers.${questionID}`}
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => {
                 return (
-                    <TextField
-                        label={question.title}
-                        required
-                        multiline={false}
-                        error={Boolean(getIn(touched, field.name) && getIn(errors, field.name))}
-                        disabled={!!submission}
-                        value={field.value || ''}
-                        name={field.name}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        description={question.description || ""}
-                        helperText={getIn(errors, field.name)}
-                    />
+                    <CardWrapper>
+                    <Card variant="outlined">
+                        <CardHeaderWrapper>
+                            <CardHeader titleTypographyProps={{variant: 'h5'}}  title="Question Title" subheader={question.title}>
+                            </CardHeader>
+                        </CardHeaderWrapper>
+                        <CardContent>
+                            <TextField
+                                required
+                                multiline={false}
+                                error={Boolean(getIn(touched, field.name) && getIn(errors, field.name))}
+                                disabled={!!submission}
+                                value={field.value || ''}
+                                name={field.name}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                description={question.description || ""}
+                                helperText={getIn(errors, field.name)}
+                            />
+                        </CardContent>
+                    </Card>
+                    </CardWrapper>
+                 
+
                 )
             }}
             validate={value => validate(value, question)}
@@ -166,4 +212,5 @@ export default {
     isCorrect: isCorrect,
     sanitizeValue: sanitizeValue,
     defaultValue: ""
+    
 };

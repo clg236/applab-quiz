@@ -23,7 +23,7 @@ const store = createStore(
     createRootReducer(history),
     {
         drawer: {
-            open: true
+            open: false,
         }
     },
     compose(

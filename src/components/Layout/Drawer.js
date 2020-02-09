@@ -15,7 +15,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const DRAWER_WIDTH = 0;
+const DRAWER_WIDTH = 240;
 
 const styles = theme => ({
     toolbarIcon: {
@@ -40,7 +40,7 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        width: theme.spacing(5),
+        width: '0',
         [theme.breakpoints.up('sm')]: {
             width: '240px',
         },

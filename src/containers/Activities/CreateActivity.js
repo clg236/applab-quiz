@@ -17,7 +17,7 @@ const styles = theme => ({
 const CreateActivity = ({classes}) => {
     return (
         <main className={classes.root}>
-            <Typography variant="h4" gutterBottom component="h2">Create an activity</Typography>
+
             <QuizInfoForm type="activity" redirectURL="/activities/:id/edit"/>
         </main>
     );
