@@ -24,7 +24,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/EditOutlined'
 import StartIcon from '@material-ui/icons/Check';
 import CommentsIcon from '@material-ui/icons/CommentOutlined';
@@ -72,7 +72,7 @@ function QuestionsForm(props) {
     }
 
     // quizLinkPrefix
-    const quizLinkPrefix = quiz.type == 'quiz' ? 'quizzes' : 'assignments';
+    const quizLinkPrefix = quiz.type === 'quiz' ? 'quizzes' : 'assignments';
 
     function markAsCorrect(questionID, question) {
         API.Quizzes.gradeQuestion(quizID, quiz, submissionID, submission, questionID, question, true).then(_ => enqueueSnackbar("Submitted!"));
@@ -110,29 +110,29 @@ function QuestionsForm(props) {
                 )}
 
 
-
                 {quiz.questions && isPopulated(quiz.questions) && _.map(quiz.questions, (question, k) => {
                     const QuestionTypeControl = question.type && question.type in QuestionTypes ? QuestionTypes[question.type].ViewControl : null;
                     const questionID = question.id ? question.id : k;
 
                     return (
                         <React.Fragment key={k}>
-                        {deadlinePassed && (
-                    <>
-                        <Grid item xs={12}>
-                            <Typography variant="h6" color="primary">Deadline (<Moment>{quiz.deadline}</Moment>) has
-                                passed.</Typography>
-                        </Grid>
-                    </>
-                )}
+                            {deadlinePassed && (
+                                <>
+                                    <Grid item xs={12}>
+                                        <Typography variant="h6" color="primary">Deadline
+                                            (<Moment>{quiz.deadline}</Moment>) has
+                                            passed.</Typography>
+                                    </Grid>
+                                </>
+                            )}
                             <Grid item xs={12}>
 
                                 {QuestionTypeControl &&
                                 <QuestionTypeControl index={k} questionID={questionID} question={question}
                                                      deadlinePassed={deadlinePassed} {...props} />}
-                                            
+
                             </Grid>
-                            
+
                             {isAdmin && submission && (
                                 <Grid item xs={12}>
                                     <Button variant="contained" color="primary" className={classes.button}
@@ -144,9 +144,9 @@ function QuestionsForm(props) {
                                         Mark as Wrong
                                     </Button>
                                 </Grid>
-                                
+
                             )}
-                            
+
                         </React.Fragment>
                     );
                 })}

@@ -30,28 +30,28 @@ const Formats = {
     },
     'url': {
         'label': 'URL',
-        'pattern': new RegExp('^https?:\\/\\/'+ // protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-            '(\\#[-a-z\\d_]*)?$','i'),
+        'pattern': new RegExp('^https?:\\/\\/' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'),
     },
     'github': {
         'label': 'Github URL',
-        'pattern': new RegExp('^https?:\\/\\/'+ // protocol
-            '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)*github.com'+ // domain name
-            '(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-            '(\\#[-a-z\\d_]*)?$','i'),
+        'pattern': new RegExp('^https?:\\/\\/' + // protocol
+            '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)*github.com' + // domain name
+            '(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'),
     },
     'heroku': {
         'label': 'Heroku URL',
-        'pattern': new RegExp('^https?:\\/\\/'+ // protocol
-            '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)*heroku.com'+ // domain name
-            '(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-            '(\\#[-a-z\\d_]*)?$','i'),
+        'pattern': new RegExp('^https?:\\/\\/' + // protocol
+            '(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)*heroku.com' + // domain name
+            '(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'),
     },
 };
 
@@ -135,7 +135,7 @@ function EditControl({questionIndex, question}) {
                                     );
                                     return (
                                         <FormControlLabel key={key} value={key}
-                                                      control={radio} label={Formats[key].label}/>
+                                                          control={radio} label={Formats[key].label}/>
                                     );
                                 })}
                             </RadioGroup>
@@ -155,14 +155,14 @@ function ViewControl(props) {
         const url = submission.answers[questionID];
         return (
             <div>
-            <InputLabel disabled required>
+                <InputLabel disabled required>
                     {question.title}
                 </InputLabel>
-                {url && <Typography style={{padding: '8px 0'}}><Link href={url} target="_blank">{url}</Link></Typography>}
+                {url &&
+                <Typography style={{padding: '8px 0'}}><Link href={url} target="_blank">{url}</Link></Typography>}
 
             </div>
-        
-                
+
 
         );
     }
@@ -174,28 +174,28 @@ function ViewControl(props) {
             render={({field, form: {handleChange, handleBlur, touched, values, errors}}) => {
                 return (
                     <CardWrapper>
-                    <Card variant="outlined">
-                        <CardHeaderWrapper>
-                            <CardHeader titleTypographyProps={{variant: 'h5'}}  title="Question Title" subheader={question.title}>
-                            </CardHeader>
-                        </CardHeaderWrapper>
-                        <CardContent>
-                            <TextField
-                                required
-                                multiline={false}
-                                error={Boolean(getIn(touched, field.name) && getIn(errors, field.name))}
-                                disabled={!!submission}
-                                value={field.value || ''}
-                                name={field.name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                description={question.description || ""}
-                                helperText={getIn(errors, field.name)}
-                            />
-                        </CardContent>
-                    </Card>
+                        <Card variant="outlined">
+                            <CardHeaderWrapper>
+                                <CardHeader titleTypographyProps={{variant: 'h5'}} title="Question Title"
+                                            subheader={question.title}>
+                                </CardHeader>
+                            </CardHeaderWrapper>
+                            <CardContent>
+                                <TextField
+                                    required
+                                    error={Boolean(getIn(touched, field.name) && getIn(errors, field.name))}
+                                    disabled={!!submission}
+                                    value={field.value || ''}
+                                    name={field.name}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    description={question.description || ""}
+                                    helperText={getIn(errors, field.name)}
+                                />
+                            </CardContent>
+                        </Card>
                     </CardWrapper>
-                 
+
 
                 )
             }}
@@ -212,5 +212,5 @@ export default {
     isCorrect: isCorrect,
     sanitizeValue: sanitizeValue,
     defaultValue: ""
-    
+
 };

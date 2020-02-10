@@ -53,42 +53,41 @@ const QuizInfoForm = (props) => {
     }
 
     return (
-        <Card variant="outlined">
-            <CardHeader className={classes.header} title="Create an Activity" subheaderTypographyProps={{color:"secondary"}} subheader="Please complete the * fields below"></CardHeader>
-            <CardContent>
-
-            
-        <form onSubmit={handleSubmit} >
-
-
-                    <Field name="Activity Title"  >
-                        {({field, form}) => (<TextField margin="normal" label="Activity Title" required fullWidth={true} {...field}
-                                                        error={Boolean(errors[field.name])}/>)}
+        <form onSubmit={handleSubmit}>
+            <Card variant="outlined">
+                <CardHeader className={classes.header} title="Create an Activity"
+                            subheaderTypographyProps={{color: "secondary"}}
+                            subheader="Please complete the * fields below"/>
+                <CardContent>
+                    <Field name="name">
+                        {({field, form}) => (
+                            <TextField margin="normal" label="Activity Title" required fullWidth={true} {...field}
+                                       error={Boolean(errors[field.name])}/>)}
                     </Field>
-                    <Field name="Activity SubTitle" >
-                        {({field, form}) => (<TextField margin="normal" label="Activity Subtitle" required fullWidth={true} {...field}
-                                                        error={Boolean(errors[field.name])}/>)}
+
+                    <Field name="subtitle">
+                        {({field, form}) => (
+                            <TextField margin="normal" label="Activity Subtitle" required fullWidth={true} {...field}
+                                       error={Boolean(errors[field.name])}/>)}
                     </Field>
+
                     <FormControl fullWidth margin="dense">
-                        
                         <InputLabel>Activity Description</InputLabel>
-                        <Field 
-                            
+                        <Field
                             name="description">
-                            {({field, form}) => (<Editor field={field} className={classes.editor} placeholder="type something..." form={form} />)}
+                            {({field, form}) => (
+                                <Editor field={field} className={classes.editor} placeholder="type something..."
+                                        form={form}/>)}
                         </Field>
                     </FormControl>
 
-
-  
                     <Field name="deadline">
                         {({field, form, meta}) => (
                             <TextField label="Deadline" margin="normal" type="datetime-local" fullWidth {...field}
                                        error={Boolean(errors[field.name])}/>)}
                     </Field>
-  
 
-               
+
                     <Field name="published">{({field, form, meta}) => (
                         <FormControlLabel control={
                             <Switch
@@ -98,20 +97,16 @@ const QuizInfoForm = (props) => {
                             />
                         } label="Publish immediately?"/>
                     )}</Field>
-             
 
-
-
-
-            
-        </form>
-        </CardContent>
-        <CardActions>
-                <Button fullWidth color="primary" variant="contained" type="submit" disabled={isSubmitting || !isValid}>
+                </CardContent>
+                <CardActions>
+                    <Button fullWidth color="primary" variant="contained" type="submit"
+                            disabled={isSubmitting || !isValid}>
                         {quizID && quiz ? "Save" : "Continue"}
                     </Button>
                 </CardActions>
-        </Card>
+            </Card>
+        </form>
     );
 };
 
@@ -156,6 +151,7 @@ export default compose(
                 } else {
                     return {
                         name: quiz.name,
+                        subtitle: "subtitle" in quiz ? quiz.subtitle : "",
                         description: "description" in quiz ? quiz.description : "",
                         deadline: "deadline" in quiz ? quiz.deadline : "",
                         published: "published" in quiz ? quiz.published : true,
@@ -189,11 +185,11 @@ export default compose(
                     } else {
                         let redirectURL = actions.props.redirectURL;
                         if (!redirectURL) {
-                            if (values.type == 'quiz') {
+                            if (values.type === 'quiz') {
                                 redirectURL = `quizzes/:id`;
-                            } else if (values.type == 'assignment') {
+                            } else if (values.type === 'assignment') {
                                 redirectURL = `assignments/:id`;
-                            } else if (values.type == 'activity') {
+                            } else if (values.type === 'activity') {
                                 redirectURL = `activities/:id`;
                             }
                         }
