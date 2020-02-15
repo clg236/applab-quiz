@@ -49,7 +49,7 @@ const QuizListGridViewItem = props => {
     }
 
     return (
-        <Grid item md={3} xs={12} component={Card} className={classes.card}>
+        <Grid variant="outlined" item md={3} xs={12} component={Card} className={classes.card}>
             <div>
                 <CardHeader titleTypographyProps={{variant: 'h5'}} className={classes.header} title={quiz.name}
                             subheader={quiz.deadline ?

@@ -30,7 +30,7 @@ const styles = theme => ({
 const routes = [
     {path: ROUTES.LANDING, component: HomePage, exact: true, icon: "home", label: "HOME"},
     {path: ROUTES.HOME, component: HomePage, exact: true},
-    {path: ROUTES.LIST_QUIZZES, component: Quizzes.ListQuizzesPage, exact: true, icon: "vial", label: "SYLLABUS"},
+    //{path: ROUTES.LIST_QUIZZES, component: Quizzes.ListQuizzesPage, exact: true, icon: "vial", label: "SYLLABUS"},
     {
         path: ROUTES.LIST_ASSIGNMENTS,
         component: Assignments.ListAssignmentsPage,
@@ -84,7 +84,7 @@ const routes = [
         exact: true,
         admin: true,
         icon: "plus-square",
-        label: "ACTIVITIES OVERVIEW"
+        label: "ACTIVITIES SUMMARY"
     },
 
     {path: ROUTES.VIEW_USER, component: UserDetailPage, exact: false, admin: true},

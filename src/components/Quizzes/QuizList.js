@@ -10,7 +10,7 @@ import QuizListTableView from "./QuizListTableView";
 const styles = theme => ({
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3),
+        padding: theme.spacing(2),
         height: '100vh',
         overflow: 'auto',
 
@@ -23,7 +23,7 @@ const styles = theme => ({
     },
 
     table: {
-        minWidth: 700,
+        //minWidth: 700,
     },
     row: {
         '&:nth-of-type(odd)': {

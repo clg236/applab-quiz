@@ -60,14 +60,10 @@ const AdminListActivities = ({classes}) => {
     }
 
     return (
-        <Card variant="outlined">
-            <CardHeader title="Activity Submissions" subheader="The tables below lists all submitted activities">
-            </CardHeader>
-            <CardContent>
-            <QuizList type="activity" showUnpublished showScoreColumn={false} showActionsColumn
+        <QuizList type="activity" showUnpublished showScoreColumn={false} showActionsColumn
                                   quizURL="/activities/:id/edit"/>
-            </CardContent>
-        </Card>
+
+
     );
 };
 

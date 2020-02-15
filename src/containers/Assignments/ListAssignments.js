@@ -40,16 +40,10 @@ const ListAssignments = ({classes, user}) => {
         <main className={classes.content}>
             <Typography variant="h5" component="h6">Your Assignments</Typography>
             <Typography variant="body1" gutterBottom>
-                The table below lists all of your current assignments
+                The table below lists all of your current assignments, the score assigned and any comments.
             </Typography>
+            <QuizList type="assignment" user={user} quizURL="/assignments/:id"/>
 
-            <Grid container direction={'row'} justify={'center'} alignItems={'stretch'}>
-                <Grid item md={12}>
-                    <Paper square>
-                        <QuizList type="assignment" user={user} quizURL="/assignments/:id"/>
-                    </Paper>
-                </Grid>
-            </Grid>
         </main>
     );
 };

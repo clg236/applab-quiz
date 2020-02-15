@@ -11,6 +11,9 @@ import Button from '@material-ui/core/Button';
 import * as ROUTES from '../../constants/routes';
 import {connect} from 'react-redux';
 import * as ROLES from "../../constants/roles";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import {withRouter} from 'react-router-dom';
+
 
 const styles = theme => ({
     appBar: {
@@ -58,7 +61,9 @@ function AppBarComponent({classes, auth, profile, drawer, dispatch}) {
 
                 <Typography component="h1" variant="h5" color="inherit" noWrap className={classes.title}>
                     <Link className={classes.title} to={"/"} variant="body2">
-                        Application Lab - Spring 2020
+                    <IconButton color="secondary">
+                    <ChevronLeftIcon/> 
+                </IconButton>
                     </Link>
                 </Typography>
 

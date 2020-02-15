@@ -10,6 +10,7 @@ import QuizListTableViewItem from "./QuizListTableViewItem";
 import API from "../../apis";
 import * as ROLES from "../../constants/roles";
 import Typography from '@material-ui/core/Typography';
+import Grid from "@material-ui/core/Grid";
 
 const styles = theme => ({
     table: {
@@ -37,15 +38,17 @@ const QuizListTableView = props => {
     }
 
     return (
+        <Grid container spacing={3}>
+        <Grid item xs={12}>
         <Table className={classes.table}>
             <TableHead>
                 <TableRow>
-                <TableCell><Typography variant="h6" color="inherit">#</Typography></TableCell>
-                    <TableCell align="left"><Typography variant="h6" color="inherit">Topic</Typography></TableCell>
-                    <TableCell align="left"><Typography variant="h6" color="inherit">Due</Typography></TableCell>
-                    {showScoreColumn && <TableCell align="left"><Typography variant="h6" color="inherit">Score</Typography></TableCell>}
-                    <TableCell align="left"><Typography variant="h6" color="inherit">Comments</Typography></TableCell>
-                    {isAdmin && showActionsColumn && <TableCell align="left"><Typography variant="h6" color="inherit">Actions</Typography></TableCell>}
+                <TableCell><Typography variant="body" color="inherit">#</Typography></TableCell>
+                    <TableCell align="left"><Typography variant="body" color="inherit">Topic</Typography></TableCell>
+                    <TableCell align="left"><Typography variant="body" color="inherit">Due</Typography></TableCell>
+                    {showScoreColumn && <TableCell align="left"><Typography variant="body" color="inherit">Score</Typography></TableCell>}
+                    <TableCell align="left"><Typography variant="body" color="inherit">Comments</Typography></TableCell>
+                    {isAdmin && showActionsColumn && <TableCell align="center"><Typography variant="body" color="inherit">Actions</Typography></TableCell>}
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -63,6 +66,9 @@ const QuizListTableView = props => {
                 ))}
             </TableBody>
         </Table>
+        </Grid>
+        </Grid>
+      
     );
 };
 

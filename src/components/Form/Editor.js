@@ -60,7 +60,7 @@ class Editor extends React.PureComponent {
 
         return (
             <EditorWrapper>
-                <ReactQuill theme="bubble" className={css} modules={QuillConfig.modules}
+                <ReactQuill theme="snow" className={css} modules={QuillConfig.modules}
                             formats={QuillConfig.formats}
                             onChange={this.handleDescriptionChanged}
                             name={field.name}

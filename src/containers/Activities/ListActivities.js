@@ -45,7 +45,7 @@ const ListActivities = ({classes, user}) => {
 
             <Grid container direction={'row'} justify={'center'} alignItems={'stretch'}>
                 <Grid item md={12}>
-                    <Paper square>
+                    <Paper>
                         <QuizList type="assignment" user={user} quizURL="/assignments/:id"/>
                     </Paper>
                 </Grid>

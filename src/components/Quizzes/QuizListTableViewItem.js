@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     cell: {
-        fontSize: '1.1em'
+        fontSize: '.6em'
     }
 });
 
@@ -37,25 +37,25 @@ const QuizListTableViewItem = props => {
 
     return (
         <TableRow className={classes.cell}>
-            <TableCell align="left">
-                <Typography variant="h6">{index + 1}</Typography>
+            <TableCell align="center">
+                <Typography variant="body2">{index + 1}</Typography>
             </TableCell>
             <TableCell align="left">
-            <Typography variant="h6"><MuiLink href='#' onClick={handleClicked}>{quiz.name}</MuiLink></Typography>
+            <Typography variant="body2"><MuiLink href='#' onClick={handleClicked}>{quiz.name}</MuiLink></Typography>
             </TableCell>
-            <TableCell align="left">
-            <Typography variant="h6">{quiz.deadline && <Moment format="MM/DD/YYYY HH:mm">{quiz.deadline}</Moment>}</Typography>
+            <TableCell align="center">
+            <Typography variant="body2">{quiz.deadline && <Moment format="MM/DD/YYYY HH:mm">{quiz.deadline}</Moment>}</Typography>
             </TableCell>
             {showScoreColumn && (
                 <TableCell align="left">
-                <Typography variant="h6">{submission ? submission.score : 0}/{quiz.questions ? _.size(quiz.questions) : 0}</Typography>
+                <Typography variant="body2">{submission ? submission.score : 0}/{quiz.questions ? _.size(quiz.questions) : 0}</Typography>
                 </TableCell>
             )}
-            <TableCell align="left">
-            <Typography variant="h6">{submission && <MuiLink href="#" onClick={handleClicked}>Comments</MuiLink>}</Typography>
+            <TableCell align="center">
+            <Typography variant="body2">{submission && <MuiLink href="#" onClick={handleClicked}>Comments</MuiLink>}</Typography>
             </TableCell>
-            {isAdmin && showActionsColumn && <TableCell align="left">
-            <Typography variant="h6"><MuiLink href="#" onClick={handleDownload}>Download</MuiLink></Typography>
+            {isAdmin && showActionsColumn && <TableCell align="center">
+            <Typography variant="body2"><MuiLink href="#" onClick={handleDownload}>Download</MuiLink></Typography>
             </TableCell>}
         </TableRow>
     )
