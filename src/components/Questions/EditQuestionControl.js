@@ -21,11 +21,11 @@ const EditQuestionControl = props => {
     const QuestionTypeControl = question.type && question.type in QuestionTypes ? QuestionTypes[question.type].EditControl : null;
 
     return (
-        <ExpansionPanel expanded={expanded}>
+        <ExpansionPanel variant="outlined" expanded={expanded}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                 <Typography>
                     {questionIndex + 1 }.
-                    {question.title ? question.title : "QUESTION TITLE "} 
+                    {question.title ? question.title : "CHOOSE A QUESTION TYPE "} 
                     {question.type ? `(${question.type.toUpperCase()})` : ''}
                 </Typography>
             </ExpansionPanelSummary>
@@ -38,7 +38,7 @@ const EditQuestionControl = props => {
                             name={`questions.${questionIndex}.type`}
                             render={({field}) => (
                                 <FormControl required>
-                                    <FormLabel>Question Type</FormLabel>
+                                    <FormLabel>What type of question?</FormLabel>
                                     <RadioGroup aria-label="Question Type" row {...field}>
                                         {Object.keys(QuestionTypes).map((key) => (
                                             <FormControlLabel key={key} value={QuestionTypes[key].code}
@@ -55,7 +55,7 @@ const EditQuestionControl = props => {
             </ExpansionPanelDetails>
             <Divider/>
             <ExpansionPanelActions>
-                <Button size="small" color="secondary" onClick={deleteQuestion}>Delete</Button>
+                <Button size="small" color="primary" variant="outlined" onClick={deleteQuestion}>Delete</Button>
             </ExpansionPanelActions>
         </ExpansionPanel>
     );

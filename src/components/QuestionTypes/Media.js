@@ -6,6 +6,8 @@ import {EditTitleControl} from "../Questions";
 import {compose} from "redux";
 import TextField from "../Form/TextField";
 import _ from "lodash";
+import VideoRecorder from 'react-video-recorder';
+import styled from 'styled-components';
 
 
 const styles = theme => ({
@@ -14,9 +16,14 @@ const styles = theme => ({
     },
     field: {
         height: "100%"
-    }
+    },
+
 });
 
+const VideoWrapper = styled.div`
+    min-height: "1280",
+    min-width: "720",
+`;
 
 function validate(value, question) {
     if (!value) {
@@ -46,22 +53,23 @@ function EditControl({questionIndex, question}) {
             </Grid>
             <Grid item xs={12}>
                 <FormControl fullWidth required>
-                    <InputLabel>Question Content</InputLabel>
-                    <Field className={styles.theme}
-                           name={`questions.${questionIndex}.description`}
-                           render={({field, form}) => (
-                               <Editor field={field} form={form} withMargin/>
-                           )}
-                    />
+                    <InputLabel>Record yourself!</InputLabel>
+                    <VideoWrapper>
+                        <VideoRecorder 
+                            onRecordingComplete={(videoBlob) => {
+                            // Do something with the video...
+                            console.log('videoBlob', videoBlob)
+                            }} 
+                        />
+                    </VideoWrapper>
+
+  <Grid item xs={12}>
+            <InputLabel>Response Type</InputLabel>
+            </Grid>
                 </FormControl>
             </Grid>
             <Grid item xs={12}>
-                <Field
-                    name={`questions.${questionIndex}.maxWords`}
-                    render={({field}) => (
-                        <TextField label="Max words" fullWidth type="number" {...field} />
-                    )}
-                />
+
             </Grid>
         </>
     );
@@ -97,8 +105,8 @@ function ViewControl(props) {
 ViewControl = compose(withStyles(styles))(ViewControl);
 
 export default {
-    name: "Media Response",
-    code: "media-response",
+    name: "Video Question",
+    code: "video-question",
     EditControl: EditControl,
     ViewControl: ViewControl,
     isCorrect: isCorrect,
