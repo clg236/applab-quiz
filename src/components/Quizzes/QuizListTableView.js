@@ -43,12 +43,12 @@ const QuizListTableView = props => {
         <Table className={classes.table}>
             <TableHead>
                 <TableRow>
-                <TableCell><Typography variant="body" color="inherit">#</Typography></TableCell>
-                    <TableCell align="left"><Typography variant="body" color="inherit">Topic</Typography></TableCell>
-                    <TableCell align="left"><Typography variant="body" color="inherit">Due</Typography></TableCell>
-                    {showScoreColumn && <TableCell align="left"><Typography variant="body" color="inherit">Score</Typography></TableCell>}
-                    <TableCell align="left"><Typography variant="body" color="inherit">Comments</Typography></TableCell>
-                    {isAdmin && showActionsColumn && <TableCell align="left"><Typography variant="body" color="inherit">Actions</Typography></TableCell>}
+                <TableCell><Typography variant="body1" color="inherit">#</Typography></TableCell>
+                    <TableCell align="left"><Typography variant="body1" color="inherit">Topic</Typography></TableCell>
+                    <TableCell align="left"><Typography variant="body1" color="inherit">Due</Typography></TableCell>
+                    {showScoreColumn && <TableCell align="left"><Typography variant="body1" color="inherit">Score</Typography></TableCell>}
+                    <TableCell align="left"><Typography variant="body1" color="inherit">Comments</Typography></TableCell>
+                    {isAdmin && showActionsColumn && <TableCell align="left"><Typography variant="body1" color="inherit">Actions</Typography></TableCell>}
                 </TableRow>
             </TableHead>
             <TableBody>

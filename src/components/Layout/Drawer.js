@@ -84,7 +84,6 @@ function DrawerComponent(props) {
             type: "CLOSE_DRAWER"
         });
     };
-
     // firebase
     const handleSignOutClicked = () => {
         firebase.logout();
@@ -100,14 +99,16 @@ function DrawerComponent(props) {
                 paper: classNames(classes.drawerPaper, !isDrawerOpen && classes.drawerPaperClose),
             }}
             open={isDrawerOpen}
-            ModalProps={{ onBackdropClick: handleDrawerClose }}
+            ModalProps={{onBackdropClick: handleDrawerClose}}
         >
             <div className={classes.toolbarIcon}>
                 <div className={classes.drawerHeader}>
-                <Typography variant="body1" color="inherit">Welcome</Typography>
-                <Typography variant="h5" color="inherit" gutterBottom>Christian Grewell</Typography>
+                    <Typography variant="body1" color="inherit">Welcome</Typography>
+                    <Typography variant="h5" color="inherit" gutterBottom title={profile && profile.displayName}>
+                        {profile && profile.displayName}
+                    </Typography>
                 </div>
-                
+
                 <IconButton onClick={handleDrawerClose}>
                     <ChevronLeftIcon/>
                 </IconButton>
@@ -130,12 +131,13 @@ function DrawerComponent(props) {
             {profile.role === ROLES.ROLE_ADMIN && (
                 <>
                     <div className={classes.drawerHeader}>
-                    <Typography variant="h6" color="inherit">Instructor Actions</Typography>
-                </div>
+                        <Typography variant="h6" color="inherit">Instructor Actions</Typography>
+                    </div>
                     <List>
                         {routes.filter(route => route.label && !!route.admin).map((route, index) => {
                             return (
-                                <ListItem key={index} button onClick={handleDrawerClose} component={Link} to={route.path}>
+                                <ListItem key={index} button onClick={handleDrawerClose} component={Link}
+                                          to={route.path}>
                                     {route.icon && (
                                         <ListItemIcon className={classes.drawerIcon}>
                                             <FontAwesomeIcon icon={route.icon} size="sm" fixedWidth/>

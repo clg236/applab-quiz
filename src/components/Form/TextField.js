@@ -16,11 +16,11 @@ const styles = {
     }
 };
 
-const TextField = ({classes, description, label, helperText, ...others}) => (
+const TextField = ({classes, description, label, helperText, InputProps, ...others}) => (
     <FormControl fullWidth {...others}>
         <InputLabel shrink={true} className={classes.label}>{label}</InputLabel>
         {description && <div dangerouslySetInnerHTML={{__html: description}}/>}
-        <Input className={classes.inputFormControl} {...others} fullWidth />
+        <Input className={classes.inputFormControl}  {...others} {...InputProps} />
         {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
 );

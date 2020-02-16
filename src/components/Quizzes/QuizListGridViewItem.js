@@ -30,9 +30,9 @@ const useStyles = makeStyles(theme => createStyles({
         backgroundColor: '#7D4CDB',
     },
     actions: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 }));
 
@@ -40,9 +40,6 @@ const QuizListGridViewItem = props => {
     const {index, quizID, quiz, hasSubmission, quizURL, pushToHistory} = props;
 
     const classes = useStyles();
-
-    // TODO
-    const unreadComments = 2;
 
     function handleClicked() {
         quizURL && pushToHistory(quizURL.replace(/:id/, quizID));
@@ -52,28 +49,20 @@ const QuizListGridViewItem = props => {
         <Grid variant="outlined" item md={3} xs={12} component={Card} className={classes.card}>
             <div>
                 <CardHeader titleTypographyProps={{variant: 'h5'}} className={classes.header} title={quiz.name}
-                            subheader={quiz.deadline ?
-                                <span>Due: <Moment>{quiz.deadline}</Moment></span> : "Due: No due date"}
-                            action={
-                                <Badge badgeContent={unreadComments} overlap="circle" color="primary">
-                                    <IconButton color="primary" aria-label="comments">
-                                        <CommentsIcon/>
-                                    </IconButton>
-                                </Badge>
-                            }
+                            subheader={quiz.subtitle}
                             avatar={<Avatar aria-label="index" className={classes.avatar}>{index + 1}</Avatar>}>
                 </CardHeader>
 
                 <CardContent>
-                    <Typography variant="body2"
-                                dangerouslySetInnerHTML={{__html: quiz.description.replace(/<p><br\/?><\/p>/mg, "")}}/>
+                    <Typography variant="body2" className="quiz--description"
+                                dangerouslySetInnerHTML={{__html: quiz.description}}/>
                 </CardContent>
             </div>
 
-            <CardActions >
-              
+            <CardActions>
+
                 {!hasSubmission ? <Button fullWidth startIcon={<StartIcon/>} size="small" variant="contained"
-                                         color="primary" onClick={handleClicked}>START</Button> :
+                                          color="primary" onClick={handleClicked}>START</Button> :
                     <Button variant="outlined" fullWidth startIcon={<EditIcon/>} size="small"
                             onClick={handleClicked}>Edit</Button>}
 

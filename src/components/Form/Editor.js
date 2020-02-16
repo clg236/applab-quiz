@@ -3,7 +3,6 @@ import {FormHelperText, withStyles} from "@material-ui/core";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
-import Typography from "@material-ui/core/Typography";
 import styled from 'styled-components';
 
 const EditorWrapper = styled.div`

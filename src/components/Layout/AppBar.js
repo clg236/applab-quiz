@@ -12,7 +12,7 @@ import * as ROUTES from '../../constants/routes';
 import {connect} from 'react-redux';
 import * as ROLES from "../../constants/roles";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import {withRouter} from 'react-router-dom';
+import {compose} from "redux";
 
 
 const styles = theme => ({
@@ -37,7 +37,7 @@ const styles = theme => ({
     }
 });
 
-function AppBarComponent({classes, auth, profile, drawer, dispatch}) {
+function AppBarComponent({classes, auth, profile, drawer, location, dispatch}) {
 
     function handleToggleDrawerClicked() {
         if (drawer.open) {
@@ -61,9 +61,10 @@ function AppBarComponent({classes, auth, profile, drawer, dispatch}) {
 
                 <Typography component="h1" variant="h5" color="inherit" noWrap className={classes.title}>
                     <Link className={classes.title} to={"/"} variant="body2">
-                    <IconButton color="secondary">
-                    <ChevronLeftIcon/> 
-                </IconButton>
+                        <IconButton color="secondary">
+                            <ChevronLeftIcon/>
+                            {JSON.stringify(location, null, 2)}
+                        </IconButton>
                     </Link>
                 </Typography>
 
@@ -77,9 +78,13 @@ function AppBarComponent({classes, auth, profile, drawer, dispatch}) {
         </AppBar>
     );
 }
+export default compose(
+    connect(
+        ({firebase: {auth, profile}, drawer, router: {location}}) => (
+            {auth, profile, drawer, location}
+        )
+    ),
 
-export default connect(
-    ({firebase: {auth, profile}, drawer}) => (
-        {auth, profile, drawer}
-    )
-)(withStyles(styles)(AppBarComponent));
+    withStyles(styles),
+
+)(AppBarComponent);

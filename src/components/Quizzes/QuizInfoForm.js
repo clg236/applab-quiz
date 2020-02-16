@@ -83,7 +83,8 @@ const QuizInfoForm = (props) => {
 
                     <Field name="deadline">
                         {({field, form, meta}) => (
-                            <TextField label="Deadline" margin="normal" type="datetime-local" fullWidth {...field}
+                            <TextField label="Deadline" margin="normal" type="datetime-local" {...field}
+                                       InputProps={{style: {width: "180px"}}}
                                        error={Boolean(errors[field.name])}/>)}
                     </Field>
 

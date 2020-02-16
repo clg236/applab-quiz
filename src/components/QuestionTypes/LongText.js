@@ -22,7 +22,7 @@ import CommentsIcon from "@material-ui/icons/CommentOutlined";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import Avatar from "@material-ui/core/Avatar";
-import VideoRecorder from 'react-video-recorder';
+// import VideoRecorder from 'react-video-recorder';
 
 const styles = theme => ({
   viewDescription: {
@@ -97,12 +97,12 @@ function EditControl({ questionIndex, question }) {
           <InputLabel>Video Content</InputLabel>
           <VideoWrapper>
 
-            <VideoRecorder 
-                            onRecordingComplete={(videoBlob) => {
-                            // Do something with the video...
-                            console.log('videoBlob', videoBlob)
-                            }} 
-                />
+            {/*<VideoRecorder */}
+            {/*                onRecordingComplete={(videoBlob) => {*/}
+            {/*                // Do something with the video...*/}
+            {/*                console.log('videoBlob', videoBlob)*/}
+            {/*                }} */}
+            {/*    />*/}
 
 
           </VideoWrapper>

@@ -19,6 +19,8 @@ export {firebase};
 // history
 export const history = createBrowserHistory();
 
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
     createRootReducer(history),
     {
@@ -26,14 +28,8 @@ const store = createStore(
             open: false,
         }
     },
-    compose(
+    composeEnhancers(
         applyMiddleware(routerMiddleware(history)),
-
-        // thunk
-        // applyMiddleware(thunk.withExtraArgument(getFirebase)),
-
-        // support redux devtools
-        typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ === 'function' ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
     )
 );
 
