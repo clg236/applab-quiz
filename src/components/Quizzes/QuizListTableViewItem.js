@@ -51,10 +51,10 @@ const QuizListTableViewItem = props => {
                 <Typography variant="body2">{submission ? submission.score : 0}/{quiz.questions ? _.size(quiz.questions) : 0}</Typography>
                 </TableCell>
             )}
-            <TableCell align="center">
+            <TableCell align="left">
             <Typography variant="body2">{submission && <MuiLink href="#" onClick={handleClicked}>Comments</MuiLink>}</Typography>
             </TableCell>
-            {isAdmin && showActionsColumn && <TableCell align="center">
+            {isAdmin && showActionsColumn && <TableCell align="left">
             <Typography variant="body2"><MuiLink href="#" onClick={handleDownload}>Download</MuiLink></Typography>
             </TableCell>}
         </TableRow>

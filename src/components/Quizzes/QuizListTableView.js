@@ -48,7 +48,7 @@ const QuizListTableView = props => {
                     <TableCell align="left"><Typography variant="body" color="inherit">Due</Typography></TableCell>
                     {showScoreColumn && <TableCell align="left"><Typography variant="body" color="inherit">Score</Typography></TableCell>}
                     <TableCell align="left"><Typography variant="body" color="inherit">Comments</Typography></TableCell>
-                    {isAdmin && showActionsColumn && <TableCell align="center"><Typography variant="body" color="inherit">Actions</Typography></TableCell>}
+                    {isAdmin && showActionsColumn && <TableCell align="left"><Typography variant="body" color="inherit">Actions</Typography></TableCell>}
                 </TableRow>
             </TableHead>
             <TableBody>

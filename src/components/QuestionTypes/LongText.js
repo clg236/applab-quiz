@@ -22,6 +22,7 @@ import CommentsIcon from "@material-ui/icons/CommentOutlined";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import Avatar from "@material-ui/core/Avatar";
+import VideoRecorder from 'react-video-recorder';
 
 const styles = theme => ({
   viewDescription: {
@@ -40,6 +41,13 @@ const CardHeaderWrapper = styled.div`
   background-color: #7d4cdb;
   color: white;
 `;
+
+const VideoWrapper = styled.div`
+  display: flex;
+  
+`;
+
+
 
 function validate(value, question) {
   if (!value) {
@@ -81,6 +89,25 @@ function EditControl({ questionIndex, question }) {
               <Editor field={field} form={form} withMargin />
             )}
           />
+          
+        </FormControl>
+      </Grid>
+      <Grid item xs={12}>
+        <FormControl fullWidth required>
+          <InputLabel>Video Content</InputLabel>
+          <VideoWrapper>
+
+            <VideoRecorder 
+                            onRecordingComplete={(videoBlob) => {
+                            // Do something with the video...
+                            console.log('videoBlob', videoBlob)
+                            }} 
+                />
+
+
+          </VideoWrapper>
+
+          
         </FormControl>
       </Grid>
       <Grid item xs={12}>
