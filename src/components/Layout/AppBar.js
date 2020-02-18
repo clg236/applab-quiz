@@ -71,10 +71,11 @@ function AppBarComponent({classes, auth, profile, drawer, location, dispatch}) {
                 </Typography>
 
                 {profile.role === ROLES.ROLE_ADMIN && (
+                    location.pathname !== '/activities/create' ? 
                     <Button variant="outlined" color="inherit" aria-label="create a new activity" component={Link}
                             to={ROUTES.CREATE_ACTIVITY} className={classes.button} startIcon={<AddIcon/>}>
                         Create Activity
-                    </Button>
+                    </Button> : null
                 )}
             </Toolbar>
         </AppBar>
