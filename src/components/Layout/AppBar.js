@@ -54,18 +54,20 @@ function AppBarComponent({classes, auth, profile, drawer, location, dispatch}) {
     return (
         <AppBar position="fixed" className={classes.appBar}>
             <Toolbar disableGutters>
+                {location.pathname !== '/activities/create' ? 
                 <IconButton color="inherit" aria-label="Toggle drawer" onClick={handleToggleDrawerClicked}
                             className={classes.btnToggle}>
                     <MenuIcon/>
-                </IconButton>
-
-                <Typography component="h1" variant="h5" color="inherit" noWrap className={classes.title}>
-                    <Link className={classes.title} to={"/"} variant="body2">
+                </IconButton> : <Link className={classes.title} to={"/"} variant="body2">
                         <IconButton color="secondary">
                             <ChevronLeftIcon/>
-                            {JSON.stringify(location, null, 2)}
+                            Back
                         </IconButton>
                     </Link>
+                }
+
+                <Typography component="h1" variant="h5" color="inherit" noWrap className={classes.title}>
+
                 </Typography>
 
                 {profile.role === ROLES.ROLE_ADMIN && (
